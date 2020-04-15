@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,8 +12,8 @@
   <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="http://localhost:8080/Enchere/index.html">
-      <h1 style="font-size: 25px">ENI - EnchÃ¨res</h1>
+    <a class="navbar-item" href="${pageContext.request.contextPath}/accueil">
+      <h1 style="font-size: 25px">ENI - Enchères</h1>
     </a>
 </nav>
   <section class="section">
@@ -37,9 +39,9 @@
 			<div class="field is-horizontal">
 			  <div class="field-body">
 			    <div class="field">
-				  <label class="label">PrÃ©nom</label>
+				  <label class="label">Prénom</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="PrÃ©nom">
+				    <input class="input" type="text" placeholder="Prénom">
 				  </div>
 				</div>
 			    <div class="field">
@@ -54,9 +56,9 @@
 			<div class="field is-horizontal">
 			  <div class="field-body">
 			    <div class="field">
-				  <label class="label">TÃ©lÃ©phone</label>
+				  <label class="label">Téléphone</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="TÃ©lÃ©phone">
+				    <input class="input" type="text" placeholder="Téléphone">
 				  </div>
 				</div>
 			    <div class="field">
@@ -107,10 +109,10 @@
 			  		<div class="control">
 			    		<button class="button is-link">Connexion</button>
 		  			</div>
-				</div>Â Â Â Â Â Â Â Â Â Â Â Â 
+				</div>            
 			    <div class="field">
 			      <div class="control">
-			        <a class="button" href="http://localhost:8080/Enchere/index.html">Annuler</a>
+			        <a class="button" href="${pageContext.request.contextPath}/accueil">Annuler</a>
 			      </div>
 			    </div>
 			 </div>

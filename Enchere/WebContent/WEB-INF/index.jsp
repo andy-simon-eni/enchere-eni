@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,8 +12,8 @@
   <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="http://localhost:8080/Enchere/index.html">
-      <h1 style="font-size: 25px">ENI - EnchÃ¨res</h1>
+    <a class="navbar-item" href="${pageContext.request.contextPath}/accueil">
+      <h1 style="font-size: 25px">ENI - Enchères</h1>
     </a>
 
     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -25,10 +27,10 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary" href="http://localhost:8080/Enchere/sign_up.html">
-            <strong>CrÃ©er un compte</strong>
+          <a class="button is-primary" href="${pageContext.request.contextPath}/signUp">
+            <strong>Créer un compte</strong>
           </a>
-          <a class="button is-light" href="http://localhost:8080/Enchere/sign_in.html">
+          <a class="button is-light" href="${pageContext.request.contextPath}/signIn">
             Se connecter
           </a>
         </div>
@@ -42,7 +44,7 @@
         A faire
       </h1>
       <p class="subtitle">
-        Afficher la liste des enchÃ¨res
+        Afficher la liste des enchères
       </p>
     </div>
   </section>

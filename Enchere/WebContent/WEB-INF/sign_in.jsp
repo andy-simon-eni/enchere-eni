@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,8 +12,8 @@
   <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="http://localhost:8080/Enchere/index.html">
-      <h1 style="font-size: 25px">ENI - EnchÃ¨res</h1>
+    <a class="navbar-item" href="${pageContext.request.contextPath}/accueil">
+      <h1 style="font-size: 25px">ENI - Enchères</h1>
     </a>
 </nav>
   <section class="section">
@@ -53,7 +55,7 @@
 			</div>
 			<div class="field">
 		      <div class="control">
-		        <a href="">Mot de passe oubliÃ©</a>
+		        <a href="">Mot de passe oublié</a>
 		      </div>
 		    </div>
 		</form>

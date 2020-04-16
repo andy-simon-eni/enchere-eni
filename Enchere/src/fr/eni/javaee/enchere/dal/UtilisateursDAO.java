@@ -6,7 +6,7 @@ import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bo.Utilisateurs;
 
 public interface UtilisateursDAO {
-	public void insert(Utilisateurs utilisateur) throws BusinessException;
+	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException;
 	public void update(Utilisateurs utilisateur);
 	public void delete(int id);
 	public List<Utilisateurs> selectAll();

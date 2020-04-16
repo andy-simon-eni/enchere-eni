@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.UtilisateursManager;
+import fr.eni.javaee.enchere.bo.Utilisateurs;
 
 /**
  * Servlet implementation class signUpServlet
@@ -44,7 +46,7 @@ public class signUpServlet extends HttpServlet {
 		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp,url_retour;
 		boolean valide = true;
 		request.setCharacterEncoding("UTF-8");
-		
+		Utilisateurs util = null;
 		pseudo = request.getParameter("pseudo");
 		nom = request.getParameter("nom");
 		prenom = request.getParameter("prenom");
@@ -57,9 +59,12 @@ public class signUpServlet extends HttpServlet {
 		verif_mdp = request.getParameter("verif_mdp");
 		UtilisateursManager utilManager = new UtilisateursManager();
 		try {
-			utilManager.insertUtilisateur(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,verif_mdp);
+			util = utilManager.insertUtilisateur(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,verif_mdp);
+			HttpSession session = request.getSession();
+			session.setAttribute("id", util.getNo_utilisateur());
+			session.setAttribute("nom", util.getNom());
+			session.setAttribute("prenom", util.getPrenom());
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			valide = false;
 			e.printStackTrace();
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
@@ -71,9 +76,6 @@ public class signUpServlet extends HttpServlet {
 			request.setAttribute("rue", rue);
 			request.setAttribute("code_postal", code_postal);
 			request.setAttribute("ville", ville);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}		
 		
 		if(valide) {

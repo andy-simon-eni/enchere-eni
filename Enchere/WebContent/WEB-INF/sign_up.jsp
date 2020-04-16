@@ -63,7 +63,7 @@
 							<label class="label">Email *</label>
 							<div class="control">
 								<input class="input" type="email" placeholder="Email"
-									name="email" value="${email}" required pattern=".{1,20}">
+									name="email" value="${email}" required pattern=".{1,100}">
 							</div>
 						</div>
 					</div>

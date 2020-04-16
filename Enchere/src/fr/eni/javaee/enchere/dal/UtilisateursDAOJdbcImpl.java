@@ -15,7 +15,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
 
 	@Override
-	public void insert(Utilisateurs utilisateur) throws BusinessException {
+	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				cnx.setAutoCommit(false);
@@ -54,6 +54,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
 			throw businessException;
 		}
+		return utilisateur;
 	}
 
 	@Override

@@ -9,6 +9,6 @@ public interface UtilisateursDAO {
 	public void update(Utilisateurs utilisateur);
 	public void delete(int id);
 	public List<Utilisateurs> selectAll();
-	public Utilisateurs selectById(int id);
-	public Utilisateurs getUtilByPseudo(String pseudo);
+	public Utilisateurs selectByNoUtil(int no_util);
+	public Utilisateurs getUtilByPseudo(String pseudo) throws Exception;
 }

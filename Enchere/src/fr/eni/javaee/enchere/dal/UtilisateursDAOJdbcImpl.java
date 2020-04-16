@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import fr.eni.javaee.enchere.bo.Utilisateurs;
-import fr.eni.javaee.gestionlistescourses.bo.ListeCourse;
 
 
 public class UtilisateursDAOJdbcImpl implements UtilisateursDAO{
@@ -74,14 +73,14 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO{
 	}
 
 	@Override
-	public Utilisateurs selectById(int id) {
+	public Utilisateurs selectByNoUtil(int no_util) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Utilisateurs getUtilByPseudo(String pseudo) {
-		Utilisateurs util;
+	public Utilisateurs getUtilByPseudo(String pseudo) throws Exception {
+		Utilisateurs util = null;
 		try (Connection cnx = ConnectionProvider.getConnection()){
 			PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_ID);
 			pstmt.setString(1, pseudo);
@@ -89,12 +88,24 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO{
 			while(rs.next())
 			{
 				util = new Utilisateurs();
-				util.setNo_utilisateur(no_utilisateur);
+				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				util.setNom(rs.getString("nom"));
+				util.setPrenom(rs.getString("prenom"));
+				util.setEmail(rs.getString("email"));
+				util.setTelephone(rs.getString("telephone"));
+				util.setRue(rs.getString("rue"));
+				util.setCode_postal(rs.getString("code_postal"));
+				util.setVille(rs.getString("ville"));
+				util.setMot_de_passe(rs.getString("mot_de_passe"));
+				util.setCredit(rs.getInt("credit"));
+				util.setAdministrateur(rs.getBoolean("administrateur"));
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+		return util;
 	}
 
 }

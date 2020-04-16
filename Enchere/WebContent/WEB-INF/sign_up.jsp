@@ -18,19 +18,19 @@
 </nav>
   <section class="section">
     <div class="container">
-    	<form>			
+    	<form method="POST" action="${pageContext.request.contextPath}/signUp">			
 			<div class="field is-horizontal">
 			  <div class="field-body">
 			    <div class="field">
 				  <label class="label">Pseudo</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Pseudo">
+				    <input class="input" type="text" placeholder="Pseudo" name="pseudo">
 				  </div>
 				</div>
 			    <div class="field">
 				  <label class="label">Nom</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Nom">
+				    <input class="input" type="text" placeholder="Nom" name="nom">
 				  </div>
 				</div>
 			  </div>
@@ -41,13 +41,13 @@
 			    <div class="field">
 				  <label class="label">Prénom</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Prénom">
+				    <input class="input" type="text" placeholder="Prénom" name="prenom">
 				  </div>
 				</div>
 			    <div class="field">
 				  <label class="label">Email</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Email">
+				    <input class="input" type="text" placeholder="Email" name="email">
 				  </div>
 				</div>
 			  </div>
@@ -58,13 +58,13 @@
 			    <div class="field">
 				  <label class="label">Téléphone</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Téléphone">
+				    <input class="input" type="text" placeholder="Téléphone" name="telephone">
 				  </div>
 				</div>
 			    <div class="field">
 				  <label class="label">Rue</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Rue">
+				    <input class="input" type="text" placeholder="Rue" name="rue">
 				  </div>
 				</div>
 			  </div>
@@ -75,13 +75,13 @@
 			    <div class="field">
 				  <label class="label">Code postal</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Code postal">
+				    <input class="input" type="text" placeholder="Code postal" name="code_postal">
 				  </div>
 				</div>
 			    <div class="field">
 				  <label class="label">Ville</label>
 				  <div class="control">
-				    <input class="input" type="text" placeholder="Ville">
+				    <input class="input" type="text" placeholder="Ville" name="ville">
 				  </div>
 				</div>
 			  </div>
@@ -92,13 +92,13 @@
 			    <div class="field">
 				  <label class="label">Mot de passe</label>
 				  <div class="control">
-				    <input class="input" type="password" placeholder="Mot de passe">
+				    <input class="input" type="password" placeholder="Mot de passe" name="mdp">
 				  </div>
 				</div>
 			    <div class="field">
 				  <label class="label">Confirmation</label>
 				  <div class="control">
-				    <input class="input" type="password" placeholder="Confirmation">
+				    <input class="input" type="password" placeholder="Confirmation" name="verif_mdp">
 				  </div>
 				</div>
 			  </div>

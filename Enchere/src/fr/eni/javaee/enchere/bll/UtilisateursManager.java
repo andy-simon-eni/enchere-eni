@@ -13,7 +13,7 @@ public class UtilisateursManager {
 	}
 
 	public void insertUtilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String code_postal, String ville, String mdp, String verif_mdp) throws Exception {
+			String code_postal, String ville, String mdp, String verif_mdp) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		pseudo = pseudo.trim();
 		nom = nom.trim();
@@ -41,11 +41,12 @@ public class UtilisateursManager {
 	}
 
 	private void validerUtil(String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String code_postal, String ville, String mdp, String verif_mdp, BusinessException businessException) {
+			String code_postal, String ville, String mdp, String verif_mdp, BusinessException businessException)
+			throws BusinessException {
 		Boolean valide = true;
 		// TODO pour tous les champs autre que mdp et pseudo, tester si il n'y a pas des
-		// caractères spéciaux
-		// TODO gérer les erreurs perso
+		// caractï¿½res spï¿½ciaux
+		// TODO gï¿½rer les erreurs perso
 		if (pseudo == null || pseudo.isEmpty() || pseudo.length() > 30) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PSEUDO_INVALIDE);
 		} else {
@@ -56,53 +57,47 @@ public class UtilisateursManager {
 		}
 
 		if (nom == null || nom.isEmpty() || nom.length() > 30) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_NOM_INVALIDE);
 		}
 		if (prenom == null || prenom.isEmpty() || prenom.length() > 30) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PRENOM_INVALIDE);
 		}
 		// TODO Tester si c'est un mail ?
 		if (email == null || email.isEmpty() || email.length() > 20) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MAIL_INVALIDE);
 		}
 		// TODO Tester si il y a que des chiffres
 		if (telephone == null || telephone.isEmpty() || telephone.length() > 15) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_TELEPHONE_INVALIDE);
 		}
 		if (code_postal == null || code_postal.isEmpty() || code_postal.length() > 10) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_CODE_POSTAL_INVALIDE);
+		}
+		if (rue == null || rue.isEmpty() || rue.length() > 30) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_RUE_INVALIDE);
 		}
 		// TODO Tester si il n'y pas de chiffres
 		if (ville == null || ville.isEmpty() || ville.length() > 30) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_VILLE_INVALIDE);
 		}
 		if (mdp == null || mdp.isEmpty() || mdp.length() > 30) {
-			valide = false;
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MDP_INVALIDE);
 		}
 		if (verif_mdp == null || verif_mdp.isEmpty() || verif_mdp.length() > 30) {
 			valide = false;
 		}
-		if (!validerMdp(mdp, verif_mdp)) {
-			valide = false;
+		validerMdp(mdp, verif_mdp, businessException);
+	}
+
+	private void validerMdp(String mdp, String verif_mdp, BusinessException businessException) {
+		if (verif_mdp == null || !mdp.equals(verif_mdp)) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MDPS_DIFFERENTS);
 		}
 	}
 
-	private boolean validerMdp(String mdp, String verif_mdp) {
-		Boolean valide = false;
-		if (mdp.equals(verif_mdp)) {
-			valide = true;
-		}
-		return valide;
-	}
-
-	public Utilisateurs getUtilByPseudo(String pseudo) {
+	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException {
 		Utilisateurs util = null;
-		try {
-			util = this.utilisateursDAO.getUtilByPseudo(pseudo);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		util = this.utilisateursDAO.getUtilByPseudo(pseudo);
 		return util;
 	}
 

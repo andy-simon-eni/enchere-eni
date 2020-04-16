@@ -2,6 +2,7 @@ package fr.eni.javaee.enchere.servlets;
 
 import java.io.IOException;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.UtilisateursManager;
 
 /**
@@ -39,7 +41,8 @@ public class signUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp;
+		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp,url_retour;
+		boolean valide = true;
 		request.setCharacterEncoding("UTF-8");
 		
 		pseudo = request.getParameter("pseudo");
@@ -53,7 +56,34 @@ public class signUpServlet extends HttpServlet {
 		mdp = request.getParameter("mdp");
 		verif_mdp = request.getParameter("verif_mdp");
 		UtilisateursManager utilManager = new UtilisateursManager();
-		utilManager.insertUtilisateur(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,verif_mdp);		
+		try {
+			utilManager.insertUtilisateur(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,verif_mdp);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			valide = false;
+			e.printStackTrace();
+			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+			request.setAttribute("pseudo", pseudo);
+			request.setAttribute("nom", nom);
+			request.setAttribute("prenom", prenom);
+			request.setAttribute("email", email);
+			request.setAttribute("telephone", telephone);
+			request.setAttribute("rue", rue);
+			request.setAttribute("code_postal", code_postal);
+			request.setAttribute("ville", ville);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		if(valide) {
+			url_retour = "bonne page";
+		}else {
+			url_retour = "/WEB-INF/sign_up.jsp";
+		}
+		
+		RequestDispatcher rd = request.getRequestDispatcher(url_retour);
+		rd.forward(request, response);
 		
 	}
 

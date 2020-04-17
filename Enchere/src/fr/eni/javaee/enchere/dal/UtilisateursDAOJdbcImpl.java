@@ -13,6 +13,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,0);";
 	private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
+	private static final String GET_UTILISATEUR_BY_EMAIL = "SELECT * from UTILISATEURS WHERE email = ?";
 
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
@@ -108,6 +109,36 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
 			throw businessException;
+		}
+		return util;
+	}
+
+	@Override
+	public Utilisateurs getUtilByEmail(String email) throws Exception {
+		Utilisateurs util = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_EMAIL);
+			pstmt.setString(1, email);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				util = new Utilisateurs();
+				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				util.setNom(rs.getString("nom"));
+				util.setPrenom(rs.getString("prenom"));
+				util.setEmail(rs.getString("email"));
+				util.setTelephone(rs.getString("telephone"));
+				util.setRue(rs.getString("rue"));
+				util.setCode_postal(rs.getString("code_postal"));
+				util.setVille(rs.getString("ville"));
+				util.setMot_de_passe(rs.getString("mot_de_passe"));
+				util.setCredit(rs.getInt("credit"));
+				util.setAdministrateur(rs.getBoolean("administrateur"));
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 		return util;
 	}

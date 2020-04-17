@@ -66,7 +66,6 @@ public class signUpServlet extends HttpServlet {
 			session.setAttribute("prenom", util.getPrenom());
 		} catch (BusinessException e) {
 			valide = false;
-			e.printStackTrace();
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 			request.setAttribute("pseudo", pseudo);
 			request.setAttribute("nom", nom);

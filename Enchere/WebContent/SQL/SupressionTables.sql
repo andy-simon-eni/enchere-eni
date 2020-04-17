@@ -1,0 +1,8 @@
+-- Script de supression des tables de la base de données ENCHERES
+--   type :      SQL Server 2012
+--
+DROP TABLE RETRAITS;
+DROP TABLE ENCHERES;
+DROP TABLE ARTICLES_VENDUS;
+DROP TABLE UTILISATEURS;
+DROP TABLE CATEGORIES;

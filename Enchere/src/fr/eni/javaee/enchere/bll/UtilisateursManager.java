@@ -46,7 +46,6 @@ public class UtilisateursManager {
 	private void validerUtil(String pseudo, String nom, String prenom, String email, String telephone, String rue,
 			String code_postal, String ville, String mdp, String verif_mdp, BusinessException businessException)
 			throws BusinessException {
-		Boolean valide = true;
 		
 		Pattern patternCompile_Pseudo;
 		Pattern patternCompile_Nom_Prenom_Ville;
@@ -57,7 +56,7 @@ public class UtilisateursManager {
 		String pattern_Pseudo = "[A-Za-z0-9]+";
 		String pattern_Nom_Prenom_Ville = "[A-Za-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\-\\s']+";
 		String pattern_Email = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-		String pattern_Telephone_CodePostal = "[0-9]+";
+		String pattern_Telephone_CodePostal = "[0-9]{0,15}";
 		String pattern_Rue = "[A-Za-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\-\\s']+";
 		
 		patternCompile_Pseudo = Pattern.compile(pattern_Pseudo);
@@ -84,9 +83,14 @@ public class UtilisateursManager {
 		// TODO Tester si c'est un mail ?
 		if (email == null || email.isEmpty() || email.length() > 100 || !patternCompile_Email.matcher(email).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MAIL_INVALIDE);
+		}else {
+			Utilisateurs util = this.getUtilByEmail(email);
+			if (util != null) {
+				businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_EMAIL_EXISTANT);
+			}
 		}
 		// TODO Tester si il y a que des chiffres
-		if (telephone == null || telephone.isEmpty() || telephone.length() > 15 || !patternCompile_Telephone_CodePostal.matcher(telephone).matches()) {
+		if (telephone.length() > 15 || !patternCompile_Telephone_CodePostal.matcher(telephone).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_TELEPHONE_INVALIDE);
 		}
 		if (code_postal == null || code_postal.isEmpty() || code_postal.length() > 10 || !patternCompile_Telephone_CodePostal.matcher(code_postal).matches()) {
@@ -116,5 +120,15 @@ public class UtilisateursManager {
 		util = this.utilisateursDAO.getUtilByPseudo(pseudo);
 		return util;
 	}
+	
+	public Utilisateurs getUtilByEmail(String email) {
+        Utilisateurs util = null;
+        try {
+            util = this.utilisateursDAO.getUtilByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return util;
+    }
 
 }

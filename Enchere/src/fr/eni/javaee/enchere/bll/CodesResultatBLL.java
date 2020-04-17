@@ -45,4 +45,13 @@ public abstract class CodesResultatBLL {
 	 * Echec les mdps ne sont pas identiques
 	 */
 	public static final int REGLE_UTIL_MDPS_DIFFERENTS = 20010;
+	/**
+	 * Echec l'email existe deja
+	 */
+	public static final int REGLE_UTIL_EMAIL_EXISTANT = 20011;
+	/**
+	 * Echec mdp ou identifiant incorrect
+	 */
+	public static final int REGLE_CNX_UTIL_MDP_INVALIDE = 30011;
+
 }

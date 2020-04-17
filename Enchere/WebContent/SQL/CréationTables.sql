@@ -1,7 +1,7 @@
--- Script de crÃ©ation de la base de donnÃ©es ENCHERES
+-- Script de création de la base de données ENCHERES
 --   type :      SQL Server 2012
 --
--- Modification : passage de varchar(20) Ã  varchar(100) le champ email dans la table UTILISATEURS
+-- Modification : passage de varchar(20) à varchar(100) le champ email dans la table UTILISATEURS
 
 
 
@@ -63,8 +63,8 @@ CREATE TABLE ARTICLES_VENDUS (
 
 ALTER TABLE ARTICLES_VENDUS ADD constraint articles_vendus_pk PRIMARY KEY (no_article)
 
-ALTER TABLE ARTICLES_VENDUS
-    ADD CONSTRAINT encheres_utilisateur_fk FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )
+ALTER TABLE ENCHERES
+    ADD CONSTRAINT encheres_utilisateurs_fk FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )
 ON DELETE NO ACTION 
     ON UPDATE no action 
 
@@ -87,8 +87,7 @@ ON DELETE NO ACTION
     ON UPDATE no action 
 
 ALTER TABLE ARTICLES_VENDUS
-    ADD CONSTRAINT ventes_utilisateur_fk FOREIGN KEY ( no_utilisateur )
+    ADD CONSTRAINT articles_vendus_utilisateurs_fk FOREIGN KEY ( no_utilisateur )
         REFERENCES utilisateurs ( no_utilisateur )
 ON DELETE NO ACTION 
     ON UPDATE no action 
-

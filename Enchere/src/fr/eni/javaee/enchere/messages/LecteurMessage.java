@@ -33,7 +33,6 @@ public class LecteurMessage {
 			e.printStackTrace();
 			message = "Une erreur inconnue est survenue";
 		}
-		System.out.println("message=" + message);
 		return message;
 	}
 }

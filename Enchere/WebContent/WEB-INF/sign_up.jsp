@@ -20,10 +20,14 @@
 			<c:if test="${!empty listeCodesErreur}">
 				<div role="alert">
 					<c:forEach var="code" items="${listeCodesErreur}">
-						<div class="notification is-danger"><button class="delete"></button><span>${LecteurMessage.getMessageErreur(code)}</span></div>
+						<div class="notification is-danger">
+							<button class="delete"></button>
+							<span>${LecteurMessage.getMessageErreur(code)}</span>
+						</div>
 					</c:forEach>
 				</div>
-				<br><br>
+				<br>
+				<br>
 			</c:if>
 
 			<form method="POST"
@@ -72,11 +76,10 @@
 				<div class="field is-horizontal">
 					<div class="field-body">
 						<div class="field">
-							<label class="label">Téléphone *</label>
+							<label class="label">Téléphone</label>
 							<div class="control">
 								<input class="input" type="text" placeholder="Téléphone"
-									name="telephone" value="${telephone}" required
-									pattern="[0-9]{1,15}">
+									name="telephone" value="${telephone}" pattern="[0-9]{0,15}">
 							</div>
 						</div>
 						<div class="field">
@@ -136,7 +139,7 @@
 							<button class="button is-link">Connexion</button>
 						</div>
 					</div>
-					            
+					            
 					<div class="field">
 						<div class="control">
 							<a class="button"

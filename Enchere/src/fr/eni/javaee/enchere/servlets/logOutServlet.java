@@ -8,19 +8,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class indexServlet
+ * Servlet implementation class logOutServlet
  */
-@WebServlet(
-        urlPatterns= {"/accueil","/"})
-public class indexServlet extends HttpServlet {
+@WebServlet("/logOut")
+public class logOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public indexServlet() {
+    public logOutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,7 +30,11 @@ public class indexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-		rd.forward(request, response);
+		HttpSession session=request.getSession();
+        session.invalidate();
+        
+        response.sendRedirect(request.getContextPath() + "/accueil");
+        
 	}
 
 	/**

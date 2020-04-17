@@ -12,4 +12,5 @@ public interface UtilisateursDAO {
 	public List<Utilisateurs> selectAll();
 	public Utilisateurs selectByNoUtil(int no_util);
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException;
+	public Utilisateurs getUtilByEmail(String email) throws BusinessException;
 }

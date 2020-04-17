@@ -4,14 +4,4 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  <!-- Déclaration d'une JSP -->
-    <!-- <servlet>
-        <servlet-name>indexJSP</servlet-name>
-        <jsp-file>/WEB-INF/index.jsp</jsp-file>
-    </servlet>
-    Association de la JSP à une ou des URL
-    <servlet-mapping>
-        <servlet-name>indexJSP</servlet-name>
-        <url-pattern>/accueil</url-pattern>
-    </servlet-mapping> -->
 </web-app>

@@ -10,7 +10,7 @@ public interface UtilisateursDAO {
 	public void update(Utilisateurs utilisateur);
 	public void delete(int id);
 	public List<Utilisateurs> selectAll();
-	public Utilisateurs selectByNoUtil(int no_util);
+	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException;
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException;
 	public Utilisateurs getUtilByEmail(String email) throws BusinessException;
 }

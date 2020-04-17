@@ -12,9 +12,9 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
 public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,0);";
-    private static final String GET_UTILISATEUR_BY_ID = "SELECT * from UTILISATEURS WHERE no_utilisateur = ?";
-    private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
-    private static final String GET_UTILISATEUR_BY_EMAIL = "SELECT * from UTILISATEURS WHERE email = ?";
+	private static final String GET_UTILISATEUR_BY_NO_UTIL = "SELECT * from UTILISATEURS WHERE no_utilisateur = ?";
+	private static final String GET_UTILISATEUR_BY_EMAIL = "SELECT * from UTILISATEURS WHERE email = ?";
+	private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
 
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
@@ -78,34 +78,59 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	}
 
 	@Override
-	public Utilisateurs selectByNoUtil(int no_util) {
-		// TODO Auto-generated method stub
-		return null;
+	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException {
+		Utilisateurs util = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_NO_UTIL);
+			pstmt.setInt(1, no_util);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				util = new Utilisateurs();
+				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				util.setNom(rs.getString("nom"));
+				util.setPrenom(rs.getString("prenom"));
+				util.setEmail(rs.getString("email"));
+				util.setTelephone(rs.getString("telephone"));
+				util.setRue(rs.getString("rue"));
+				util.setCode_postal(rs.getString("code_postal"));
+				util.setVille(rs.getString("ville"));
+				util.setMot_de_passe(rs.getString("mot_de_passe"));
+				util.setCredit(rs.getInt("credit"));
+				util.setAdministrateur(rs.getBoolean("administrateur"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
+			throw businessException;
+		}
+		return util;
 	}
 
 	
 	@Override
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException {
-        Utilisateurs util = null;
-        try (Connection cnx = ConnectionProvider.getConnection()){
-            PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_PSEUDO);
-            pstmt.setString(1, pseudo);
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next())
-            {
-                util = new Utilisateurs();
-                util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-                util.setPseudo(rs.getString("pseudo"));
-                util.setNom(rs.getString("nom"));
-                util.setPrenom(rs.getString("prenom"));
-                util.setEmail(rs.getString("email"));
-                util.setTelephone(rs.getString("telephone"));
-                util.setRue(rs.getString("rue"));
-                util.setCode_postal(rs.getString("code_postal"));
-                util.setVille(rs.getString("ville"));
-                util.setMot_de_passe(rs.getString("mot_de_passe"));
-                util.setCredit(rs.getInt("credit"));
-                util.setAdministrateur(rs.getBoolean("administrateur"));
+		Utilisateurs util = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_PSEUDO);
+			pstmt.setString(1, pseudo);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				util = new Utilisateurs();
+				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				util.setNom(rs.getString("nom"));
+				util.setPrenom(rs.getString("prenom"));
+				util.setEmail(rs.getString("email"));
+				util.setTelephone(rs.getString("telephone"));
+				util.setRue(rs.getString("rue"));
+				util.setCode_postal(rs.getString("code_postal"));
+				util.setVille(rs.getString("ville"));
+				util.setMot_de_passe(rs.getString("mot_de_passe"));
+				util.setCredit(rs.getInt("credit"));
+				util.setAdministrateur(rs.getBoolean("administrateur"));
 
             }
         } catch (Exception e) {

@@ -160,6 +160,12 @@ public class UtilisateursManager {
         util = this.utilisateursDAO.getUtilByEmail(email);
         return util;
     }
+	
+	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException {
+        Utilisateurs util = null;
+        util = this.utilisateursDAO.getUtilByNoUtil(no_util);
+        return util;
+    }
 
 	
 }

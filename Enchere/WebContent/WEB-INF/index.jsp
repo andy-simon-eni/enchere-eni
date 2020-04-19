@@ -13,7 +13,7 @@
   <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="${pageContext.request.contextPath}/accueil">
+    <a class="navbar-item" href="${pageContext.request.contextPath}">
       <h1 style="font-size: 25px">ENI - Enchères</h1>
     </a>
 
@@ -29,7 +29,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
       <div style="padding-right : 10px">
-	       <a href="${pageContext.request.contextPath}/showProfil" >
+	       <a href="${pageContext.request.contextPath}/profil" >
 	            <strong>${ sessionScope.prenom } ${ sessionScope.nom }</strong>
 	          </a>
           </div>

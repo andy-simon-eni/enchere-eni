@@ -29,7 +29,7 @@ public class UtilisateursManager {
 		mdp = mdp.trim();
 		verif_mdp = verif_mdp.trim();
 
-		this.validerUtil(pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp, verif_mdp,
+		this.validerUtil(0, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp, verif_mdp,
 				businessException);
 		if (!businessException.hasErreurs()) {
 
@@ -43,7 +43,7 @@ public class UtilisateursManager {
 		return util;
 	}
 
-	private void validerUtil(String pseudo, String nom, String prenom, String email, String telephone, String rue,
+	private void validerUtil(int no_util, String pseudo, String nom, String prenom, String email, String telephone, String rue,
 			String code_postal, String ville, String mdp, String verif_mdp, BusinessException businessException)
 			throws BusinessException {
 		
@@ -70,7 +70,13 @@ public class UtilisateursManager {
 		} else {
 			Utilisateurs util = this.getUtilByPseudo(pseudo);
 			if (util != null) {
-				businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PSEUDO_EXISTANT);
+				if(no_util != 0) {
+					if(util.getNo_utilisateur() != no_util) {
+						businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PSEUDO_EXISTANT);
+					}
+				}else {
+					businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PSEUDO_EXISTANT);
+				}
 			}
 		}
 
@@ -86,7 +92,13 @@ public class UtilisateursManager {
 		}else {
 			Utilisateurs util = this.getUtilByEmail(email);
 			if (util != null) {
-				businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_EMAIL_EXISTANT);
+				if(no_util != 0) {
+					if(util.getNo_utilisateur() != no_util) {
+						businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_EMAIL_EXISTANT);
+					}
+				}else {
+					businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_EMAIL_EXISTANT);
+				}
 			}
 		}
 		// TODO Tester si il y a que des chiffres
@@ -167,5 +179,49 @@ public class UtilisateursManager {
         return util;
     }
 
+	public Utilisateurs updateUtilisateur(int no_utilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String code_postal, String ville, String mdp, String verif_mdp, String mdp_actuel) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		Utilisateurs util = null;
+		
+		util = this.utilisateursDAO.getUtilByNoUtil(no_utilisateur);
+		
+		pseudo = pseudo.trim();
+		nom = nom.trim();
+		prenom = prenom.trim();
+		email = email.trim();
+		telephone = telephone.trim();
+		rue = rue.trim();
+		code_postal = code_postal.trim();
+		ville = ville.trim();
+		mdp = mdp.trim();
+		verif_mdp = verif_mdp.trim();
+		mdp_actuel = mdp_actuel.trim();
+		
+		if(util.getMot_de_passe().equals(mdp_actuel)) {
+			
+			this.validerUtil(no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp, verif_mdp,
+					businessException);
+			if (!businessException.hasErreurs()) {
+
+				util = new Utilisateurs(no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp, util.getCredit(),
+						util.isAdministrateur());
+				this.utilisateursDAO.update(util);
+				util = this.utilisateursDAO.getUtilByNoUtil(no_utilisateur);
+
+			} else {
+				throw businessException;
+			}
+			
+		}else {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MDP_ACTUEL_INVALIDE);
+			throw businessException;
+		}
+		
+		return util;
+	}
 	
+	public void deleteUtilisateur(int no_util) throws BusinessException {
+        this.utilisateursDAO.delete(no_util);
+    }
 }

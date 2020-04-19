@@ -53,5 +53,9 @@ public abstract class CodesResultatBLL {
 	 * Echec mdp ou identifiant incorrect
 	 */
 	public static final int REGLE_CNX_UTIL_MDP_INVALIDE = 30011;
+	/**
+	 * mdp actuel incorrect lors de la modification de compte
+	 */
+	public static final int REGLE_UTIL_MDP_ACTUEL_INVALIDE = 40000;
 
 }

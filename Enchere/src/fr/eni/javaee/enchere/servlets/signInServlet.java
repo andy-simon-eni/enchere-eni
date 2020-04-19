@@ -78,7 +78,7 @@ public class signInServlet extends HttpServlet {
 			
 		}
 		 if(success) {
-			 response.sendRedirect(request.getContextPath() + "/accueil");   
+			 response.sendRedirect(request.getContextPath() + "/");   
 		 }else {
 			 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/sign_in.jsp");
 			 rd.forward(request, response);

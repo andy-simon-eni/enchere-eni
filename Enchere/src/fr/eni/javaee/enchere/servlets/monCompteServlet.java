@@ -18,7 +18,7 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
  * Servlet implementation class monCompteServlet
  */
 @WebServlet(
-        urlPatterns= {"/mon-compte"})
+        urlPatterns= {"/profil"})
 public class monCompteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,19 +36,9 @@ public class monCompteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int no_util = 0;
 		boolean sessionExiste = false;
-		String pseudo, nom, prenom, email, tel, rue, cp, ville, credits, url_retour;
+		String tel = "Non renseigné";
 		Utilisateurs util = null;
 		UtilisateursManager utilManager = new UtilisateursManager();
-		
-		pseudo = "Non renseigné";
-		nom = "Non renseigné";
-		prenom = "Non renseigné";
-		email = "Non renseigné";
-		tel = "Non renseigné";
-		rue = "Non renseigné"; 
-		cp = "Non renseigné";
-		ville = "Non renseigné";
-		credits = "Non renseigné";
 		
 		try {
 			HttpSession session = request.getSession();
@@ -58,42 +48,29 @@ public class monCompteServlet extends HttpServlet {
 				util = utilManager.getUtilByNoUtil(no_util);
 				
 				if(util != null) {
-					pseudo = util.getPseudo();
-					nom = util.getNom();
-					prenom = util.getPrenom();
-					email = util.getEmail();
+					request.setAttribute("pseudo", util.getPseudo());
+					request.setAttribute("nom", util.getNom());
+					request.setAttribute("prenom", util.getPrenom());
+					request.setAttribute("email", util.getEmail());
 					if(util.getTelephone() != null && !util.getTelephone().isEmpty()) {
 						tel = util.getTelephone();
 					}
-					rue = util.getRue();
-					cp = util.getCode_postal();
-					ville = util.getVille();
-					credits = String.valueOf(util.getCredit());
+					request.setAttribute("telephone", tel);
+					request.setAttribute("rue", util.getRue());
+					request.setAttribute("code_postal", util.getCode_postal());
+					request.setAttribute("ville", util.getVille());
+					request.setAttribute("credits", String.valueOf(util.getCredit()));
 				}
-				
-				request.setAttribute("pseudo", pseudo);
-				request.setAttribute("nom", nom);
-				request.setAttribute("prenom", prenom);
-				request.setAttribute("email", email);
-				request.setAttribute("telephone", tel);
-				request.setAttribute("rue", rue);
-				request.setAttribute("code_postal", cp);
-				request.setAttribute("ville", ville);
-				request.setAttribute("credits", credits);
 			}
-						
-			
-			
 		} catch (BusinessException e) {
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 		}
 		if(!sessionExiste) {
-			url_retour = "/WEB-INF/index.jsp";
+			response.sendRedirect(request.getContextPath() + "/");
 		}else {
-			url_retour = "/WEB-INF/mon_compte.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/mon_compte.jsp");
+			rd.forward(request, response);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher(url_retour);
-		rd.forward(request, response);
 	}
 
 	/**

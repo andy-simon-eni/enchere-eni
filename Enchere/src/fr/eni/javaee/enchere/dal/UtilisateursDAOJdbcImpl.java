@@ -15,7 +15,9 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String GET_UTILISATEUR_BY_NO_UTIL = "SELECT * from UTILISATEURS WHERE no_utilisateur = ?";
 	private static final String GET_UTILISATEUR_BY_EMAIL = "SELECT * from UTILISATEURS WHERE email = ?";
 	private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
-
+	private static final String UPDATE_UTILISATEUR_BY_NO_UTIL = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?";
+	private static final String DELETE_UTILISATEUR_BY_NO_UTIL = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";
+	
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -60,15 +62,53 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	}
 
 	@Override
-	public void update(Utilisateurs utilisateur) {
-		// TODO Auto-generated method stub
-
+	public void update(Utilisateurs utilisateur) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt;
+				ResultSet rs;
+			
+				pstmt = cnx.prepareStatement(UPDATE_UTILISATEUR_BY_NO_UTIL);
+				pstmt.setString(1, utilisateur.getPseudo());
+				pstmt.setString(2, utilisateur.getNom());
+				pstmt.setString(3, utilisateur.getPrenom());
+				pstmt.setString(4, utilisateur.getEmail());
+				pstmt.setString(5, utilisateur.getTelephone());
+				pstmt.setString(6, utilisateur.getRue());
+				pstmt.setString(7, utilisateur.getCode_postal());
+				pstmt.setString(8, utilisateur.getVille());
+				pstmt.setString(9, utilisateur.getMot_de_passe());
+				pstmt.setInt(10, utilisateur.getNo_utilisateur());
+				pstmt.executeUpdate();
+				pstmt.close();
+				cnx.commit();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				cnx.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_ECHEC);
+			throw businessException;
+		}
 	}
 
 	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-
+	public void delete(int no_util) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(DELETE_UTILISATEUR_BY_NO_UTIL);
+			pstmt.setInt(1, no_util);
+			pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_OBJET_ECHEC);
+			throw businessException;
+		}
 	}
 
 	@Override

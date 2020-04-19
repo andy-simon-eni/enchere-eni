@@ -9,7 +9,7 @@
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
 			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/accueil">
+				href="${pageContext.request.contextPath}/">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 		</div>
@@ -114,7 +114,7 @@
 				</div>
 			</div>
 			<br>
-			<button class="button is-link">Modifier</button>
+			<a href="${pageContext.request.contextPath}/modifier_profil" class="button is-link">Modifier</a>
 
 		</div>
 	</section>

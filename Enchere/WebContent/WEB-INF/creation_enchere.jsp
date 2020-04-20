@@ -4,13 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head><title>Créer un compte</title></head>
+<head>
+<title>Créer un compte</title>
+</head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/">
+			<a class="navbar-item" href="${pageContext.request.contextPath}/">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 		</div>
@@ -18,38 +19,64 @@
 	<section class="section">
 		<div class="container">
 
+			<c:if test="${!empty listeCodesErreur}">
+				<div role="alert">
+					<c:forEach var="code" items="${listeCodesErreur}">
+						<div class="notification is-danger">
+							<button class="delete"></button>
+							<span>${LecteurMessage.getMessageErreur(code)}</span>
+						</div>
+					</c:forEach>
+				</div>
+				<br>
+				<br>
+			</c:if>
+
 			<div style="width: 100%; text-align: center">
 				<span style="font-size: 20px">Nouvelle vente</span>
 			</div>
-			<br><br>
-			<form method="POST"	action="${pageContext.request.contextPath}/creation_enchere">
-				
+			<br> <br>
+			<form method="POST"
+				action="${pageContext.request.contextPath}/creation_enchere">
+
 				<div class="field">
 					<label class="label">Article</label>
 					<div class="control">
-						<input class="input" type="text" name="article">
+						<input class="input" type="text" name="article"
+							value="${nomArticle}">
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Description</label>
 					<div class="control">
-						<textarea class="textarea" name="desciption"></textarea>
+						<textarea class="textarea" name="description"
+							value="${description}"></textarea>
 					</div>
 				</div>
 
 				<div class="field">
 					<label class="label">Catégorie</label>
 					<div class="control">
-						<div class="select" name="categorie">
-						  <select>
-						    <option>Select dropdown</option>
-						    <option>With options</option>
-						  </select>
+						<div class="select">
+							<select name="categorie">
+								<option value="">Selectionner une catégorie</option>
+								<c:forEach items="${listCat}" var="lc">
+									<c:choose>
+										<c:when test="${noCateg == lc.getNo_categorie()}">
+											<option value="${lc.getNo_categorie()}" selected>${lc.getLibelle()}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${lc.getNo_categorie()}">${lc.getLibelle()}</option>
+										</c:otherwise>
+									</c:choose>
+
+								</c:forEach>
+							</select>
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Photo de l'article</label>
 					<div class="control">
@@ -60,45 +87,48 @@
 				<div class="field">
 					<label class="label">Mise à prix</label>
 					<div class="control">
-						<input class="input" type="number" name="prix">
+						<input class="input" type="number" name="prix"
+							value="${prixInitial}">
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Début de l'enchère</label>
 					<div class="control">
-						<input class="input" type="date" name="dateDebut">
+						<input class="input" type="date" name="dateDebut"
+							value="${dateDebut}">
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Fin de l'enchère</label>
 					<div class="control">
-						<input class="input" type="date" name="dateFin">
+						<input class="input" type="date" name="dateFin" value="${dateFin}">
 					</div>
 				</div>
 
 				<div class="field">
 					<label class="label">Rue</label>
 					<div class="control">
-						<input class="input" type="text" name="rue">
+						<input class="input" type="text" name="rue" value="${rue}">
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Code postal</label>
 					<div class="control">
-						<input class="input" type="text" name="codePostal">
+						<input class="input" type="text" name="codePostal"
+							value="${codePostal}">
 					</div>
 				</div>
-				
+
 				<div class="field">
 					<label class="label">Ville</label>
 					<div class="control">
-						<input class="input" type="text" name="ville">
+						<input class="input" type="text" name="ville" value="${ville}">
 					</div>
 				</div>
-				
+
 				<br>
 				<div style="width: 100%; text-align: center">
 					<button class="button is-link">Enregistrer</button>

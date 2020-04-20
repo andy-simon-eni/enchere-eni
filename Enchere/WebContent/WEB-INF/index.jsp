@@ -29,7 +29,7 @@
 				<div class="navbar-end">
 					<div class="navbar-item">
 						<div style="padding-right: 10px">
-							<a href="${pageContext.request.contextPath}/showProfil"> <strong>${ sessionScope.prenom }
+							<a href="${pageContext.request.contextPath}/profil"> <strong>${ sessionScope.prenom }
 									${ sessionScope.nom }</strong>
 							</a>
 						</div>

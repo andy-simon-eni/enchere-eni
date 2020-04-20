@@ -8,4 +8,5 @@ import fr.eni.javaee.enchere.bo.Categories;
 public interface CategoriesDAO {
 
 	public List<Categories> selectAll() throws BusinessException;
+	public Categories getCategorieByNoCategorie(int no_categorie) throws BusinessException;
 }

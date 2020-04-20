@@ -36,9 +36,9 @@ public class Categories {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Cat�gories [no_categorie=");
+		builder.append("Catégories [no_categorie=");
 		builder.append(no_categorie);
-		builder.append(", libell�=");
+		builder.append(", libellé=");
 		builder.append(libelle);
 		builder.append("]");
 		return builder.toString();

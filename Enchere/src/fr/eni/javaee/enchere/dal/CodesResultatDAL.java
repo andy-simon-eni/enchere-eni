@@ -12,6 +12,6 @@ public abstract class CodesResultatDAL {
 	/**
 	 * Echec du select all
 	 */
-	public static final int SELECT_ALL_ECHEC=10002;
+	public static final int SELECT_ALL_ECHEC=10004;
 	
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.CategoriesManager;
+import fr.eni.javaee.enchere.bll.EncheresManager;
 
 /**
  * Servlet implementation class indexServlet
@@ -34,9 +35,11 @@ public class indexServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager cm = new CategoriesManager();
+		EncheresManager em = new EncheresManager();
 		try {
 			
 			request.setAttribute("listCat", cm.getAllCategories());
+			request.setAttribute("listEnch", em.getAllEncheres());
 			
 		} catch (BusinessException e) {
 			e.printStackTrace();

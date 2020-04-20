@@ -110,26 +110,28 @@
 				</div>
 			</div>
 
+			<c:forEach items="${ listEnch }" var="lw">
+				<div class="card" style="width: 20%; margin: 1em">
+					<div class="card-image">
+						<figure class="image is-4by3">
+							<img src="https://bulma.io/images/placeholders/1280x960.png"
+								alt="Placeholder image">
+						</figure>
+					</div>
+					<div class="card-content">
 
-			<div class="card" style="width:20%; margin:1em">
-				<div class="card-image">
-					<figure class="image is-4by3">
-						<img src="https://bulma.io/images/placeholders/1280x960.png"
-							alt="Placeholder image">
-					</figure>
-				</div>
-				<div class="card-content">
-
-					<div>
-						<p class="title is-4">Audi RS6</p>
-						<p>Prix :</p>
-						<p>Fin de l'enchère :</p>
-						<p>Vendeur :</p>
+						<div>
+							<p class="title is-4"></p>
+							<p>Prix : ${lw.getMontant_enchere()}</p>
+							<p>Fin de l'enchère : ${lw.getDate_enchere()}</p>
+							<%-- <p>Vendeur : ${lw.getNo_utilisateur().getNom()}</p> --%>
+						</div>
 					</div>
 				</div>
-			</div>
+			</c:forEach>
 		</section>
 	</div>
+
 
 
 

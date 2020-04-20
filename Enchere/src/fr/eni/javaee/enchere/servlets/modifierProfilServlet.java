@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,7 +132,10 @@ public class modifierProfilServlet extends HttpServlet {
 				} catch (BusinessException e) {
 					request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 				}
-				response.sendRedirect(request.getContextPath() + "/");
+				Cookie cookie = new Cookie("identifiant", "");
+		    	cookie.setMaxAge(0);
+		    	response.addCookie(cookie);
+				response.sendRedirect(request.getContextPath() + "/logOut");
 			}
 		}else {
 			response.sendRedirect(request.getContextPath() + "/");

@@ -140,14 +140,14 @@
 							<label class="label">Mot de passe</label>
 							<div class="control">
 								<input class="input" type="password" placeholder="Mot de passe"
-									name="mdp" required pattern=".{8,30}">
+									name="mdp" pattern=".{8,30}">
 							</div>
 						</div>
 						<div class="field">
 							<label class="label">Confirmation</label>
 							<div class="control">
 								<input class="input" type="password" placeholder="Confirmation"
-									name="verif_mdp" required pattern=".{8,30}">
+									name="verif_mdp" pattern=".{8,30}">
 							</div>
 						</div>
 					</div>

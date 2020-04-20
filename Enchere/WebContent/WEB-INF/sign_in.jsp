@@ -4,6 +4,7 @@
 <%@ page import="fr.eni.javaee.enchere.messages.LecteurMessage"%>
 <!DOCTYPE html>
 <html>
+<head><title>Se connecter</title></head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
 	<nav class="navbar" role="navigation" aria-label="main navigation">
@@ -12,6 +13,10 @@
 				href="${pageContext.request.contextPath}/accueil">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
+			<div class="navbar-item">
+    			<button class="button is-small is-primary is-rounded" value="Rafraichir" id="refresh" onclick="document.location.reload(false)"><i class="fas fa-undo-alt"></i></button>
+    		</div>		
+    	</div>		
 	</nav>
 	<section class="section">
 		<div class="container" style="max-width: 600px !important">

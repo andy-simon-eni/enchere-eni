@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
+<head><title>Créer un compte</title></head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
 	<nav class="navbar" role="navigation" aria-label="main navigation">

@@ -1,22 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Accueil</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  </head>
+<head><title>Accueil</title></head>
+  <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
   <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="${pageContext.request.contextPath}/accueil">
-      <h1 style="font-size: 25px">ENI - Enchères</h1>
+      <h1 style="font-size: 25px">ENI - EnchÃ¨res</h1>
     </a>
-
+    <div class="navbar-item">
+    	<button class="button is-small is-primary is-rounded" value="Rafraichir" id="refresh" onclick="document.location.reload(false)"><i class="fas fa-undo-alt"></i></button>
+    </div>
     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -35,7 +34,7 @@
           </div>
         <div class="buttons">
           <a class="button is-light" href="${pageContext.request.contextPath}/logOut">
-            Déconnexion
+            DÃ©connexion
           </a>
         </div>
       </div>
@@ -52,7 +51,7 @@
       <div class="navbar-item">
         <div class="buttons">
           <a class="button is-primary" href="${pageContext.request.contextPath}/signUp">
-            <strong>Créer un compte</strong>
+            <strong>CrÃ©er un compte</strong>
           </a>
           <a class="button is-light" href="${pageContext.request.contextPath}/signIn">
             Se connecter
@@ -69,7 +68,7 @@
         A faire
       </h1>
       <p class="subtitle">
-        Afficher la liste des enchères
+        Afficher la liste des enchÃ¨res
       </p>
     </div>
   </section>

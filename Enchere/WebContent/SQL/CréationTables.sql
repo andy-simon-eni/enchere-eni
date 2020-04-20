@@ -1,8 +1,8 @@
--- Script de création de la base de données ENCHERES
+-- Script de crï¿½ation de la base de donnï¿½es ENCHERES
 --   type :      SQL Server 2012
 --
--- Modification : passage de varchar(20) à varchar(100) le champ email dans la table UTILISATEURS
-
+-- Modification : passage de varchar(20) ï¿½ varchar(100) le champ email dans la table UTILISATEURS
+-- Modification : erreur de table pour la contrainte encheres_utilisateurs_fk qui s'ajoutait sur ARTICLES_VENDUS et non sur ENCHERES
 
 
 CREATE TABLE CATEGORIES (

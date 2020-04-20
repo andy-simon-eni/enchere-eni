@@ -67,10 +67,14 @@ public class signInServlet extends HttpServlet {
 		    session.setAttribute("nom", util.getNom());
 		    session.setAttribute("prenom", util.getPrenom());
 		    if(request.getParameter("cbRemenber_id") != null) {
-			       Cookie cookie = new Cookie("identifiant",identifiant);
-			       cookie.setHttpOnly(true);
-			       cookie.setMaxAge(7 * 24 * 60 * 60);
-			       response.addCookie(cookie);
+			    	Cookie cookie = new Cookie("identifiant", "");
+			    	cookie.setMaxAge(0);
+			    	response.addCookie(cookie);
+		    	
+			       Cookie cookie2 = new Cookie("identifiant",identifiant);
+			       cookie2.setHttpOnly(true);
+			       cookie2.setMaxAge(7 * 24 * 60 * 60);
+			       response.addCookie(cookie2);
 		    } 
 		} catch(BusinessException e) {
 			success = false;
@@ -78,7 +82,7 @@ public class signInServlet extends HttpServlet {
 			
 		}
 		 if(success) {
-			 response.sendRedirect(request.getContextPath() + "/accueil");   
+			 response.sendRedirect(request.getContextPath() + "/");   
 		 }else {
 			 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/sign_in.jsp");
 			 rd.forward(request, response);

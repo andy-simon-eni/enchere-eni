@@ -4,13 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head><title>Créer un compte</title></head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/">
+			<a class="navbar-item" href="${pageContext.request.contextPath}/">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 		</div>
@@ -34,9 +32,9 @@
 			<div style="width: 100%; text-align: center">
 				<span style="font-size: 20px">Mon profil</span>
 			</div>
-			<br><br>
+			<br> <br>
 			<form method="POST"
-				action="${pageContext.request.contextPath}/signUp">
+				action="${pageContext.request.contextPath}/modifier_profil">
 				<div class="field is-horizontal">
 					<div class="field-body">
 						<div class="field">
@@ -118,29 +116,47 @@
 						</div>
 					</div>
 				</div>
-
+				<div class="field is-horizontal">
+					<div class="field-body">
+						<div class="field">
+							<label class="label">Mot de passe actuel</label>
+							<div class="control">
+								<input class="input" type="password" placeholder="Mot de passe"
+									name="mdp_actuel" required pattern=".{8,30}">
+							</div>
+						</div>
+						<div class="field" style="visibility: hidden">
+							<label class="label"></label>
+							<div class="control">
+								<input class="input" type="text">
+							</div>
+						</div>
+					</div>
+				</div>
+				
 				<div class="field is-horizontal">
 					<div class="field-body">
 						<div class="field">
 							<label class="label">Mot de passe</label>
 							<div class="control">
 								<input class="input" type="password" placeholder="Mot de passe"
-									name="mdp" required pattern=".{8,30}">
+									name="mdp" pattern=".{8,30}">
 							</div>
 						</div>
 						<div class="field">
 							<label class="label">Confirmation</label>
 							<div class="control">
 								<input class="input" type="password" placeholder="Confirmation"
-									name="verif_mdp" required pattern=".{8,30}">
+									name="verif_mdp" pattern=".{8,30}">
 							</div>
 						</div>
 					</div>
 				</div>
 				<br>
 				<div style="width: 100%; text-align: center">
-					<button class="button is-link">Créer</button>
-					<a class="button" href="${pageContext.request.contextPath}/">Annuler</a>
+					<button value="update" name="button" class="button is-link">Enregistrer</button>
+					<button value="delete" name="button" class="button">Supprimer
+						mon compte</button>
 				</div>
 			</form>
 		</div>

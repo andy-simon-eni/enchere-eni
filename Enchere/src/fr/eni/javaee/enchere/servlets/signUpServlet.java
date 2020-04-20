@@ -43,7 +43,7 @@ public class signUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp,url_retour;
+		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp;
 		boolean valide = true;
 		request.setCharacterEncoding("UTF-8");
 		Utilisateurs util = null;
@@ -78,14 +78,11 @@ public class signUpServlet extends HttpServlet {
 		}		
 		
 		if(valide) {
-			url_retour = "bonne page";
+			response.sendRedirect(request.getContextPath() + "/");
 		}else {
-			url_retour = "/WEB-INF/sign_up.jsp";
-		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher(url_retour);
-		rd.forward(request, response);
-		
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/sign_up.jsp");
+			rd.forward(request, response);
+		}		
 	}
 
 }

@@ -9,4 +9,12 @@ public abstract class CodesResultatDAL {
 	 * Echec du select
 	 */
 	public static final int SELECT_OBJET_ECHEC=10001;
+	/**
+	 * Echec du delete
+	 */
+	public static final int DELETE_OBJET_ECHEC=10002;
+	/**
+	 * Echec du update
+	 */
+	public static final int UPDATE_OBJET_ECHEC=10003;
 }

@@ -33,7 +33,7 @@ public class logOutServlet extends HttpServlet {
 		HttpSession session=request.getSession();
         session.invalidate();
         
-        response.sendRedirect(request.getContextPath() + "/accueil");
+        response.sendRedirect(request.getContextPath() + "/");
         
 	}
 

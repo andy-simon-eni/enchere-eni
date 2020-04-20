@@ -10,7 +10,7 @@
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
 			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/accueil">
+				href="${pageContext.request.contextPath}/">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 			<div class="navbar-item">

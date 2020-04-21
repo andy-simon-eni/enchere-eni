@@ -27,6 +27,37 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
 			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "WHERE c.no_categorie = ?";
+	private static final String RECHERCHE_ENCH = "SELECT * FROM ENCHERES e " + 
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " +
+			"WHERE a.nom_article LIKE '%?%'";
+	
+	@Override
+	public List<Encheres> getEnchereByMotCle(String motCle) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCH_BY_CAT);
+			pstmt.setString(1, motCle);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+ 
 
 	@Override
 	public List<Encheres> selectAll() throws BusinessException {
@@ -55,11 +86,11 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	}
 
 	@Override
-	public List<Encheres> getEnchereByCategorie(Categories cat) throws BusinessException {
+	public List<Encheres> getEnchereByCategorie(int cat) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCH_BY_CAT);
-			pstmt.setInt(1, cat.getNo_categorie());
+			pstmt.setInt(1, cat);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
@@ -130,5 +161,6 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		
 		return art;
 	}
+
 
 }

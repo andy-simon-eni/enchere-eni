@@ -1,8 +1,6 @@
 package fr.eni.javaee.enchere.servlets;
 
-import java.awt.List;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,31 +15,32 @@ import fr.eni.javaee.enchere.bll.EncheresManager;
 import fr.eni.javaee.enchere.bo.Encheres;
 
 /**
- * Servlet implementation class indexServlet
+ * Servlet implementation class rechercheMotCleServlet
  */
-@WebServlet(
-        urlPatterns= {"/accueil","/"})
-public class indexServlet extends HttpServlet {
+@WebServlet("/rechercheMotCleServlet")
+public class rechercheMotCleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public indexServlet() {
+    public rechercheMotCleServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String motCle;
 		CategoriesManager cm = new CategoriesManager();
 		EncheresManager em = new EncheresManager();
-		
+		motCle = request.getParameter("motCle");
 		try {
 			
 			request.setAttribute("listCat", cm.getAllCategories());
-			request.setAttribute("listEnch", em.getAllEncheres());
+			request.setAttribute("listEnch", em.getEncheresByMotCle(motCle));
 		
 		} catch (BusinessException e) {
 			e.printStackTrace();

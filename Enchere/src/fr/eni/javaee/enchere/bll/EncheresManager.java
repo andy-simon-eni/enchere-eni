@@ -20,7 +20,11 @@ public class EncheresManager {
 		return this.encheresDAO.selectAll();
 	}
 	
-	public List<Encheres> getEncheresByCategorie(Categories cat) throws BusinessException{
-		return this.encheresDAO.getEnchereByCategorie(cat);
+	public List<Encheres> getEncheresByCategorie(int no_categorie) throws BusinessException{
+		return this.encheresDAO.getEnchereByCategorie(no_categorie);
+	}
+	
+	public List<Encheres> getEncheresByMotCle(String motCle) throws BusinessException{
+		return this.encheresDAO.getEnchereByMotCle(motCle);
 	}
 }

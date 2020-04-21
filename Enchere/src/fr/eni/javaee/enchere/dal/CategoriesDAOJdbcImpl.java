@@ -11,7 +11,7 @@ import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bo.Categories;
 
 public class CategoriesDAOJdbcImpl implements CategoriesDAO {
-	
+
 	private static final String SELECT_ALL_CAT = "SELECT * from CATEGORIES";
 
 	@Override
@@ -21,7 +21,7 @@ public class CategoriesDAOJdbcImpl implements CategoriesDAO {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_CAT);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				listCat.add(new Categories(rs.getString("libelle")));
+				listCat.add(new Categories(rs.getInt("no_categorie"), rs.getString("libelle")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

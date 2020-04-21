@@ -73,62 +73,115 @@
 	<div>
 		<h1 class="title" style="text-align: center">Liste des enchères</h1>
 	</div>
+
+
+
 	<div id="enchere">
 		<section class="section">
-			<div class="container">
-				<h2 class="subtitle">Filtre :</h2>
-				<div class="field has-addons">
-					<div class="control">
-						<input class="input" type="text" placeholder="Trouvé une enchère">
-					</div>
-					<div class="control">
-						<a class="button is-primary"> Search </a>
-					</div>
-				</div>
-			</div>
+
+			<div class="columns">
 
 
-			<div class="container">
-				<h2 class="subtitle">Catégories :</h2>
+				<div class="column is-3" style="margin: 1em">
 
-				<div class="dropdown is-active">
-					<div class="dropdown-trigger">
-						<button class="button" aria-haspopup="true"
-							aria-controls="dropdown-menu">
-							<span>Toutes</span> <span class="icon is-small"> <i
-								class="fas fa-angle-down" aria-hidden="true"></i>
-							</span>
-						</button>
-					</div>
-					<div class="dropdown-menu" id="dropdown-menu" role="menu">
-						<div class="dropdown-content">
-							<c:forEach items="${ listCat }" var="lc">
-								<a class="dropdown-item"> ${lc.getLibelle()} </a>
-							</c:forEach>
+
+
+					<div class="dropdown is-active">
+						<div class="dropdown-trigger">
+							<button class="button" aria-haspopup="true"
+								aria-controls="dropdown-menu">
+								<span>Toutes les catégories</span> <span class="icon is-small">
+									<i class="fas fa-angle-down" aria-hidden="true"></i>
+								</span>
+							</button>
+						</div>
+						<div class="dropdown-menu" id="dropdown-menu" role="menu">
+							<div class="dropdown-content">
+								<c:forEach items="${ listCat }" var="lc">
+									<a class="dropdown-item"> ${lc.getLibelle()} </a>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<c:forEach items="${ listEnch }" var="lw">
-				<div class="card" style="width: 20%; margin: 1em">
-					<div class="card-image">
-						<figure class="image is-4by3">
-							<img src="https://bulma.io/images/placeholders/1280x960.png"
-								alt="Placeholder image">
-						</figure>
-					</div>
-					<div class="card-content">
 
-						<div>
-							<p class="title is-4"></p>
-							<p>Prix : ${lw.getMontant_enchere()}</p>
-							<p>Fin de l'enchère : ${lw.getDate_enchere()}</p>
-							<%-- <p>Vendeur : ${lw.getNo_utilisateur().getNom()}</p> --%>
+				<div class="column is-6 is-offset-6">
+					<div class="field has-addons">
+						<div class="control is-fullwidth">
+
+							<input class="input" type="text" placeholder="Trouvé une enchère">
+						</div>
+						<div class="control">
+							<a class="button is-primary"><i class="fas fa-search"></i></a>
 						</div>
 					</div>
 				</div>
-			</c:forEach>
+
+
+			</div>
+			<c:if test="${ !empty sessionScope.id}">
+				<div class="columns" style="margin: 1em">
+
+					<div class="control column is-2">
+						<label class="radio"> <input type="radio" name="answer"
+							checked> Achat
+						</label> <br>
+
+						<div style="margin: 1em">
+							<label class="checkbox"> <input type="checkbox">
+								Enchères ouvertes
+							</label> <label class="checkbox"> <input type="checkbox">
+								Mes enchères en cours
+							</label> <label class="checkbox"> <input type="checkbox">
+								Mes enchères remportées
+							</label>
+						</div>
+					</div>
+
+
+					<div class="control column is-2">
+						<label class="radio"> <input type="radio" name="answer">
+							Mes ventes
+						</label> <br>
+						<div style="margin: 1em">
+							<label class="checkbox"> <input type="checkbox">
+								Mes ventes en cours
+							</label> <label class="checkbox"> <input type="checkbox">
+								Ventes débutées
+							</label> <label class="checkbox"> <input type="checkbox">
+								Ventes terminées
+							</label>
+						</div>
+					</div>
+				</div>
+
+			</c:if>
+
+			<div class="columns is-multiline">
+				<c:forEach items="${listEnch}" var="ench">
+					<div class="column is-3">
+						<div class="card" style="margin: 1em">
+							<div class="card-image">
+								<figure class="image is-4by3">
+									<img src="https://bulma.io/images/placeholders/1280x960.png"
+										alt="Placeholder image">
+								</figure>
+							</div>
+							<div class="card-content">
+
+								<div>
+									<p class="title is-4">${ench.no_article.nom_article}</p>
+									<p>Prix : ${ench.montant_enchere}</p>
+									<p>Fin de l'enchère : ${ench.date_enchere}</p>
+									<p>Vendeur : ${ench.no_utilisateur.nom}
+										${ench.no_utilisateur.prenom}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
 		</section>
 	</div>
 

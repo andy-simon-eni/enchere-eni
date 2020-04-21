@@ -17,4 +17,10 @@ public abstract class DAOFactory {
 	{
 		return new EncheresDAOJdbcImpl();
 	}
+	
+	public static ArticlesVendusDAO getArticlesVendusDAO()
+	{
+		return new ArticlesVendusDAOJdbcImpl();
+	}
+	
 }

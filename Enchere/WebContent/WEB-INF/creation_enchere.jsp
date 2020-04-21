@@ -12,12 +12,16 @@
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
 			<a class="navbar-item" href="${pageContext.request.contextPath}/">
-				<h1 style="font-size: 25px">ENI - Enchères</h1>
+				<h1 class="title is-4">ENI - Enchères</h1>
 			</a>
 		</div>
 	</nav>
 	<section class="section">
-		<div class="container">
+		<img class="imgArticle"
+			src="img/imageVide.png">
+		<div class="container petitContainer">
+		
+		<div class="erreurFile"></div>
 
 			<c:if test="${!empty listeCodesErreur}">
 				<div role="alert">
@@ -32,8 +36,8 @@
 				<br>
 			</c:if>
 
-			<div style="width: 100%; text-align: center">
-				<span style="font-size: 20px">Nouvelle vente</span>
+			<div class="sous-titre">
+				<span class="title is-5">Nouvelle vente</span>
 			</div>
 			<br> <br>
 			<form method="POST"
@@ -58,7 +62,7 @@
 					<label class="label">Catégorie *</label>
 					<div class="control">
 						<div class="select">
-							<select name="categorie" required>
+							<select name="categorie" class="input-is-250" required>
 								<option value="">Selectionner une catégorie</option>
 								<c:forEach items="${listCat}" var="lc">
 									<c:choose>
@@ -77,21 +81,23 @@
 				</div>
 
 				<div class="field">
-					<label class="label">Photo de l'article</label>
-					<div class="control">
-						<button class="button">UPLOADER</button>
-					</div>
+					<label class="label">Photo de l'article</label> 
+					<span class="button input-is-250" id="uploadImage">UPLOADER</span>
 				</div>
+
+				<img class="imgArticleMobile"
+					src="img/imageVide.png">
 
 				<div class="field">
 					<label class="label">Mise à prix</label>
 					<div class="control">
 						<c:choose>
 							<c:when test="${prixInital == null}">
-								<input class="input" type="number" name="prix" value="150">
+								<input class="input input-is-250" type="number" name="prix"
+									value="150">
 							</c:when>
 							<c:otherwise>
-								<input class="input" type="number" name="prix"
+								<input class="input input-is-250" type="number" name="prix"
 									value="${prixInitial}">
 							</c:otherwise>
 						</c:choose>
@@ -115,44 +121,45 @@
 					</div>
 				</div>
 
-				<div class="field">
-					<label class="label">Rue</label>
-					<div class="control">
-						<input class="input" type="text" name="rue" value="${rue}"
-							id="rue"
-							pattern="[A-Za-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
+				<div class="blocRetrait">
+					<span class="titleRetrait"> Retrait </span>
+					<div class="field">
+						<label class="label">Rue</label>
+						<div class="control">
+							<input class="input" type="text" name="rue" value="${rue}"
+								id="rue"
+								pattern="[A-Za-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label">Code postal</label>
+						<div class="control">
+							<input class="input" type="text" name="codePostal"
+								value="${codePostal}" pattern="[0-9]{1,10}">
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label">Ville</label>
+						<div class="control">
+							<input class="input" type="text" name="ville" value="${ville}"
+								pattern="[A-Za-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
+						</div>
 					</div>
 				</div>
-
-				<div class="field">
-					<label class="label">Code postal</label>
-					<div class="control">
-						<input class="input" type="text" name="codePostal"
-							value="${codePostal}" pattern="[0-9]{1,10}">
-					</div>
-				</div>
-
-				<div class="field">
-					<label class="label">Ville</label>
-					<div class="control">
-						<input class="input" type="text" name="ville" value="${ville}"
-							pattern="[A-Za-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
-					</div>
-				</div>
-
 				<br>
-				<div style="width: 100%; text-align: center">
+				<div class="is-center">
 					<button class="button is-link">Enregistrer</button>
 					<a class="button" href="${pageContext.request.contextPath}/">Annuler</a>
 					<c:if test="${noArticle != null }">
 						<button class="button is-link">Annuler la vente</button>
 					</c:if>
 				</div>
+				<input type="file" id="imgUrl">
 			</form>
 		</div>
 	</section>
 </body>
 </html>
-<script>
-	
-</script>
+<script src="js/creation_enchere.js"></script>

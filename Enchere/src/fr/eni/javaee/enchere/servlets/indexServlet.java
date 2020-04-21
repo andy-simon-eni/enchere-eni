@@ -35,7 +35,12 @@ public class indexServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager cm = new CategoriesManager();
 		try {
-			
+			Object paramSessionErreur = request.getSession().getAttribute("ListeErreurAfficherEnchere");
+			if(paramSessionErreur != null) {
+				List<Integer> listeErreurs = (List<Integer>) paramSessionErreur;
+				request.setAttribute("listeCodesErreur", listeErreurs);
+				request.getSession().removeAttribute("ListeErreurAfficherEnchere");
+			}
 			request.setAttribute("listCat", cm.getAllCategories());
 			
 		} catch (BusinessException e) {

@@ -6,23 +6,29 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html>
-<head><title>Accueil</title></head>
-  <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
-  <body>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="${pageContext.request.contextPath}">
-      <h1 style="font-size: 25px">ENI - Enchères</h1>
-    </a>
-    <div class="navbar-item">
-    	<button class="button is-small is-primary is-rounded" value="Rafraichir" id="refresh" onclick="document.location.reload(false)"><i class="fas fa-undo-alt"></i></button>
-    </div>
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
+<head>
+<title>Accueil</title>
+</head>
+<jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
+<body>
+	<nav class="navbar" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+			<a class="navbar-item" href="${pageContext.request.contextPath}">
+				<h1 style="font-size: 25px">ENI - Enchères</h1>
+			</a>
+			<div class="navbar-item">
+				<button class="button is-small is-primary is-rounded"
+					value="Rafraichir" id="refresh"
+					onclick="document.location.reload(false)">
+					<i class="fas fa-undo-alt"></i>
+				</button>
+			</div>
+			<a role="button" class="navbar-burger burger" aria-label="menu"
+				aria-expanded="false" data-target="navbarBasicExample"> <span
+				aria-hidden="true"></span> <span aria-hidden="true"></span> <span
+				aria-hidden="true"></span>
+			</a>
+		</div>
 
 		<c:if test="${ !empty sessionScope.id}">
 			<div id="navbarBasicExample" class="navbar-menu">
@@ -69,6 +75,18 @@
 	<div id="enchere">
 		<section class="section">
 			<div class="container">
+				<c:if test="${!empty listeCodesErreur}">
+					<div role="alert">
+						<c:forEach var="code" items="${listeCodesErreur}">
+							<div class="notification is-danger">
+								<button class="delete"></button>
+								<span>${LecteurMessage.getMessageErreur(code)}</span>
+							</div>
+						</c:forEach>
+					</div>
+					<br>
+					<br>
+				</c:if>
 				<h2 class="subtitle">Filtre :</h2>
 				<div class="field has-addons">
 					<div class="control">
@@ -104,7 +122,7 @@
 			</div>
 
 
-			<div class="card" style="width:20%; margin:1em">
+			<div class="card" style="width: 20%; margin: 1em">
 				<div class="card-image">
 					<figure class="image is-4by3">
 						<img src="https://bulma.io/images/placeholders/1280x960.png"

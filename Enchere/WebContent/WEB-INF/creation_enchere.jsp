@@ -38,7 +38,7 @@
 			<br> <br>
 			<form method="POST"
 				action="${pageContext.request.contextPath}/creation_enchere">
-
+				<input name="noArticle" type="hidden" value="${noArticle }">
 				<div class="field">
 					<label class="label">Article *</label>
 					<div class="control">
@@ -50,8 +50,7 @@
 				<div class="field">
 					<label class="label">Description *</label>
 					<div class="control">
-						<textarea class="textarea" name="description"
-							value="${description}" required></textarea>
+						<textarea class="textarea" name="description" required>${description}</textarea>
 					</div>
 				</div>
 
@@ -145,6 +144,9 @@
 				<div style="width: 100%; text-align: center">
 					<button class="button is-link">Enregistrer</button>
 					<a class="button" href="${pageContext.request.contextPath}/">Annuler</a>
+					<c:if test="${noArticle != null }">
+						<button class="button is-link">Annuler la vente</button>
+					</c:if>
 				</div>
 			</form>
 		</div>

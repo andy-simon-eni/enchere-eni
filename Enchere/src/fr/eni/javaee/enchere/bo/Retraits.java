@@ -1,7 +1,6 @@
 package fr.eni.javaee.enchere.bo;
 
 public class Retraits {
-	private ArticlesVendus article;
 	private String rue;
 	private String code_postal;
 	private String ville;
@@ -10,20 +9,11 @@ public class Retraits {
 		super();
 	}
 
-	public Retraits(ArticlesVendus article, String rue, String code_postal, String ville) {
+	public Retraits(String rue, String code_postal, String ville) {
 		super();
-		this.article = article;
 		this.rue = rue;
 		this.code_postal = code_postal;
 		this.ville = ville;
-	}
-
-	public ArticlesVendus getArticle() {
-		return article;
-	}
-
-	public void setArticle(ArticlesVendus article) {
-		this.article = article;
 	}
 
 	public String getRue() {
@@ -53,9 +43,7 @@ public class Retraits {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Retraits [article=");
-		builder.append(article);
-		builder.append(", rue=");
+		builder.append("Retraits [rue=");
 		builder.append(rue);
 		builder.append(", code_postal=");
 		builder.append(code_postal);
@@ -64,5 +52,6 @@ public class Retraits {
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

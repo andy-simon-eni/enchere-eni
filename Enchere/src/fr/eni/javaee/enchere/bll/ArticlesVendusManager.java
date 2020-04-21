@@ -9,15 +9,12 @@ import fr.eni.javaee.enchere.bo.Retraits;
 import fr.eni.javaee.enchere.bo.Utilisateurs;
 import fr.eni.javaee.enchere.dal.ArticlesVendusDAO;
 import fr.eni.javaee.enchere.dal.DAOFactory;
-import fr.eni.javaee.enchere.dal.RetraitsDAO;
 
 public class ArticlesVendusManager {
 	private ArticlesVendusDAO articlesVendusDAO;
-	private RetraitsDAO retraitsDAO;
 
 	public ArticlesVendusManager() {
 		this.articlesVendusDAO = DAOFactory.getArticlesVendusDAO();
-		this.retraitsDAO = DAOFactory.getRetraitsDAO();
 	}
 	
 	public ArticlesVendus insertArticleVendu(String nom_article, String description, LocalDate date_debut, LocalDate date_fin, int prix_initial, int no_util, int no_categorie, String rue, String code_postal, String ville) throws BusinessException {
@@ -34,13 +31,12 @@ public class ArticlesVendusManager {
 		validerArticle(nom_article, description, date_debut, date_fin, prix_initial, no_util, no_categorie, businessException);
 		createRetrait = validerRetrait(rue, code_postal, ville, businessException);
 		if (!businessException.hasErreurs()) {
-			 article = new ArticlesVendus(nom_article, description, date_debut, date_fin, prix_initial, 0, utilManager.getUtilByNoUtil(no_util), categManager.getCategorieByNoCategorie(no_categorie), null);
-			 article = this.articlesVendusDAO.insert(article);			 
+			 article = new ArticlesVendus(nom_article, description, date_debut, date_fin, prix_initial, 0, utilManager.getUtilByNoUtil(no_util), categManager.getCategorieByNoCategorie(no_categorie), null);			 
 			 if(createRetrait) {
-				 Retraits retrait = new Retraits(article, rue, code_postal, ville);
-				 this.retraitsDAO.insert(retrait);
+				 Retraits retrait = new Retraits(rue, code_postal, ville);
 				 article.setRetrait(retrait);
-			 }
+			 }			 
+			 article = this.articlesVendusDAO.insert(article);
 		} else {
 			throw businessException;
 		}
@@ -104,6 +100,37 @@ public class ArticlesVendusManager {
 			}			
 		}
 		return create;
+	}
+	
+	public ArticlesVendus getArticleByNoArticle(int no_article) throws BusinessException {
+		ArticlesVendus article = null;
+		article = this.articlesVendusDAO.getArticleByNoArticle(no_article);
+		return article;
+	}
+	
+	public void updateArticleVendu(int noArticle, String nom_article, String description, LocalDate date_debut, LocalDate date_fin, int prix_initial, int no_util, int no_categorie, String rue, String code_postal, String ville) throws BusinessException {
+		BusinessException businessException = new BusinessException();
+		UtilisateursManager utilManager = new UtilisateursManager();
+		CategoriesManager categManager = new CategoriesManager();
+		ArticlesVendus article = null;
+		Boolean createRetrait;
+		nom_article = nom_article.trim();
+		description = description.trim();
+		rue = rue.trim();
+		code_postal = code_postal.trim();
+		ville = ville.trim();
+		validerArticle(nom_article, description, date_debut, date_fin, prix_initial, no_util, no_categorie, businessException);
+		createRetrait = validerRetrait(rue, code_postal, ville, businessException);
+		if (!businessException.hasErreurs() && noArticle > 0) {
+			 article = new ArticlesVendus(noArticle, nom_article, description, date_debut, date_fin, prix_initial, 0, utilManager.getUtilByNoUtil(no_util), categManager.getCategorieByNoCategorie(no_categorie), null);			 
+			 if(createRetrait) {
+				 Retraits retrait = new Retraits(rue, code_postal, ville);
+				 article.setRetrait(retrait);
+			 }			 
+			 this.articlesVendusDAO.update(article);
+		} else {
+			throw businessException;
+		}
 	}
 	
 }

@@ -69,7 +69,11 @@ public class creationEnchereServlet extends HttpServlet {
 		rue = request.getParameter("rue");
 		codePostal = request.getParameter("codePostal");
 		ville = request.getParameter("ville");
-		noCateg = Integer.parseInt(request.getParameter("categorie"));
+		if(request.getParameter("categorie") == null || request.getParameter("categorie").isEmpty()) {
+			noCateg = 0;
+		}else {
+			noCateg = Integer.parseInt(request.getParameter("categorie"));
+		}
 		ArticlesVendusManager articlesManager = new ArticlesVendusManager();
 		try {
 			HttpSession session = request.getSession();

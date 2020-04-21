@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Créer un compte</title>
+<title>Créer une enchère</title>
 </head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
@@ -40,26 +40,26 @@
 				action="${pageContext.request.contextPath}/creation_enchere">
 
 				<div class="field">
-					<label class="label">Article</label>
+					<label class="label">Article *</label>
 					<div class="control">
 						<input class="input" type="text" name="article"
-							value="${nomArticle}">
+							value="${nomArticle}" required>
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">Description</label>
+					<label class="label">Description *</label>
 					<div class="control">
 						<textarea class="textarea" name="description"
-							value="${description}"></textarea>
+							value="${description}" required></textarea>
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">Catégorie</label>
+					<label class="label">Catégorie *</label>
 					<div class="control">
 						<div class="select">
-							<select name="categorie">
+							<select name="categorie" required>
 								<option value="">Selectionner une catégorie</option>
 								<c:forEach items="${listCat}" var="lc">
 									<c:choose>
@@ -87,30 +87,41 @@
 				<div class="field">
 					<label class="label">Mise à prix</label>
 					<div class="control">
-						<input class="input" type="number" name="prix"
-							value="${prixInitial}">
+						<c:choose>
+							<c:when test="${prixInital == null}">
+								<input class="input" type="number" name="prix" value="150">
+							</c:when>
+							<c:otherwise>
+								<input class="input" type="number" name="prix"
+									value="${prixInitial}">
+							</c:otherwise>
+						</c:choose>
+
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">Début de l'enchère</label>
+					<label class="label">Début de l'enchère *</label>
 					<div class="control">
 						<input class="input" type="date" name="dateDebut"
-							value="${dateDebut}">
+							value="${dateDebut}" required>
 					</div>
 				</div>
 
 				<div class="field">
-					<label class="label">Fin de l'enchère</label>
+					<label class="label">Fin de l'enchère *</label>
 					<div class="control">
-						<input class="input" type="date" name="dateFin" value="${dateFin}">
+						<input class="input" type="date" name="dateFin" value="${dateFin}"
+							required>
 					</div>
 				</div>
 
 				<div class="field">
 					<label class="label">Rue</label>
 					<div class="control">
-						<input class="input" type="text" name="rue" value="${rue}">
+						<input class="input" type="text" name="rue" value="${rue}"
+							id="rue"
+							pattern="[A-Za-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
 					</div>
 				</div>
 
@@ -118,14 +129,15 @@
 					<label class="label">Code postal</label>
 					<div class="control">
 						<input class="input" type="text" name="codePostal"
-							value="${codePostal}">
+							value="${codePostal}" pattern="[0-9]{1,10}">
 					</div>
 				</div>
 
 				<div class="field">
 					<label class="label">Ville</label>
 					<div class="control">
-						<input class="input" type="text" name="ville" value="${ville}">
+						<input class="input" type="text" name="ville" value="${ville}"
+							pattern="[A-Za-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\-\s']{1,30}">
 					</div>
 				</div>
 
@@ -139,3 +151,6 @@
 	</section>
 </body>
 </html>
+<script>
+	
+</script>

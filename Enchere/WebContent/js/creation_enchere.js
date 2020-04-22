@@ -11,6 +11,16 @@ $(document).ready(function(){
 	    dayNamesMin: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 	});
 	
+	$("[name='dateDebut']").on("change", function(){
+		var dt = new Date($(this).val());
+		$("[name='dateFin']").datepicker('option', 'minDate', dt);
+	});
+	
+	$("[name='dateFin']").on("change", function(){
+		var dt = new Date($(this).val());
+		$("[name='dateDebut']").datepicker('option', 'maxDate', dt);
+	});
+	
 	$("#uploadImage").on("click", function(){
 		$("#imgUrl").click();
 	});

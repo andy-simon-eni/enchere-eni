@@ -131,10 +131,12 @@
 			</div>
 
 			<div class="blocRetrait">
-				<span class="titleRetrait">  Retrait <span
-					class="icon has-text-warning"><i
-						class="fas fa-exclamation-triangle"></i></span>
-				</span>
+				<span class="titleRetrait">  Retrait </span> <span
+					class="icon is-orange"> <i
+					class="fas fa-exclamation-triangle"></i>
+				</span> <span class="is-orange"> Si aucune adresse n'est renseignée,
+					l'adresse insérée sera votre adresse. </span>
+
 				<div class="field">
 					<label class="label">Rue</label>
 					<div class="control">

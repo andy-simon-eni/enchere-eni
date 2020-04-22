@@ -62,10 +62,23 @@ public class modifierEnchereServlet extends HttpServlet {
 						request.setAttribute("ville", article.getRetrait().getVille());
 					}	
 					request.setAttribute("listCat", cm.getAllCategories());
+					LocalDate dateActuelle = LocalDate.now();
+					System.out.println(dateActuelle.toString());
+					System.out.println(article.getDate_debut().toString());
+					String url;
+					if(article.getDate_debut().isAfter(dateActuelle)) {
+						url = "/WEB-INF/creation_enchere.jsp";
+						
+					}else {
+						url = "/WEB-INF/detailEnchere.jsp";
+					}
+					RequestDispatcher rd = request.getRequestDispatcher(url);
+					rd.forward(request, response);
 					
+				}else {
+					response.sendRedirect(request.getContextPath() + "/");
 				}
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/creation_enchere.jsp");
-				rd.forward(request, response);
+				
 			} catch (BusinessException e) {
 				request.getSession().setAttribute("ListeErreurAfficherEnchere", e.getListeCodesErreur());
 				response.sendRedirect(request.getContextPath() + "/");				

@@ -98,7 +98,8 @@ public class modifierEnchereServlet extends HttpServlet {
 		ArticlesVendusManager articlesManager = new ArticlesVendusManager();
 		try {
 			HttpSession session = request.getSession();
-			articlesManager.updateArticleVendu(noArticle, nomArticle, description, dateDebut, dateFin, prixInitial, (int)session.getAttribute("id"), noCateg, rue, codePostal, ville);
+			int no_util = (int)session.getAttribute("id");
+			articlesManager.updateArticleVendu(noArticle, nomArticle, description, dateDebut, dateFin, prixInitial, no_util, noCateg, rue, codePostal, ville);
 		} catch (BusinessException e) {
 			valide = false;
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
@@ -112,7 +113,9 @@ public class modifierEnchereServlet extends HttpServlet {
 			request.setAttribute("codePostal", codePostal);
 			request.setAttribute("ville", ville);
 			request.setAttribute("noCateg", noCateg);
-		}		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		if(valide) {
 			response.sendRedirect(request.getContextPath() + "/");

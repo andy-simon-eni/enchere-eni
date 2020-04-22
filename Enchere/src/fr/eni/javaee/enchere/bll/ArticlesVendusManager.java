@@ -29,13 +29,17 @@ public class ArticlesVendusManager {
 		code_postal = code_postal.trim();
 		ville = ville.trim();
 		validerArticle(nom_article, description, date_debut, date_fin, prix_initial, no_util, no_categorie, businessException);
-		createRetrait = validerRetrait(rue, code_postal, ville, businessException);
+		if((rue == null || rue.isEmpty()) && (code_postal == null || code_postal.isEmpty()) && (ville == null || ville.isEmpty())) {
+			Utilisateurs util = utilManager.getUtilByNoUtil(no_util);
+			rue = util.getRue();
+			code_postal = util.getCode_postal();
+			ville = util.getVille();
+		}
+		validerRetrait(rue, code_postal, ville, businessException);
 		if (!businessException.hasErreurs()) {
 			 article = new ArticlesVendus(nom_article, description, date_debut, date_fin, prix_initial, 0, utilManager.getUtilByNoUtil(no_util), categManager.getCategorieByNoCategorie(no_categorie), null);			 
-			 if(createRetrait) {
-				 Retraits retrait = new Retraits(rue, code_postal, ville);
-				 article.setRetrait(retrait);
-			 }			 
+			 Retraits retrait = new Retraits(rue, code_postal, ville);
+			 article.setRetrait(retrait);
 			 article = this.articlesVendusDAO.insert(article);
 		} else {
 			throw businessException;
@@ -69,8 +73,8 @@ public class ArticlesVendusManager {
 		}
 	}
 	
-	private boolean validerRetrait(String rue, String code_postal, String ville, BusinessException businessException) {
-		Boolean create = true;
+	private void validerRetrait(String rue, String code_postal, String ville, BusinessException businessException) throws BusinessException {
+		UtilisateursManager utilManager;
 		Pattern patternCompile_Ville;
 		Pattern patternCompile_CodePostal;
 		Pattern patternCompile_Rue;
@@ -83,23 +87,16 @@ public class ArticlesVendusManager {
 		patternCompile_CodePostal = Pattern.compile(pattern_CodePostal);
 		patternCompile_Rue = Pattern.compile(pattern_Rue);
 		
-		if((rue == null || rue.isEmpty()) && (code_postal == null || code_postal.isEmpty()) && (ville == null || ville.isEmpty())) {
-			create = false;
-		}else {
-			if(rue == null || rue.isEmpty() || rue.length() > 30 || !patternCompile_Rue.matcher(rue).matches()) {
-				create = false;
-				businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_RUE_INVALIDE);
-			}
-			if(code_postal == null || code_postal.isEmpty() || !patternCompile_CodePostal.matcher(code_postal).matches()) {
-				create = false;
-				businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_CODE_POSTAL_INVALIDE);
-			}
-			if(ville == null || ville.isEmpty() || ville.length() > 30 || !patternCompile_Ville.matcher(ville).matches()) {
-				create = false;
-				businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_VILLE_INVALIDE);
-			}			
+		if(rue == null || rue.isEmpty() || rue.length() > 30 || !patternCompile_Rue.matcher(rue).matches()) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_RUE_INVALIDE);
 		}
-		return create;
+		if(code_postal == null || code_postal.isEmpty() || !patternCompile_CodePostal.matcher(code_postal).matches()) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_CODE_POSTAL_INVALIDE);
+		}
+		if(ville == null || ville.isEmpty() || ville.length() > 30 || !patternCompile_Ville.matcher(ville).matches()) {
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_ARTICLES_VENDUS_VILLE_INVALIDE);
+		}	
+		
 	}
 	
 	public ArticlesVendus getArticleByNoArticle(int no_article) throws BusinessException {
@@ -120,13 +117,17 @@ public class ArticlesVendusManager {
 		code_postal = code_postal.trim();
 		ville = ville.trim();
 		validerArticle(nom_article, description, date_debut, date_fin, prix_initial, no_util, no_categorie, businessException);
-		createRetrait = validerRetrait(rue, code_postal, ville, businessException);
+		if((rue == null || rue.isEmpty()) && (code_postal == null || code_postal.isEmpty()) && (ville == null || ville.isEmpty())) {
+			Utilisateurs util = utilManager.getUtilByNoUtil(no_util);
+			rue = util.getRue();
+			code_postal = util.getCode_postal();
+			ville = util.getVille();
+		}
+		validerRetrait(rue, code_postal, ville, businessException);
 		if (!businessException.hasErreurs() && noArticle > 0) {
 			 article = new ArticlesVendus(noArticle, nom_article, description, date_debut, date_fin, prix_initial, 0, utilManager.getUtilByNoUtil(no_util), categManager.getCategorieByNoCategorie(no_categorie), null);			 
-			 if(createRetrait) {
-				 Retraits retrait = new Retraits(rue, code_postal, ville);
-				 article.setRetrait(retrait);
-			 }			 
+			 Retraits retrait = new Retraits(rue, code_postal, ville);
+			 article.setRetrait(retrait);
 			 this.articlesVendusDAO.update(article);
 		} else {
 			throw businessException;

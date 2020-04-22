@@ -40,8 +40,19 @@
 				<span class="title is-5">Nouvelle vente</span>
 			</div>
 			<br> <br>
-			<form method="POST"
-				action="${pageContext.request.contextPath}/creation_enchere">
+			
+			<c:choose>
+				<c:when test="${noArticle != null}">
+					<form method="POST"
+						action="${pageContext.request.contextPath}/modifierEnchere">
+				</c:when>
+				<c:otherwise>
+					<form method="POST"
+						action="${pageContext.request.contextPath}/creation_enchere">
+				</c:otherwise>
+			</c:choose>
+			
+			
 				<input name="noArticle" type="hidden" value="${noArticle }">
 				<div class="field">
 					<label class="label">Article *</label>
@@ -92,13 +103,13 @@
 					<label class="label">Mise à prix</label>
 					<div class="control">
 						<c:choose>
-							<c:when test="${prixInital == null}">
+							<c:when test="${prix == null}">
 								<input class="input input-is-250" type="number" name="prix"
-									value="150">
+									value="0">
 							</c:when>
 							<c:otherwise>
 								<input class="input input-is-250" type="number" name="prix"
-									value="${prixInitial}">
+									value="${prix}">
 							</c:otherwise>
 						</c:choose>
 
@@ -108,7 +119,7 @@
 				<div class="field">
 					<label class="label">Début de l'enchère *</label>
 					<div class="control">
-						<input class="input" type="date" name="dateDebut"
+						<input class="input input-is-250" type="text" name="dateDebut"
 							value="${dateDebut}" required>
 					</div>
 				</div>
@@ -116,7 +127,7 @@
 				<div class="field">
 					<label class="label">Fin de l'enchère *</label>
 					<div class="control">
-						<input class="input" type="date" name="dateFin" value="${dateFin}"
+						<input class="input input-is-250" type="text" name="dateFin" value="${dateFin}"
 							required>
 					</div>
 				</div>

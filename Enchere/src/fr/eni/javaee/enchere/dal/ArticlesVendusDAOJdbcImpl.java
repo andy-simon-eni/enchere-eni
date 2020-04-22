@@ -82,7 +82,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt;
 				Retraits retrait;
-				if (article.getNo_article() == 0) {
+				if (article.getNo_article() != 0) {
 					pstmt = cnx.prepareStatement(UPDATE_ARTICLE);
 					pstmt.setString(1, article.getNom_article());
 					pstmt.setString(2, article.getDescription());
@@ -93,14 +93,12 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 					pstmt.setInt(7, article.getNo_article());
 					pstmt.executeUpdate();
 					retrait = article.getRetrait();
-					if (retrait != null) {
-						pstmt = cnx.prepareStatement(UPDATE_RETRAIT);
-						pstmt.setString(1, retrait.getRue());
-						pstmt.setString(2, retrait.getCode_postal());
-						pstmt.setString(3, retrait.getVille());
-						pstmt.setInt(4, article.getNo_article());
-						pstmt.executeUpdate();
-					}
+					pstmt = cnx.prepareStatement(UPDATE_RETRAIT);
+					pstmt.setString(1, retrait.getRue());
+					pstmt.setString(2, retrait.getCode_postal());
+					pstmt.setString(3, retrait.getVille());
+					pstmt.setInt(4, article.getNo_article());
+					pstmt.executeUpdate();
 					pstmt.close();
 					cnx.commit();
 				}

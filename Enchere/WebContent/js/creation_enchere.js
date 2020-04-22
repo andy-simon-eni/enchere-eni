@@ -1,4 +1,16 @@
 $(document).ready(function(){
+
+	$("[name='dateDebut'], [name='dateFin']").datepicker({
+	    minDate: new Date(),
+	    altFormat: "yy-mm-dd",
+	    dateFormat: "yy-mm-dd",
+	    firstDay: 1,
+	    prevText: 'Précédent',
+	    nextText: 'Suivant',
+	    monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+	    dayNamesMin: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+	});
+	
 	$("#uploadImage").on("click", function(){
 		$("#imgUrl").click();
 	});
@@ -18,23 +30,20 @@ $(document).ready(function(){
 			success: function (data) {
 				$(".erreurFile").children().remove();
 				if(data.result == "erreurExt"){
-					var erreur = '<div class="notification is-danger">';
+					var erreur = '<div><div class="notification is-danger">';
 					erreur += '<button class="delete" onclick="closeError()"></button>';
 					erreur += '<span>Le type de format n\'est pas accepté.</span>';
-					erreur += '<br><br></div>';
+					erreur += '</div><br></div>';
 					$(".erreurFile").append(erreur);
 				}else if(data.result == "erreurSize"){
-					var erreur = '<div class="notification is-danger">';
+					var erreur = '<div><div class="notification is-danger">';
 					erreur += '<button class="delete" onclick="closeError()"></button>';
 					erreur += '<span>Le fichier est trop volumineux.</span>';
-					erreur += '<br><br></div>';
+					erreur += '</div><br></div>';
 					$(".erreurFile").append(erreur);
 				}else{
 					readURL(image);
 				}	
-			},
-			error: function () {
-				alert('pas marché');
 			}
 		});
 	});

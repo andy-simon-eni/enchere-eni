@@ -116,17 +116,19 @@
 
 			<div class="field">
 				<label class="label">Début de l'enchère *</label>
-				<div class="control">
+				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateDebut"
 						value="${dateDebut}" required>
+						 <span class="icon is-small is-left"><i class="far fa-calendar-alt"></i></span>
 				</div>
 			</div>
 
 			<div class="field">
 				<label class="label">Fin de l'enchère *</label>
-				<div class="control">
+				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateFin"
 						value="${dateFin}" required>
+						<span class="icon is-small is-left"><i class="far fa-calendar-alt"></i></span>
 				</div>
 			</div>
 

@@ -40,118 +40,114 @@
 			</div>
 			<br> <br>
 
+			<div class="field">
+				<span class="title is-5">${nomArticle}</span>
+			</div>
+			<br>
+			<div class="field is-horizontal">
+				<div class="field is-margin-20" style="position: relative">
+					<label class="label"
+						style="position: relative; top: 50%; left: 0; transform: translateY(-50%);">Description</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<textarea class="textarea" name="description" readonly>${description}</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Catégorie</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<span>${categorie}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<img class="imgArticleMobile" src="img/imageVide.png">
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Meileure offre</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<c:choose>
+								<c:when test="${montantMax != null}">
+									<span>${montantMax} crédits par ${PseudoMontantMax}</span>
+								</c:when>
+								<c:otherwise>
+									<span>Aucune offre !</span>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Mise a prix</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<span>${prix}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Fin de l'enchère</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<span>${dateFin}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Retrait</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<span>${rue}, ${codePostal} ${ville}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="field is-horizontal">
+				<div class="field is-margin-20">
+					<label class="label">Vendeur</label>
+				</div>
+				<div class="field-body">
+					<div class="field">
+						<div class="control">
+							<span>${pseudoVendeur}</span>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<form method="POST"
-				action="${pageContext.request.contextPath}/modifierEnchere">
-
-				<input name="noArticle" type="hidden" value="${noArticle}">
-
-				<div class="field">
-					<span class="title is-5">${nomArticle}</span>
-				</div>
-				<br>
-				<div class="field is-horizontal">
-					<div class="field is-margin-20" style="position: relative">
-						<label class="label"
-							style="position: relative; top: 50%; left: 0; transform: translateY(-50%);">Description</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<textarea class="textarea" name="description" readonly>${description}</textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Catégorie</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<span>${categorie}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<img class="imgArticleMobile" src="img/imageVide.png">
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Meileure offre</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<c:choose>
-									<c:when test="${montantMax != null}">
-										<span>${montantMax} crédits par ${PseudoMontantMax}</span>
-									</c:when>
-									<c:otherwise>
-										<span>Aucune offre !</span>
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Mise a prix</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<span>${prix}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Fin de l'enchère</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<span>${dateFin}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Retrait</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<span>${rue}, ${codePostal} ${ville}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Vendeur</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<span>${pseudoVendeur}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
+				action="${pageContext.request.contextPath}/faire_enchere">
 				<div class="field is-horizontal">
 					<div class="field is-margin-20">
 						<label class="label">Ma proposition</label>
@@ -160,12 +156,12 @@
 						<div class="field">
 							<div class="control">
 								<input class="input input-is-250" type="number"
-									value="${montantMax + 1}">
+									name="proposition" value="${montantMax + 1}">
 							</div>
 						</div>
 					</div>
 				</div>
-				<br>
+				<br> <input name="noArticle" type="hidden" value="${noArticle}">
 				<button class="button is-link">Encherir</button>
 			</form>
 		</div>

@@ -1,6 +1,7 @@
 package fr.eni.javaee.enchere.dal;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,12 +9,14 @@ import java.time.LocalDate;
 
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bo.Encheres;
+import fr.eni.javaee.enchere.bo.Retraits;
 
 public class EncheresDAOJdbcImpl implements EncheresDAO {
 
 	private EncheresDAO encheresDAO;
 	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES "
 			+ " WHERE montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND no_article = ?";
+	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 
 	@Override
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
@@ -39,4 +42,32 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		
 		return uneEnchere;
 	}
+
+	@Override
+	public void insertEnchere(Encheres uneEnchere) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt;
+				pstmt = cnx.prepareStatement(INSERT_ENCHERE);
+				pstmt.setInt(1, uneEnchere.getNo_utilisateur());
+				pstmt.setInt(2, uneEnchere.getNo_article());
+				pstmt.setDate(3, Date.valueOf(uneEnchere.getDate_enchere()));
+				pstmt.setInt(4, uneEnchere.getMontant_enchere());
+				pstmt.executeUpdate();
+				pstmt.close();
+				cnx.commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				cnx.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
+			throw businessException;
+		}
+	}
+
+
 }

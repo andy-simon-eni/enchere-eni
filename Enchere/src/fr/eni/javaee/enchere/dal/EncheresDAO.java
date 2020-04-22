@@ -1,5 +1,8 @@
 package fr.eni.javaee.enchere.dal;
 
-public interface EncheresDAO {
+import fr.eni.javaee.enchere.BusinessException;
+import fr.eni.javaee.enchere.bo.Encheres;
 
+public interface EncheresDAO {
+	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException;
 }

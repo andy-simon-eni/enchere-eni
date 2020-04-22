@@ -14,7 +14,10 @@ import javax.servlet.http.HttpSession;
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.ArticlesVendusManager;
 import fr.eni.javaee.enchere.bll.CategoriesManager;
+import fr.eni.javaee.enchere.bll.EncheresManager;
+import fr.eni.javaee.enchere.bll.UtilisateursManager;
 import fr.eni.javaee.enchere.bo.ArticlesVendus;
+import fr.eni.javaee.enchere.bo.Encheres;
 
 /**
  * Servlet implementation class modifierEnchere
@@ -38,6 +41,9 @@ public class modifierEnchereServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CategoriesManager cm = new CategoriesManager();
+		EncheresManager encheresManager = new EncheresManager();
+		UtilisateursManager utilManager = new UtilisateursManager();
+		Encheres uneEnchere = null;
 		String paramNoArticle = request.getParameter("noArt");
 		if (paramNoArticle == null) {
 			response.sendRedirect(request.getContextPath() + "/");
@@ -56,21 +62,24 @@ public class modifierEnchereServlet extends HttpServlet {
 					request.setAttribute("prix", article.getPrix_initial());
 					request.setAttribute("dateDebut", article.getDate_debut());
 					request.setAttribute("dateFin", article.getDate_fin());
-					if(article.getRetrait() != null) {
-						request.setAttribute("rue", article.getRetrait().getRue());
-						request.setAttribute("codePostal", article.getRetrait().getCode_postal());
-						request.setAttribute("ville", article.getRetrait().getVille());
-					}	
+					request.setAttribute("rue", article.getRetrait().getRue());
+					request.setAttribute("codePostal", article.getRetrait().getCode_postal());
+					request.setAttribute("ville", article.getRetrait().getVille());
 					request.setAttribute("listCat", cm.getAllCategories());
 					LocalDate dateActuelle = LocalDate.now();
-					System.out.println(dateActuelle.toString());
-					System.out.println(article.getDate_debut().toString());
 					String url;
 					if(article.getDate_debut().isAfter(dateActuelle)) {
 						url = "/WEB-INF/creation_enchere.jsp";
 						
 					}else {
 						url = "/WEB-INF/detailEnchere.jsp";
+						uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
+						if(uneEnchere != null) {
+							request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
+							request.setAttribute("PseudoMontantMax", utilManager.getUtilByNoUtil(uneEnchere.getNo_utilisateur()).getPseudo());
+						}
+						request.setAttribute("categorie", article.getCategorie().getLibelle());
+						request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
 					}
 					RequestDispatcher rd = request.getRequestDispatcher(url);
 					rd.forward(request, response);

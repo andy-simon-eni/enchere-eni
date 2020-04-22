@@ -17,4 +17,9 @@ public abstract class CodesResultatDAL {
 	 * Echec du update
 	 */
 	public static final int UPDATE_OBJET_ECHEC=10003;
+	/**
+	 * Echec du select all
+	 */
+	public static final int SELECT_ALL_ECHEC=10004;
+	
 }

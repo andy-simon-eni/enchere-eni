@@ -4,6 +4,19 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+<script>
+	function search() {
+		$('#inputSearch').val();
+		$.ajax({
+			type : "GET",
+			url : "./rechercheMotCleServlet",
+			data : "motCle=" + $('#inputSearch').val(),
+			success : function(data) {
+
+			}
+		});
+	}
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,9 +123,9 @@
 					<div class="field has-addons">
 						<div class="control is-fullwidth">
 
-							<input class="input" type="text" placeholder="Trouvé une enchère">
+							<input id="inputSearch" class="input" type="text" placeholder="Trouvé une enchère">
 						</div>
-						<div class="control">
+						<div class="control" onclick="search()">
 							<a class="button is-primary"><i class="fas fa-search"></i></a>
 						</div>
 					</div>
@@ -146,11 +159,11 @@
 						</label> <br>
 						<div style="margin: 1em">
 							<label class="checkbox"> <input type="checkbox">
+								Mes ventes débutées
+							</label> <label class="checkbox"> <input type="checkbox">
 								Mes ventes en cours
 							</label> <label class="checkbox"> <input type="checkbox">
-								Ventes débutées
-							</label> <label class="checkbox"> <input type="checkbox">
-								Ventes terminées
+								Mes ventes terminées
 							</label>
 						</div>
 					</div>

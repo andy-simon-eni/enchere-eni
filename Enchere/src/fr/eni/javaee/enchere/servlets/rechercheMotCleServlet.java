@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.CategoriesManager;
 import fr.eni.javaee.enchere.bll.EncheresManager;
-import fr.eni.javaee.enchere.bo.Encheres;
 
 /**
  * Servlet implementation class rechercheMotCleServlet
@@ -38,7 +37,7 @@ public class rechercheMotCleServlet extends HttpServlet {
 		EncheresManager em = new EncheresManager();
 		motCle = request.getParameter("motCle");
 		try {
-			
+			System.out.println("15646");
 			request.setAttribute("listCat", cm.getAllCategories());
 			request.setAttribute("listEnch", em.getEncheresByMotCle(motCle));
 		
@@ -46,8 +45,7 @@ public class rechercheMotCleServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-		rd.forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/toto");
 	}
 
 	/**

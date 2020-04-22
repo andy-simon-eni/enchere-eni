@@ -21,12 +21,14 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
 			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
 			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article";
+	
 	private static final String SELECT_ENCH_BY_CAT = "SELECT * FROM ENCHERES e " + 
 			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
 			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
 			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
 			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "WHERE c.no_categorie = ?";
+	
 	private static final String RECHERCHE_ENCH = "SELECT * FROM ENCHERES e " + 
 			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
 			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
@@ -34,11 +36,196 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " +
 			"WHERE a.nom_article LIKE '%?%'";
 	
+	private static final String SELECT_ENCHERES_OUVERTES = "SELECT * FROM ENCHERES e " + 
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " +
+			"WHERE a.date_debut_encheres > GETDATE()";
+	
+	private static final String SELECT_MES_ENCHERES_EN_COURS = "SELECT * FROM ENCHERES e " + 
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " + 
+			"WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND e.no_utilisateur = ?";
+	
+	private static final String SELECT_MES_ENCHRES_REMPORTEES = "SELECT * FROM ENCHERES e "+
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "+
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "+
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "+ 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article "+
+			"WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ?";
+	
+	private static final String SELECT_MES_VENTES_NON_DEBUTEES = "SELECT * FROM ENCHERES e " + 
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " +
+			"WHERE a.date_debut_encheres > GETDATE() AND a.no_utilisateur = ?";
+	
+	private static final String SELECT_MES_VENTES_EN_COURS = "SELECT * FROM ENCHERES e " + 
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article " + 
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie " + 
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur " + 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article " + 
+			"WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND a.no_utilisateur = ?";
+	
+	private static final String SELECT_MES_VENTES_TERMINEES = "SELECT * FROM ENCHERES e "+
+			"INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "+
+			"INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "+
+			"INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "+ 
+			"LEFT JOIN RETRAITS R ON r.no_article=a.no_article "+
+			"WHERE a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ?";
+	
+	@Override
+	public List<Encheres> getEnchereByMesVentesnNonDebutes(int no_utilisateurVendeurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_MES_VENTES_NON_DEBUTEES);
+			pstmt.setInt(1, no_utilisateurVendeurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEnchereByMesVentesEnCours(int no_utilisateurVendeurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_MES_VENTES_EN_COURS);
+			pstmt.setInt(1, no_utilisateurVendeurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEnchereByMesVentesTerminees(int no_utilisateurVendeurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_MES_VENTES_TERMINEES);
+			pstmt.setInt(1, no_utilisateurVendeurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEnchereByEncheresOuvertes() throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_OUVERTES);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEnchereByMesEncheresEnCours(int no_utilisateurAcheteurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_MES_ENCHERES_EN_COURS);
+			pstmt.setInt(1, no_utilisateurAcheteurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEnchereByMesEncheresRemportees(int no_utilisateurAcheteurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_MES_ENCHRES_REMPORTEES);
+			pstmt.setInt(1, no_utilisateurAcheteurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);	
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
 	@Override
 	public List<Encheres> getEnchereByMotCle(String motCle) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCH_BY_CAT);
+			PreparedStatement pstmt = cnx.prepareStatement(RECHERCHE_ENCH);
 			pstmt.setString(1, motCle);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -65,16 +252,13 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_ENCH);
 			ResultSet rs = pstmt.executeQuery();
-			System.out.println(rs);
 			while (rs.next()) {
 				Encheres ench = new Encheres();
 				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
 				ench.setMontant_enchere(rs.getInt("montant_enchere"));
 				listEnch.add(ench);	
 				ench.setNo_utilisateur(getObjectUtil(rs));
-				System.out.println(ench);
 				ench.setNo_article(getObjectArticle(rs));
-				System.out.println(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

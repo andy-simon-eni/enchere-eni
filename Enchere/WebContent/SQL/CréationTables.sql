@@ -3,6 +3,7 @@
 --
 -- Modification : passage de varchar(20) � varchar(100) le champ email dans la table UTILISATEURS
 -- Modification : erreur de table pour la contrainte encheres_utilisateurs_fk qui s'ajoutait sur ARTICLES_VENDUS et non sur ENCHERES
+-- Modification : passage de varchar(30) à varchar(35) le champ mot de passe car il est crypté en base
 
 
 CREATE TABLE CATEGORIES (
@@ -41,7 +42,7 @@ CREATE TABLE UTILISATEURS (
     rue              VARCHAR(30) NOT NULL,
     code_postal      VARCHAR(10) NOT NULL,
     ville            VARCHAR(30) NOT NULL,
-    mot_de_passe     VARCHAR(30) NOT NULL,
+    mot_de_passe     VARCHAR(35) NOT NULL,
     credit           INTEGER NOT NULL,
     administrateur   bit NOT NULL
 )

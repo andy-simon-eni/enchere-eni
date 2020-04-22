@@ -1,7 +1,9 @@
 $(document).ready(function(){
-
+	var dt = new Date();
+	dt.setDate( dt.getDate() + 1 );
+	
 	$("[name='dateDebut'], [name='dateFin']").datepicker({
-	    minDate: new Date(),
+	    minDate: dt,
 	    altFormat: "yy-mm-dd",
 	    dateFormat: "yy-mm-dd",
 	    firstDay: 1,

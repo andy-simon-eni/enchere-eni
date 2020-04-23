@@ -80,7 +80,7 @@ public class modifierEnchereServlet extends HttpServlet {
 							uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
 							if(uneEnchere != null) {
 								request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
-								request.setAttribute("PseudoMontantMax", utilManager.getUtilByNoUtil(uneEnchere.getNo_utilisateur()).getPseudo());
+								request.setAttribute("PseudoMontantMax", uneEnchere.getNo_utilisateur().getPseudo());
 							}
 							request.setAttribute("categorie", article.getCategorie().getLibelle());
 							request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());

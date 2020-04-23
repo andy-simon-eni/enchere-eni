@@ -13,4 +13,5 @@ public interface UtilisateursDAO {
 	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException;
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException;
 	public Utilisateurs getUtilByEmail(String email) throws BusinessException;
+	public void ajouterCredit(int no_util, int montant) throws BusinessException;
 }

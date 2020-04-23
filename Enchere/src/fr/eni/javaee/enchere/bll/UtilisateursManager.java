@@ -262,4 +262,8 @@ public class UtilisateursManager {
 	public void deleteUtilisateur(int no_util) throws BusinessException {
 		this.utilisateursDAO.delete(no_util);
 	}
+	
+	public void ajouterCredit(int no_util, int montant) throws BusinessException{
+		this.utilisateursDAO.ajouterCredit(no_util, montant);
+	}
 }

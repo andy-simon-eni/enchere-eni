@@ -102,11 +102,11 @@
 				<div class="control">
 					<c:choose>
 						<c:when test="${prix == null}">
-							<input class="input input-is-250" type="number" name="prix"
+							<input class="input input-is-250" type="number" name="prix" min="0"
 								value="0">
 						</c:when>
 						<c:otherwise>
-							<input class="input input-is-250" type="number" name="prix"
+							<input class="input input-is-250" type="number" name="prix" min="0"
 								value="${prix}">
 						</c:otherwise>
 					</c:choose>

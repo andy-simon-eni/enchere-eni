@@ -97,5 +97,13 @@ public abstract class CodesResultatBLL {
 	 * Echec la ville de retrait n'est pas valide
 	 */
 	public static final int REGLE_ARTICLES_VENDUS_VILLE_INVALIDE = 20007;
+	/**
+	 * Echec les crédits sont insuffisants
+	 */
+	public static final int REGLE_CREDITS_INSUFFISANTS = 60000;
+	/**
+	 * Echec montant enchère inférieur à la dernière enchère
+	 */
+	public static final int REGLE_CREDITS_INVALIDE = 60001;
 
 }

@@ -17,7 +17,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String GET_UTILISATEUR_BY_PSEUDO = "SELECT * from UTILISATEURS WHERE pseudo = ?";
 	private static final String UPDATE_UTILISATEUR_BY_NO_UTIL = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?";
 	private static final String DELETE_UTILISATEUR_BY_NO_UTIL = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";
-	
+	private static final String AJOUTER_CREDIT_UTILISATEUR = "UPDATE UTILISATEURS SET credit = credit + (?) WHERE no_utilisateur = ?";
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -214,6 +214,33 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
         }
         return util;
     }
+
+	@Override
+	public void ajouterCredit(int no_util, int montant) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt;			
+				pstmt = cnx.prepareStatement(AJOUTER_CREDIT_UTILISATEUR);
+				pstmt.setInt(1, montant);
+				pstmt.setInt(2, no_util);
+				pstmt.executeUpdate();
+				pstmt.close();
+				cnx.commit();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				cnx.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_ECHEC);
+			throw businessException;
+		}
+		
+	}
 
 
 }

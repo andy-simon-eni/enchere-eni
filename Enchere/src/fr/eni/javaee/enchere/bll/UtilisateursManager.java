@@ -260,7 +260,18 @@ public class UtilisateursManager {
 	}
 
 	public void deleteUtilisateur(int no_util) throws BusinessException {
-		this.utilisateursDAO.delete(no_util);
+		if(!this.utilisateursDAO.isEncherisseurMax(no_util) && !this.utilisateursDAO.isVendeur(no_util)) {
+			EncheresManager enchereManager = new EncheresManager();
+			ArticlesVendusManager articleManager = new ArticlesVendusManager();
+			enchereManager.deleteEncheresByNoUtil(no_util);
+			articleManager.deleteArticlesRetraits(no_util);
+			this.utilisateursDAO.delete(no_util);
+		}else {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_NO_SUPPRESSION);
+			throw businessException;
+		}
+		
 	}
 	
 	public void ajouterCredit(int no_util, int montant) throws BusinessException{

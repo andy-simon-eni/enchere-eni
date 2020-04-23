@@ -4,19 +4,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head><title>Mon Compte</title></head>
+<head>
+<title>Mon Compte</title>
+</head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
 	<nav class="navbar" role="navigation" aria-label="main navigation">
 		<div class="navbar-brand">
-			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/">
+			<a class="navbar-item" href="${pageContext.request.contextPath}/">
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 		</div>
 	</nav>
 	<section class="section">
-		<div class="container" style="max-width: 650px !important; text-align: center">
+		<div class="container"
+			style="max-width: 650px !important; text-align: center">
 			<div class="field is-horizontal">
 				<div class="field-label is-normal">
 					<label class="label">Pseudo :</label>
@@ -103,20 +105,22 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="field is-horizontal">
-				<div class="field-label is-normal">
-					<label class="label">Crédits :</label>
-				</div>
-				<div class="field-body">
-					<div class="field">
-						<label class="label">${credits}</label>
+
+			<c:if test="${showInfo}">
+				<div class="field is-horizontal">
+					<div class="field-label is-normal">
+						<label class="label">Crédits :</label>
+					</div>
+					<div class="field-body">
+						<div class="field">
+							<label class="label">${credits}</label>
+						</div>
 					</div>
 				</div>
-			</div>
-			<br>
-			<a href="${pageContext.request.contextPath}/modifier_profil" class="button is-link">Modifier</a>
-
+				<br>
+				<a href="${pageContext.request.contextPath}/modifier_profil"
+					class="button is-link">Modifier</a>
+			</c:if>
 		</div>
 	</section>
 </body>

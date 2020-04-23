@@ -35,8 +35,8 @@ public class monCompteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int no_util = 0;
-		boolean sessionExiste = false;
-		String tel = "Non renseigné";
+		boolean sessionExiste = false, showInfo = false;
+		String tel = "Non renseigné", pseudo = null;
 		Utilisateurs util = null;
 		UtilisateursManager utilManager = new UtilisateursManager();
 		
@@ -44,8 +44,14 @@ public class monCompteServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			if(session.getAttribute("id") != null) {
 				sessionExiste = true;
-				no_util = (int)session.getAttribute("id");
-				util = utilManager.getUtilByNoUtil(no_util);
+				if(request.getParameter("pseudo") != null) {
+					pseudo = request.getParameter("pseudo");
+					util = utilManager.getUtilByPseudo(pseudo);
+				}else {
+					no_util = (int)session.getAttribute("id");
+					util = utilManager.getUtilByNoUtil(no_util);
+					showInfo = true;
+				}
 				
 				if(util != null) {
 					request.setAttribute("pseudo", util.getPseudo());
@@ -60,6 +66,9 @@ public class monCompteServlet extends HttpServlet {
 					request.setAttribute("code_postal", util.getCode_postal());
 					request.setAttribute("ville", util.getVille());
 					request.setAttribute("credits", String.valueOf(util.getCredit()));
+					request.setAttribute("showInfo", showInfo);
+				}else {
+					sessionExiste = false;
 				}
 			}
 		} catch (BusinessException e) {

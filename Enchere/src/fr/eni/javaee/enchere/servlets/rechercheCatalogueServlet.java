@@ -1,8 +1,6 @@
 package fr.eni.javaee.enchere.servlets;
 
-import java.awt.List;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,39 +12,35 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bll.CategoriesManager;
 import fr.eni.javaee.enchere.bll.EncheresManager;
-import fr.eni.javaee.enchere.bo.Encheres;
+import fr.eni.javaee.enchere.bo.Categories;
 
 /**
- * Servlet implementation class indexServlet
+ * Servlet implementation class rechercheCatalogueServlet
  */
-@WebServlet(
-        urlPatterns= {""})
-public class indexServlet extends HttpServlet {
+@WebServlet("/rechercheCatalogueServlet")
+public class rechercheCatalogueServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public indexServlet() {
+    public rechercheCatalogueServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int no_categorie;
 		CategoriesManager cm = new CategoriesManager();
 		EncheresManager em = new EncheresManager();
-		
+		no_categorie = Integer.parseInt(request.getParameter("no_categorie"));
 		try {
-			Object paramSessionErreur = request.getSession().getAttribute("ListeErreurAfficherEnchere");
-			if(paramSessionErreur != null) {
-				List<Integer> listeErreurs = (List<Integer>) paramSessionErreur;
-				request.setAttribute("listeCodesErreur", listeErreurs);
-				request.getSession().removeAttribute("ListeErreurAfficherEnchere");
-			}
+			
 			request.setAttribute("listCat", cm.getAllCategories());
-			request.setAttribute("listEnch", em.getAllEncheres());
+			request.setAttribute("listEnch", em.getEncheresByCategorie(no_categorie));
 		
 		} catch (BusinessException e) {
 			e.printStackTrace();

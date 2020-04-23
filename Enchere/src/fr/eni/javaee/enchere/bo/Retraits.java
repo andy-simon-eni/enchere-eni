@@ -16,6 +16,7 @@ public class Retraits {
 		this.ville = ville;
 	}
 
+
 	public String getRue() {
 		return rue;
 	}
@@ -43,7 +44,7 @@ public class Retraits {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Retraits [rue=");
+		builder.append("Retraits [ rue=");
 		builder.append(rue);
 		builder.append(", code_postal=");
 		builder.append(code_postal);
@@ -52,6 +53,5 @@ public class Retraits {
 		builder.append("]");
 		return builder.toString();
 	}
-
 
 }

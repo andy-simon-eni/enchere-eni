@@ -134,4 +134,8 @@ public class ArticlesVendusManager {
 		}
 	}
 	
+	public void deleteArticlesRetraits(int no_util) throws BusinessException {
+		this.articlesVendusDAO.deleteArticlesRetraits(no_util);
+	}
+	
 }

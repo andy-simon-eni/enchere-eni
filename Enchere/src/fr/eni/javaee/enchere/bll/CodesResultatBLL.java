@@ -58,6 +58,10 @@ public abstract class CodesResultatBLL {
 	 */
 	public static final int REGLE_UTIL_MDP_ACTUEL_INVALIDE = 40000;
 	/**
+	 * mdp actuel incorrect lors de la modification de compte
+	 */
+	public static final int REGLE_UTIL_NO_SUPPRESSION = 40001;
+	/**
 	 * Nom de l'articles_vendus non valide
 	 */
 	public static final int REGLE_ARTICLES_VENDUS_NOM_INVALIDE = 50000;

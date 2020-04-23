@@ -19,6 +19,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
 	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
+	private static final String DELETE_ENCHERES_BY_NO_UTIL ="DELETE FROM ENCHERES WHERE no_utilisateur = ?";
 
 	@Override
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
@@ -120,6 +121,20 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		
 		return uneEnchere;
+	}
+
+	@Override
+	public void deleteByNoUtil(int no_util) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(DELETE_ENCHERES_BY_NO_UTIL);
+			pstmt.setInt(1, no_util);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_OBJET_ECHEC);
+			throw businessException;
+		}
 	}
 
 

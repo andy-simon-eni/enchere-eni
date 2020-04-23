@@ -155,7 +155,7 @@
 					<div class="field-body">
 						<div class="field">
 							<div class="control">
-								<input class="input input-is-250" type="number"
+								<input class="input input-is-250" type="number" min="0"
 									name="proposition" value="${montantMax + 1}">
 							</div>
 						</div>

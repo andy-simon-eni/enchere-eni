@@ -18,7 +18,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ " WHERE montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND no_article = ?";
 	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
-	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES WHERE no_util = ? AND no_article = ?";
+	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
 
 	@Override
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {

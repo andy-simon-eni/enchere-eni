@@ -96,7 +96,7 @@ public class creationEnchereServlet extends HttpServlet {
 		if (valide) {
 			response.sendRedirect(request.getContextPath() + "/");
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/creation_enchere");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/creation_enchere.jsp");
 			rd.forward(request, response);
 		}
 	}

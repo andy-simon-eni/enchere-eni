@@ -76,7 +76,6 @@ public class modifierEnchereServlet extends HttpServlet {
 						if(article.getUtil().getNo_utilisateur() != no_util) {
 							url = "/WEB-INF/detailEnchere.jsp";
 							showInfo = false;
-							request.setAttribute("showInfo", showInfo);
 							uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
 							if(uneEnchere != null) {
 								request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
@@ -95,6 +94,7 @@ public class modifierEnchereServlet extends HttpServlet {
 						request.setAttribute("categorie", article.getCategorie().getLibelle());
 						request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
 					}
+					request.setAttribute("showInfo", showInfo);
 					RequestDispatcher rd = request.getRequestDispatcher(url);
 					rd.forward(request, response);
 					
@@ -156,7 +156,7 @@ public class modifierEnchereServlet extends HttpServlet {
 		if(valide) {
 			response.sendRedirect(request.getContextPath() + "/");
 		}else {
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/creation_enchere");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/creation_enchere.jsp");
 			rd.forward(request, response);
 		}
 	}

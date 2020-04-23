@@ -77,8 +77,11 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "WHERE a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ?";
 
-	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES "
-			+ " WHERE montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND no_article = ?";
+	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES E "
+			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
+			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
+			+ " INNER JOIN CATEGORIES C ON AV.no_categorie = C.no_categorie "
+			+ " WHERE E.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND E.no_article = ?";
 	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
 	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES E "

@@ -229,8 +229,8 @@ public class UtilisateursManager {
 
 		if (mdpIdentique) {
 			if ((mdp == null || mdp.isEmpty()) && (verif_mdp.isEmpty() || verif_mdp == null)) {
-				mdp = util.getMot_de_passe();
-				verif_mdp = util.getMot_de_passe();
+				mdp = mdp_actuel;
+				verif_mdp = mdp_actuel;
 			}
 
 			this.validerUtil(no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,

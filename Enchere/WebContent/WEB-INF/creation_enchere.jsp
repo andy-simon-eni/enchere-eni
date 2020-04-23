@@ -9,13 +9,7 @@
 </head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
-	<nav class="navbar" role="navigation" aria-label="main navigation">
-		<div class="navbar-brand">
-			<a class="navbar-item" href="${pageContext.request.contextPath}/">
-				<h1 class="title is-4">ENI - Enchères</h1>
-			</a>
-		</div>
-	</nav>
+	<jsp:include page="/WEB-INF/fragments/navbar.jsp"></jsp:include>
 	<section class="section">
 		<img class="imgArticle" src="img/imageVide.png">
 		<div class="container petitContainer">
@@ -102,12 +96,12 @@
 				<div class="control">
 					<c:choose>
 						<c:when test="${prix == null}">
-							<input class="input input-is-250" type="number" name="prix" min="0"
-								value="0">
+							<input class="input input-is-250" type="number" name="prix"
+								min="0" value="0">
 						</c:when>
 						<c:otherwise>
-							<input class="input input-is-250" type="number" name="prix" min="0"
-								value="${prix}">
+							<input class="input input-is-250" type="number" name="prix"
+								min="0" value="${prix}">
 						</c:otherwise>
 					</c:choose>
 
@@ -118,8 +112,9 @@
 				<label class="label">Début de l'enchère *</label>
 				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateDebut"
-						value="${dateDebut}" required>
-						 <span class="icon is-small is-left"><i class="far fa-calendar-alt"></i></span>
+						value="${dateDebut}" required> <span
+						class="icon is-small is-left"><i
+						class="far fa-calendar-alt"></i></span>
 				</div>
 			</div>
 
@@ -127,8 +122,9 @@
 				<label class="label">Fin de l'enchère *</label>
 				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateFin"
-						value="${dateFin}" required>
-						<span class="icon is-small is-left"><i class="far fa-calendar-alt"></i></span>
+						value="${dateFin}" required> <span
+						class="icon is-small is-left"><i
+						class="far fa-calendar-alt"></i></span>
 				</div>
 			</div>
 

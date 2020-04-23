@@ -7,14 +7,7 @@
 <head><title>Créer un compte</title></head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
-	<nav class="navbar" role="navigation" aria-label="main navigation">
-		<div class="navbar-brand">
-			<a class="navbar-item"
-				href="${pageContext.request.contextPath}/">
-				<h1 style="font-size: 25px">ENI - Enchères</h1>
-			</a>
-		</div>
-	</nav>
+	<jsp:include page="/WEB-INF/fragments/navbar.jsp"></jsp:include>
 	<section class="section">
 		<div class="container">
 

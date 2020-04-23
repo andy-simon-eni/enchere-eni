@@ -27,11 +27,11 @@ public class EncheresManager {
 		BusinessException businessException = new BusinessException();
 		UtilisateursManager utilManager = new UtilisateursManager();
 		Encheres uneEnchere = null, enchereMax = null;
-
+		ArticlesVendusManager articleManager = new ArticlesVendusManager();
 		if(no_utilisateur > 0 && no_article > 0) {
 			if(utilManager.getUtilByNoUtil(no_utilisateur).getCredit() >= montant_enchere) {
 				enchereMax = this.getInfosMaxEnchereByNoArticle(no_article);
-				if((enchereMax != null && montant_enchere > enchereMax.getMontant_enchere()) || (enchereMax == null && montant_enchere > 0)) {
+				if((enchereMax != null && montant_enchere > enchereMax.getMontant_enchere()) || (enchereMax == null && montant_enchere > 0 && montant_enchere >= articleManager.getArticleByNoArticle(no_article).getPrix_initial()) ) {
 					uneEnchere = new Encheres(no_utilisateur, no_article, java.time.LocalDate.now(), montant_enchere);
 					if(this.encheresDAO.getEnchereByNoUtil(no_utilisateur, no_article) != null) {
 						this.encheresDAO.updateEnchere(uneEnchere);

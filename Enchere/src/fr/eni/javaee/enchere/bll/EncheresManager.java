@@ -32,24 +32,24 @@ public class EncheresManager {
 		return this.encheresDAO.getEnchereByMesEncheresRemportees(no_utilisateurAcheteurConnecte);
 	}
 	
-	List<Encheres> getEnchereByMesEncheresEnCours(int no_utilisateurAcheteurConnecte)throws BusinessException{
+	public List<Encheres> getEnchereByMesEncheresEnCours(int no_utilisateurAcheteurConnecte)throws BusinessException{
 		return this.encheresDAO.getEnchereByMesEncheresEnCours(no_utilisateurAcheteurConnecte);
 	}
 	
-	List<Encheres> getEnchereByEncheresOuvertes()  throws BusinessException{
+	public List<Encheres> getEnchereByEncheresOuvertes()  throws BusinessException{
 		return this.encheresDAO.getEnchereByEncheresOuvertes();
 
 	}
 	
-	List<Encheres> getEnchereByMesVentesTerminees(int no_utilisateurVendeurConnecte) throws BusinessException{
+	public List<Encheres> getEnchereByMesVentesTerminees(int no_utilisateurVendeurConnecte) throws BusinessException{
 		return this.encheresDAO.getEnchereByMesVentesTerminees(no_utilisateurVendeurConnecte);
 	}
 	
-	List<Encheres> getEnchereByMesVentesEnCours(int no_utilisateurVendeurConnecte) throws BusinessException{
+	public List<Encheres> getEnchereByMesVentesEnCours(int no_utilisateurVendeurConnecte) throws BusinessException{
 		return this.encheresDAO.getEnchereByMesVentesEnCours(no_utilisateurVendeurConnecte);
 	}
 	
-	List<Encheres> getEnchereByMesVentesnNonDebutes(int no_utilisateurVendeurConnecte) throws BusinessException{
+	public List<Encheres> getEnchereByMesVentesnNonDebutes(int no_utilisateurVendeurConnecte) throws BusinessException{
 		return this.encheresDAO.getEnchereByMesVentesnNonDebutes(no_utilisateurVendeurConnecte);
 	}
 	

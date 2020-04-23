@@ -1,5 +1,6 @@
 package fr.eni.javaee.enchere.bll;
 
+import fr.eni.javaee.enchere.bo.Encheres;
 import fr.eni.javaee.enchere.bo.Utilisateurs;
 import fr.eni.javaee.enchere.dal.CodesResultatDAL;
 import fr.eni.javaee.enchere.BusinessException;
@@ -59,14 +60,14 @@ public class EncheresManager {
 			if(utilManager.getUtilByNoUtil(no_utilisateur).getCredit() >= montant_enchere) {
 				enchereMax = this.getInfosMaxEnchereByNoArticle(no_article);
 				if((enchereMax != null && montant_enchere > enchereMax.getMontant_enchere()) || (enchereMax == null && montant_enchere > 0 && montant_enchere >= articleManager.getArticleByNoArticle(no_article).getPrix_initial()) ) {
-					uneEnchere = new Encheres(no_utilisateur, no_article, java.time.LocalDate.now(), montant_enchere);
+					uneEnchere = new Encheres(utilManager.getUtilByNoUtil(no_utilisateur), articleManager.getArticleByNoArticle(no_article), java.time.LocalDate.now(), montant_enchere);
 					if(this.encheresDAO.getEnchereByNoUtil(no_utilisateur, no_article) != null) {
 						this.encheresDAO.updateEnchere(uneEnchere);
 					}else {
 						this.encheresDAO.insertEnchere(uneEnchere);
 					}									
 					if(enchereMax != null) {
-						utilManager.ajouterCredit(enchereMax.getNo_utilisateur(), enchereMax.getMontant_enchere());
+						utilManager.ajouterCredit(enchereMax.getNo_utilisateur().getNo_utilisateur(), enchereMax.getMontant_enchere());
 					}
 					utilManager.ajouterCredit(no_utilisateur, -montant_enchere);
 				}else {

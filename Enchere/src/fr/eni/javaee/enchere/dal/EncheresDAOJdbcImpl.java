@@ -81,8 +81,11 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ " WHERE montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND no_article = ?";
 	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
-	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
-	private static final String DELETE_ENCHERES_BY_NO_UTIL ="DELETE FROM ENCHERES WHERE no_utilisateur = ?";
+	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES E "
+			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
+			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
+			+ " WHERE no_utilisateur = ? AND no_article = ?";
+	private static final String DELETE_ENCHERES_BY_NO_UTIL = "DELETE FROM ENCHERES WHERE no_utilisateur = ?";
 
 	@Override
 	public List<Encheres> getEnchereByMesVentesnNonDebutes(int no_utilisateurVendeurConnecte) throws BusinessException {
@@ -231,20 +234,20 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	@Override
 	public List<Encheres> getEnchereByMotCle(String motCle) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
-		String mot= "%"+ motCle +"%";
+		String mot = "%" + motCle + "%";
 		System.out.println(mot);
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(RECHERCHE_ENCH);
 			pstmt.setString(1, mot);
 			ResultSet rs = pstmt.executeQuery();
-				while (rs.next()) {
-					Encheres ench = new Encheres();
-					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-					ench.setMontant_enchere(rs.getInt("montant_enchere"));
-					listEnch.add(ench);
-					ench.setNo_utilisateur(getObjectUtil(rs));
-					ench.setNo_article(getObjectArticle(rs));
-				}
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
@@ -364,8 +367,10 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				uneEnchere = new Encheres();
-				uneEnchere.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				uneEnchere.setNo_article(rs.getInt("no_article"));
+				Utilisateurs util = this.getObjectUtil(rs);
+				ArticlesVendus article = this.getObjectArticle(rs);
+				uneEnchere.setNo_utilisateur(util);
+				uneEnchere.setNo_article(article);
 				uneEnchere.setMontant_enchere(rs.getInt("montant_enchere"));
 				uneEnchere.setDate_enchere((rs.getDate("date_enchere")).toLocalDate());
 			}
@@ -375,7 +380,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
 			throw businessException;
 		}
-		
+
 		return uneEnchere;
 	}
 
@@ -386,8 +391,8 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt;
 				pstmt = cnx.prepareStatement(INSERT_ENCHERE);
-				pstmt.setInt(1, uneEnchere.getNo_utilisateur());
-				pstmt.setInt(2, uneEnchere.getNo_article());
+				pstmt.setInt(1, uneEnchere.getNo_utilisateur().getNo_utilisateur());
+				pstmt.setInt(2, uneEnchere.getNo_article().getNo_article());
 				pstmt.setDate(3, Date.valueOf(uneEnchere.getDate_enchere()));
 				pstmt.setInt(4, uneEnchere.getMontant_enchere());
 				pstmt.executeUpdate();
@@ -404,7 +409,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			throw businessException;
 		}
 	}
-	
+
 	@Override
 	public void updateEnchere(Encheres uneEnchere) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -414,8 +419,8 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 				pstmt = cnx.prepareStatement(UPDATE_ENCHERE);
 				pstmt.setInt(1, uneEnchere.getMontant_enchere());
 				pstmt.setDate(2, Date.valueOf(uneEnchere.getDate_enchere()));
-				pstmt.setInt(3, uneEnchere.getNo_utilisateur());
-				pstmt.setInt(4, uneEnchere.getNo_article());
+				pstmt.setInt(3, uneEnchere.getNo_utilisateur().getNo_utilisateur());
+				pstmt.setInt(4, uneEnchere.getNo_article().getNo_article());
 				pstmt.executeUpdate();
 				pstmt.close();
 				cnx.commit();
@@ -441,8 +446,10 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				uneEnchere = new Encheres();
-				uneEnchere.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				uneEnchere.setNo_article(rs.getInt("no_article"));
+				Utilisateurs util = this.getObjectUtil(rs);
+				ArticlesVendus article = this.getObjectArticle(rs);
+				uneEnchere.setNo_utilisateur(util);
+				uneEnchere.setNo_article(article);
 				uneEnchere.setMontant_enchere(rs.getInt("montant_enchere"));
 				uneEnchere.setDate_enchere((rs.getDate("date_enchere")).toLocalDate());
 			}
@@ -452,7 +459,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
 			throw businessException;
 		}
-		
+
 		return uneEnchere;
 	}
 

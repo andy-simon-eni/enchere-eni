@@ -80,7 +80,7 @@ public class faireEnchereServlet extends HttpServlet {
 				request.setAttribute("categorie", article.getCategorie().getLibelle());
 				if(uneEnchere != null) {
 					request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
-					request.setAttribute("PseudoMontantMax", utilManager.getUtilByNoUtil(uneEnchere.getNo_utilisateur()).getPseudo());
+					request.setAttribute("PseudoMontantMax", uneEnchere.getNo_utilisateur().getPseudo());
 				}
 				request.setAttribute("prix", article.getPrix_initial());
 				request.setAttribute("dateFin", article.getDate_fin());

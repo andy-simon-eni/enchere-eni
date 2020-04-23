@@ -51,22 +51,15 @@ public class recherchesNonConnecté extends HttpServlet {
 			throws ServletException, IOException {
 		EncheresManager em = new EncheresManager();
 		List<Encheres> listEnch = null;
-		String type, search;
 		int idCateg;
 
-		search = request.getParameter("search");
-		type = request.getParameter("type");
+		idCateg = Integer.parseInt(request.getParameter("search"));
 
 		try {
-			if (type.equals("categorie")) {
-				idCateg = Integer.parseInt(search);
-				if (idCateg == 0) {
-					listEnch = em.getAllEncheres();
-				} else {
-					listEnch = em.getEncheresByCategorie(idCateg);
-				}
+			if (idCateg == 0) {
+				listEnch = em.getAllEncheres();
 			} else {
-				listEnch = em.getEncheresByMotCle(search);
+				listEnch = em.getEncheresByCategorie(idCateg);
 			}
 		} catch (BusinessException e) {
 			e.printStackTrace();
@@ -79,6 +72,7 @@ public class recherchesNonConnecté extends HttpServlet {
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());
+			objectBuilder.add("dateDebutEnch", ench.getNo_article().getDate_debut().toString());
 			objectBuilder.add("pseudo", ench.getNo_utilisateur().getPseudo());
 
 			arrayBuilder.add(objectBuilder);

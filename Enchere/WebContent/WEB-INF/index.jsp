@@ -56,11 +56,11 @@
 									</label> <br>
 
 									<div style="margin: 1em">
-										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="vOuverte">
+										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aDebute">
 											Enchères ouvertes
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="vEnCours">
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aEnCours">
 											Mes enchères en cours
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="vRemporte">
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aTermine">
 											Mes enchères remportées
 										</label>
 									</div>
@@ -72,11 +72,11 @@
 										id="radioV" type="radio" name="answer" value="Vente" data-val="Achat"> Mes ventes
 									</label> <br>
 									<div style="margin: 1em">
-										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="aDebute"
-											disabled> Mes ventes débutées
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="aEnCours"
+										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vOuverte"
+											disabled> Mes ventes non débutées
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vEnCours"
 											disabled> Mes ventes en cours
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="aTermine"
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vRemporte"
 											disabled> Mes ventes terminées
 										</label>
 									</div>
@@ -97,8 +97,9 @@
 									<div class="card-content">
 
 										<div>
-											<p class="title is-4">${ench.no_article.nom_article}</p>
+											<p class="titleEnchere title is-4">${ench.no_article.nom_article}</p>
 											<p>Prix : ${ench.montant_enchere}</p>
+											<span class="dateEnchere">${ench.no_article.date_debut}</span>
 											<p>Fin de l'enchère : ${ench.no_article.date_fin}</p>
 											<p>Vendeur : ${ench.no_utilisateur.pseudo}</p>
 										</div>

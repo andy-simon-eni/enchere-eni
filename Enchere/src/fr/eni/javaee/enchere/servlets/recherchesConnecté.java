@@ -67,7 +67,7 @@ public class recherchesConnecté extends HttpServlet {
 				listEnch = em.getAllEncheres();
 				break;
 			case "aDebute":
-				listEnch = em.getEnchereByEncheresOuvertes();
+				listEnch = em.getAllEncheres();
 				break;
 			case "aEnCours":
 				listEnch = em.getAllEncheres();

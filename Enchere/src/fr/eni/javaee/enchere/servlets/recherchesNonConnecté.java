@@ -25,80 +25,67 @@ import fr.eni.javaee.enchere.bo.Encheres;
 @WebServlet("/recherchesNonConnecté")
 public class recherchesNonConnecté extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public recherchesNonConnecté() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		EncheresManager em = new EncheresManager();
-		int codeCat = Integer.parseInt(request.getParameter("codeCat"));
-		List<Encheres> listEnch = null;
-			try {
-				if(codeCat==0) {
-					listEnch =em.getAllEncheres();
-				}else {
-					listEnch = em.getEncheresByCategorie(codeCat);
-				}	
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-		
-		for(Encheres ench : listEnch) {
-			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
-			objectBuilder.add("montant", ench.getMontant_enchere());
-			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());
-			objectBuilder.add("nomUtil", ench.getNo_utilisateur().getNom());
-			objectBuilder.add("prenomUtil", ench.getNo_utilisateur().getPrenom());
-	
-			arrayBuilder.add(objectBuilder);
-		}
-		response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().write(arrayBuilder.build().toString());
-		
+	public recherchesNonConnecté() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		EncheresManager em = new EncheresManager();
-		
-		String motCle = request.getParameter("motCle");
 		List<Encheres> listEnch = null;
+		String type, search;
+		int idCateg;
+
+		search = request.getParameter("search");
+		type = request.getParameter("type");
+
 		try {
-			listEnch = em.getEncheresByMotCle(motCle);
+			if (type.equals("categorie")) {
+				idCateg = Integer.parseInt(search);
+				if (idCateg == 0) {
+					listEnch = em.getAllEncheres();
+				} else {
+					listEnch = em.getEncheresByCategorie(idCateg);
+				}
+			} else {
+				listEnch = em.getEncheresByMotCle(search);
+			}
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-		
-		for(Encheres ench : listEnch) {
+
+		for (Encheres ench : listEnch) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());
-			objectBuilder.add("nomUtil", ench.getNo_utilisateur().getNom());
-			objectBuilder.add("prenomUtil", ench.getNo_utilisateur().getPrenom());
-	
+			objectBuilder.add("pseudo", ench.getNo_utilisateur().getPseudo());
+
 			arrayBuilder.add(objectBuilder);
 		}
 		response.setContentType("application/json; charset=UTF-8");
-        response.getWriter().write(arrayBuilder.build().toString());
-				 
+		response.getWriter().write(arrayBuilder.build().toString());
+
 	}
 
 }

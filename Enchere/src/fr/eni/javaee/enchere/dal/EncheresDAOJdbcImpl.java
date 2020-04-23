@@ -18,29 +18,40 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
 
 public class EncheresDAOJdbcImpl implements EncheresDAO {
 
-	private static final String SELECT_ALL_ENCH = "SELECT * FROM ENCHERES e "
+	private static final String SELECT_ALL_ENCH = "SELECT * FROM ENCHERES E "
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur)";
 
 	private static final String SELECT_ENCH_BY_CAT = "SELECT * FROM ENCHERES e "
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article " + "WHERE c.no_categorie = ?";
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "c.no_categorie = ?";
 
 	private static final String RECHERCHE_ENCH = "SELECT * FROM ENCHERES e "
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS r ON r.no_article=a.no_article " + "WHERE a.nom_article LIKE ?";
+			+ "LEFT JOIN RETRAITS r ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.nom_article LIKE ?";
 
 	private static final String SELECT_ENCHERES_OUVERTES = "SELECT * FROM ENCHERES e "
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article " + "WHERE a.date_debut_encheres > GETDATE()";
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_debut_encheres > GETDATE()";
 
 	private static final String SELECT_MES_ENCHERES_EN_COURS = "SELECT * FROM ENCHERES e "
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
@@ -241,7 +252,6 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	public List<Encheres> getEnchereByMotCle(String motCle) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
 		String mot = "%" + motCle + "%";
-		System.out.println(mot);
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(RECHERCHE_ENCH);
 			pstmt.setString(1, mot);
@@ -273,9 +283,9 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 				Encheres ench = new Encheres();
 				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
 				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
 				ench.setNo_utilisateur(getObjectUtil(rs));
 				ench.setNo_article(getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -81,13 +81,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
 			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
 			+ " INNER JOIN CATEGORIES C ON AV.no_categorie = C.no_categorie "
+			+ " LEFT JOIN RETRAITS R ON R.no_article=AV.no_article"
 			+ " WHERE E.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?) AND E.no_article = ?";
 	private static final String INSERT_ENCHERE = "INSERT INTO ENCHERES VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_ENCHERE = "UPDATE ENCHERES SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
 	private static final String GET_ENCHERE_BY_NO_UTIL = "SELECT * FROM ENCHERES E "
 			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
 			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
-			+ " WHERE no_utilisateur = ? AND no_article = ?";
+			+ " INNER JOIN CATEGORIES C ON AV.no_categorie = C.no_categorie "
+			+ " LEFT JOIN RETRAITS R ON R.no_article=AV.no_article"
+			+ " WHERE E.no_utilisateur = ? AND E.no_article = ?";
 	private static final String DELETE_ENCHERES_BY_NO_UTIL = "DELETE FROM ENCHERES WHERE no_utilisateur = ?";
 
 	@Override

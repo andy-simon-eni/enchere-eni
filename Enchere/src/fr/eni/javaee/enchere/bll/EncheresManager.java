@@ -56,4 +56,8 @@ public class EncheresManager {
 		}
 	}
 	
+	public void deleteEncheresByNoUtil(int no_util) throws BusinessException {
+		this.encheresDAO.deleteByNoUtil(no_util);
+	}
+	
 }

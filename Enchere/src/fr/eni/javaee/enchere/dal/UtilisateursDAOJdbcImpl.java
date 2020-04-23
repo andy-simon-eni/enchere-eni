@@ -108,7 +108,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(DELETE_UTILISATEUR_BY_NO_UTIL);
 			pstmt.setInt(1, no_util);
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();

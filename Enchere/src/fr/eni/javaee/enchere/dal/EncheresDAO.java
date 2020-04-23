@@ -8,4 +8,5 @@ public interface EncheresDAO {
 	public void insertEnchere(Encheres uneEnchere) throws BusinessException;
 	public void updateEnchere(Encheres uneEnchere) throws BusinessException;
 	public Encheres getEnchereByNoUtil(int no_util, int no_article) throws BusinessException;
+	public void deleteByNoUtil(int no_util) throws BusinessException;
 }

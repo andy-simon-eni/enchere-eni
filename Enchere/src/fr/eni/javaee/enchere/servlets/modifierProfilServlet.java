@@ -128,14 +128,23 @@ public class modifierProfilServlet extends HttpServlet {
 				}
 			}else if(resultButton.equals("delete")) {
 				try {
+					valide = true;
 					utilManager.deleteUtilisateur(no_util);
 				} catch (BusinessException e) {
+					valide = false;
 					request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+					
 				}
-				Cookie cookie = new Cookie("identifiant", "");
-		    	cookie.setMaxAge(0);
-		    	response.addCookie(cookie);
-				response.sendRedirect(request.getContextPath() + "/logOut");
+				if(valide) {
+					Cookie cookie = new Cookie("identifiant", "");
+			    	cookie.setMaxAge(0);
+			    	response.addCookie(cookie);
+					response.sendRedirect(request.getContextPath() + "/logOut");
+				}else {
+					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/modifier_profil.jsp");
+					rd.forward(request, response);
+				}
+				
 			}
 		}else {
 			response.sendRedirect(request.getContextPath() + "/");

@@ -9,13 +9,7 @@
 </head>
 <jsp:include page="/WEB-INF/fragments/head.jsp"></jsp:include>
 <body>
-	<nav class="navbar" role="navigation" aria-label="main navigation">
-		<div class="navbar-brand">
-			<a class="navbar-item" href="${pageContext.request.contextPath}/">
-				<h1 class="title is-4">ENI - Enchères</h1>
-			</a>
-		</div>
-	</nav>
+	<jsp:include page="/WEB-INF/fragments/navbar.jsp"></jsp:include>
 	<section class="section">
 		<img class="imgArticle" src="img/imageVide.png">
 		<div class="container petitContainer">
@@ -83,7 +77,8 @@
 						<div class="control">
 							<c:choose>
 								<c:when test="${montantMax != null}">
-									<span>${montantMax} crédits par ${PseudoMontantMax}</span>
+									<span>${montantMax} crédits par <a
+										href="${pageContext.request.contextPath}/profil?pseudo=${PseudoMontantMax}">${PseudoMontantMax}</a></span>
 								</c:when>
 								<c:otherwise>
 									<span>Aucune offre !</span>
@@ -106,6 +101,21 @@
 					</div>
 				</div>
 			</div>
+
+			<c:if test="${!showInfo}">
+				<div class="field is-horizontal">
+					<div class="field is-margin-20">
+						<label class="label">Debut de l'enchère</label>
+					</div>
+					<div class="field-body">
+						<div class="field">
+							<div class="control">
+								<span>${dateDebut}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:if>
 
 			<div class="field is-horizontal">
 				<div class="field is-margin-20">
@@ -140,7 +150,8 @@
 				<div class="field-body">
 					<div class="field">
 						<div class="control">
-							<span>${pseudoVendeur}</span>
+							<span><a
+								href="${pageContext.request.contextPath}/profil?pseudo=${pseudoVendeur}">${pseudoVendeur}</a></span>
 						</div>
 					</div>
 				</div>
@@ -155,14 +166,25 @@
 					<div class="field-body">
 						<div class="field">
 							<div class="control">
-								<input class="input input-is-250" type="number" min="0"
-									name="proposition" value="${montantMax + 1}">
+								<c:choose>
+									<c:when test="${montantMax == null}">
+										<input class="input input-is-250" type="number" min="${prix}"
+											name="proposition" value="${prix}">
+									</c:when>
+									<c:otherwise>
+										<input class="input input-is-250" type="number"
+											min="${montantMax + 1}" name="proposition"
+											value="${montantMax + 1}">
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</div>
 					</div>
 				</div>
 				<br> <input name="noArticle" type="hidden" value="${noArticle}">
-				<button class="button is-link">Encherir</button>
+				<c:if test="${showInfo}">
+					<button class="button is-link">Encherir</button>
+				</c:if>
 			</form>
 		</div>
 	</section>

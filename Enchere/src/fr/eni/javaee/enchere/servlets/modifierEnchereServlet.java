@@ -44,6 +44,7 @@ public class modifierEnchereServlet extends HttpServlet {
 		EncheresManager encheresManager = new EncheresManager();
 		UtilisateursManager utilManager = new UtilisateursManager();
 		Encheres uneEnchere = null;
+		Boolean showInfo = true;
 		String paramNoArticle = request.getParameter("noArt");
 		if (paramNoArticle == null) {
 			response.sendRedirect(request.getContextPath() + "/");
@@ -70,7 +71,20 @@ public class modifierEnchereServlet extends HttpServlet {
 					String url;
 					if(article.getDate_debut().isAfter(dateActuelle)) {
 						url = "/WEB-INF/creation_enchere.jsp";
-						
+						HttpSession session = request.getSession();
+						int no_util = (int)session.getAttribute("id");
+						if(article.getUtil().getNo_utilisateur() != no_util) {
+							url = "/WEB-INF/detailEnchere.jsp";
+							showInfo = false;
+							request.setAttribute("showInfo", showInfo);
+							uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
+							if(uneEnchere != null) {
+								request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
+								request.setAttribute("PseudoMontantMax", utilManager.getUtilByNoUtil(uneEnchere.getNo_utilisateur()).getPseudo());
+							}
+							request.setAttribute("categorie", article.getCategorie().getLibelle());
+							request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
+						}
 					}else {
 						url = "/WEB-INF/detailEnchere.jsp";
 						uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());

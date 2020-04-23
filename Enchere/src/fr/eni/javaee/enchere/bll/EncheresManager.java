@@ -26,15 +26,26 @@ public class EncheresManager {
 	public void insertEnchere(int no_utilisateur, int no_article, int montant_enchere) throws BusinessException{
 		BusinessException businessException = new BusinessException();
 		UtilisateursManager utilManager = new UtilisateursManager();
-		Encheres uneEnchere = null;
-		no_utilisateur = no_utilisateur;
-		no_article = no_article;
-		montant_enchere = montant_enchere;
+		Encheres uneEnchere = null, enchereMax = null;
 
-		if(no_utilisateur > 0 && no_article > 0 && montant_enchere > 0) {
+		if(no_utilisateur > 0 && no_article > 0) {
 			if(utilManager.getUtilByNoUtil(no_utilisateur).getCredit() >= montant_enchere) {
-				uneEnchere = new Encheres(no_utilisateur, no_article, java.time.LocalDate.now(), montant_enchere);
-				this.encheresDAO.insertEnchere(uneEnchere);
+				enchereMax = this.getInfosMaxEnchereByNoArticle(no_article);
+				if((enchereMax != null && montant_enchere > enchereMax.getMontant_enchere()) || (enchereMax == null && montant_enchere > 0)) {
+					uneEnchere = new Encheres(no_utilisateur, no_article, java.time.LocalDate.now(), montant_enchere);
+					if(this.encheresDAO.getEnchereByNoUtil(no_utilisateur, no_article) != null) {
+						this.encheresDAO.updateEnchere(uneEnchere);
+					}else {
+						this.encheresDAO.insertEnchere(uneEnchere);
+					}									
+					if(enchereMax != null) {
+						utilManager.ajouterCredit(enchereMax.getNo_utilisateur(), enchereMax.getMontant_enchere());
+					}
+					utilManager.ajouterCredit(no_utilisateur, -montant_enchere);
+				}else {
+					businessException.ajouterErreur(CodesResultatBLL.REGLE_CREDITS_INVALIDE);
+					throw businessException;
+				}								
 			}else {
 				businessException.ajouterErreur(CodesResultatBLL.REGLE_CREDITS_INSUFFISANTS);
 				throw businessException;

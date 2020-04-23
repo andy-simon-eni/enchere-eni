@@ -18,6 +18,12 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String UPDATE_UTILISATEUR_BY_NO_UTIL = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?";
 	private static final String DELETE_UTILISATEUR_BY_NO_UTIL = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";
 	private static final String AJOUTER_CREDIT_UTILISATEUR = "UPDATE UTILISATEURS SET credit = credit + (?) WHERE no_utilisateur = ?";
+	private static final String IS_ENCHERISSEUR_MAX = "SELECT * FROM ENCHERES E "
+			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
+			+ " INNER JOIN (SELECT MAX(montant_enchere) 'maxMontant' FROM ENCHERES GROUP BY no_article) g1 ON g1.maxMontant = E.montant_enchere "
+			+ " WHERE E.no_utilisateur = ? AND AV.date_fin_encheres >= convert(varchar(10), getdate(), 120) ";
+	private static final String IS_VENDEUR = " SELECT TOP(1) 1 FROM ARTICLES_VENDUS WHERE no_utilisateur = ? AND date_fin_encheres >= convert(varchar(10), getdate(), 120) ";
+
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -68,7 +74,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt;
 				ResultSet rs;
-			
+
 				pstmt = cnx.prepareStatement(UPDATE_UTILISATEUR_BY_NO_UTIL);
 				pstmt.setString(1, utilisateur.getPseudo());
 				pstmt.setString(2, utilisateur.getNom());
@@ -83,7 +89,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 				pstmt.executeUpdate();
 				pstmt.close();
 				cnx.commit();
-				
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 				cnx.rollback();
@@ -149,7 +155,6 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		return util;
 	}
 
-	
 	@Override
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException {
 		Utilisateurs util = null;
@@ -172,62 +177,61 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 				util.setCredit(rs.getInt("credit"));
 				util.setAdministrateur(rs.getBoolean("administrateur"));
 
-            }
-        } catch (Exception e) {
-        	e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
 			throw businessException;
-        }
-        return util;
-    }
-	
+		}
+		return util;
+	}
+
 	@Override
 	public Utilisateurs getUtilByEmail(String email) throws BusinessException {
-        Utilisateurs util = null;
-        try (Connection cnx = ConnectionProvider.getConnection()){
-            PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_EMAIL);
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next())
-            {
-                util = new Utilisateurs();
-                util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-                util.setPseudo(rs.getString("pseudo"));
-                util.setNom(rs.getString("nom"));
-                util.setPrenom(rs.getString("prenom"));
-                util.setEmail(rs.getString("email"));
-                util.setTelephone(rs.getString("telephone"));
-                util.setRue(rs.getString("rue"));
-                util.setCode_postal(rs.getString("code_postal"));
-                util.setVille(rs.getString("ville"));
-                util.setMot_de_passe(rs.getString("mot_de_passe"));
-                util.setCredit(rs.getInt("credit"));
-                util.setAdministrateur(rs.getBoolean("administrateur"));
+		Utilisateurs util = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(GET_UTILISATEUR_BY_EMAIL);
+			pstmt.setString(1, email);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				util = new Utilisateurs();
+				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				util.setPseudo(rs.getString("pseudo"));
+				util.setNom(rs.getString("nom"));
+				util.setPrenom(rs.getString("prenom"));
+				util.setEmail(rs.getString("email"));
+				util.setTelephone(rs.getString("telephone"));
+				util.setRue(rs.getString("rue"));
+				util.setCode_postal(rs.getString("code_postal"));
+				util.setVille(rs.getString("ville"));
+				util.setMot_de_passe(rs.getString("mot_de_passe"));
+				util.setCredit(rs.getInt("credit"));
+				util.setAdministrateur(rs.getBoolean("administrateur"));
 
-            }
-        } catch (Exception e) {
-        	e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
 			throw businessException;
-        }
-        return util;
-    }
+		}
+		return util;
+	}
 
 	@Override
 	public void ajouterCredit(int no_util, int montant) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				cnx.setAutoCommit(false);
-				PreparedStatement pstmt;			
+				PreparedStatement pstmt;
 				pstmt = cnx.prepareStatement(AJOUTER_CREDIT_UTILISATEUR);
 				pstmt.setInt(1, montant);
 				pstmt.setInt(2, no_util);
 				pstmt.executeUpdate();
 				pstmt.close();
 				cnx.commit();
-				
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 				cnx.rollback();
@@ -239,8 +243,45 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_ECHEC);
 			throw businessException;
 		}
-		
+
 	}
 
+	@Override
+	public boolean isEncherisseurMax(int no_util) throws BusinessException {
+		Boolean isEncherisseur = false;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(IS_ENCHERISSEUR_MAX);
+			pstmt.setInt(1, no_util);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				isEncherisseur = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
+			throw businessException;
+		}
+		return isEncherisseur;
+	}
+
+	@Override
+	public boolean isVendeur(int no_util) throws BusinessException {
+		Boolean isVendeur = false;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(IS_VENDEUR);
+			pstmt.setInt(1, no_util);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				isVendeur = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_OBJET_ECHEC);
+			throw businessException;
+		}
+		return isVendeur;
+	}
 
 }

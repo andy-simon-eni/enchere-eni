@@ -65,8 +65,7 @@
 
 									<div class="is-margin-1em">
 										<label class="checkbox"> <input type="checkbox"
-											class="cbEnchere cbAchat" value="aOuverte"> Enchères
-											ouvertes
+											class="cbEnchere cbAchat" value="aOuverte"> Enchères à venir
 										</label> <label class="checkbox"> <input type="checkbox"
 											class="cbEnchere cbAchat" value="aEnCours"> Mes
 											enchères en cours

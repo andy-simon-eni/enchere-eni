@@ -1,84 +1,123 @@
-.petitContainer{
+.petitContainer {
 	max-width: 600px !important;
 }
 
-.sous-titre{
+.is-center{
+	text-align: center;
+}
+
+.sous-titre {
 	width: 100%;
 	text-align: center;
 }
 
-.input-is-250{
+.input-is-250 {
 	width: 250px;
 }
 
-.is-center{
+.is-center {
 	width: 100%;
 	text-align: center;
 }
 
-.blocRetrait{
-	border: solid 1px black; 
-	margin-top: 20px; 
-	padding: 20px; 
+.blocRetrait {
+	border: solid 1px black;
+	margin-top: 20px;
+	padding: 20px;
 	position: relative;
 	border-radius: 5px;
 }
 
-.titleRetrait{
-	position: absolute; 
-	background-color: white; 
-	top: -15px; 
-	left: 20px; 
-	font-weight: bold; 
+.titleRetrait {
+	position: absolute;
+	background-color: white;
+	top: -15px;
+	left: 20px;
+	font-weight: bold;
 	color: #363636;
 }
 
-@media (min-width: 1200px) {
-	.imgArticle{
+@media ( min-width : 1200px) {
+	.imgArticle {
 		width: 20%;
 		height: auto;
-	    position: absolute;
-	    top: 205px;
+		position: absolute;
+		top: 205px;
 	}
-	
-	.imgArticleMobile{
+	.imgArticleMobile {
 		display: none;
 	}
 }
-@media (min-width: 980px) and (max-width: 1199px) {
-	.imgArticle{
+
+@media ( min-width : 980px) and (max-width: 1199px) {
+	.imgArticle {
 		width: 15%;
-	    position: absolute;
-	    top: 205px;
+		position: absolute;
+		top: 205px;
 	}
-	
-	.imgArticleMobile{
+	.imgArticleMobile {
 		display: none;
 	}
 }
-@media (max-width: 979px) {
-	.imgArticle{
+
+@media ( max-width : 979px) {
+	.imgArticle {
 		display: none;
 	}
-	
-	.imgArticleMobile{
+	.imgArticleMobile {
 		width: auto;
 		height: 200px;
 	}
 }
 
-#imgUrl{
+#imgUrl {
 	display: none;
 }
 
-.is-orange{
-	color : orange;
+.is-orange {
+	color: orange;
 }
 
-.is-margin-20{
+.is-margin-20 {
 	margin-right: 20px;
 }
 
-.dateEnchere{
+.dateEnchere {
 	display: none;
+}
+
+@media ( min-width : 550px) {
+	.searchBar {
+		float: right;
+	}
+}
+
+.is-relative {
+	position: relative;
+}
+
+.label-description {
+	position: relative;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+
+.bgPanel {
+	background-color: #f7f7f7;
+}
+
+.is-margin-1em {
+	margin: 1em;
+}
+
+@media ( min-width : 770px) {
+	.hideField {
+		visibility: hidden;
+	}
+}
+@media ( max-width : 769px) {
+	.hideField {
+		display: none;
+	}
 }

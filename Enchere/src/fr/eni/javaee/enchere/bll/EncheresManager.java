@@ -59,6 +59,12 @@ public class EncheresManager {
 	public List<Encheres> getMesEncheresTermineesByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
 		return this.encheresDAO.getMesEncheresTermineesByCategorie(idUtilisateur, idCateg);
 	}
+	public List<Encheres> getMesEncheresGagnees(int idUtilisateur) throws BusinessException{
+		return this.encheresDAO.getMesEncheresGagnees(idUtilisateur);
+	}
+	public List<Encheres> getMesEncheresGagneesByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
+		return this.encheresDAO.getMesEncheresGagneesByCategorie(idUtilisateur, idCateg);
+	}
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
 		Encheres uneEnchere = null;
 		uneEnchere = this.encheresDAO.getInfosMaxEnchereByNoArticle(no_article);

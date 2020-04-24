@@ -21,6 +21,8 @@ public interface EncheresDAO {
 	public List<Encheres> getMesEncheresEnCoursByCategorie(int no_utilisateur, int idCateg) throws BusinessException;
 	public List<Encheres> getMesEncheresTerminees(int no_utilisateur) throws BusinessException;
 	public List<Encheres> getMesEncheresTermineesByCategorie(int no_utilisateur, int idCateg) throws BusinessException;
+	public List<Encheres> getMesEncheresGagnees(int no_utilisateur) throws BusinessException;
+	public List<Encheres> getMesEncheresGagneesByCategorie(int no_utilisateur, int idCateg) throws BusinessException;
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException;
 	public void insertEnchere(Encheres uneEnchere) throws BusinessException;
 	public void updateEnchere(Encheres uneEnchere) throws BusinessException;

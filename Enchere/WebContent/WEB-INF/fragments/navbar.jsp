@@ -7,7 +7,7 @@
 				<h1 style="font-size: 25px">ENI - Enchères</h1>
 			</a>
 			<div class="navbar-item">
-				<button class="button is-small is-primary is-rounded"
+				<button class="button is-small is-link is-rounded"
 					value="Rafraichir" id="refresh"
 					onclick="document.location.reload(false)">
 					<i class="fas fa-undo-alt"></i>
@@ -26,7 +26,7 @@
 					<div class="navbar-item">
 					<div style="padding-right: 10px">
 						
-							<a class="button is-primary"
+							<a class="button is-link"
 								href="${pageContext.request.contextPath}/creation_enchere"> <strong>Créer
 									une enchère</strong>
 							</a>
@@ -51,12 +51,10 @@
 				<div class="navbar-end">
 					<div class="navbar-item">
 						<div class="buttons">
-							<a class="button is-primary"
-								href="${pageContext.request.contextPath}/signUp"> <strong>Créer
-									un compte</strong>
-							</a> <a class="button is-light"
-								href="${pageContext.request.contextPath}/signIn"> Se
-								connecter </a>
+							<a class="button is-link"
+								href="${pageContext.request.contextPath}/signIn"> <strong>Créer
+									un compte / Se Connecter</strong>
+							</a>
 						</div>
 					</div>
 				</div>

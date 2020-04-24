@@ -88,7 +88,7 @@ public class faireEnchereServlet extends HttpServlet {
 				request.setAttribute("codePostal", article.getRetrait().getCode_postal());
 				request.setAttribute("ville", article.getRetrait().getVille());
 				request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
-				
+				request.setAttribute("showInfo", true);
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/detailEnchere.jsp");
 				rd.forward(request, response);
 			} catch (BusinessException e) {

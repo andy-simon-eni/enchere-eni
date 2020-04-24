@@ -18,7 +18,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${pseudo}</label>
+						<span>${pseudo}</span>
 					</div>
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${nom}</label>
+						<span>${nom}</span>
 					</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${prenom}</label>
+						<span>${prenom}</span>
 					</div>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${email}</label>
+						<span>${email}</span>
 					</div>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${telephone}</label>
+						<span>${telephone}</span>
 					</div>
 				</div>
 			</div>
@@ -72,7 +72,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${rue}</label>
+						<span>${rue}</span>
 					</div>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${code_postal}</label>
+						<span>${code_postal}</span>
 					</div>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 				</div>
 				<div class="field-body">
 					<div class="field">
-						<label class="label">${ville}</label>
+						<span>${ville}</span>
 					</div>
 				</div>
 			</div>
@@ -106,7 +106,7 @@
 					</div>
 					<div class="field-body">
 						<div class="field">
-							<label class="label">${credits}</label>
+							<span>${credits}</span>
 						</div>
 					</div>
 				</div>

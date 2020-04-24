@@ -80,7 +80,7 @@
 							</div>
 						</div>
 						<div class="field">
-							<label class="label">Rue</label>
+							<label class="label">Rue *</label>
 							<div class="control">
 								<input class="input" type="text" placeholder="Rue" name="rue"
 									value="${rue}" required
@@ -93,7 +93,7 @@
 				<div class="field is-horizontal">
 					<div class="field-body">
 						<div class="field">
-							<label class="label">Code postal</label>
+							<label class="label">Code postal *</label>
 							<div class="control">
 								<input class="input" type="text" placeholder="Code postal"
 									name="code_postal" value="${code_postal}" required
@@ -101,7 +101,7 @@
 							</div>
 						</div>
 						<div class="field">
-							<label class="label">Ville</label>
+							<label class="label">Ville *</label>
 							<div class="control">
 								<input class="input" type="text" placeholder="Ville"
 									name="ville" value="${ville}" required
@@ -113,7 +113,7 @@
 				<div class="field is-horizontal">
 					<div class="field-body">
 						<div class="field">
-							<label class="label">Mot de passe actuel</label>
+							<label class="label">Mot de passe actuel *</label>
 							<div class="control">
 								<input class="input" type="password" placeholder="Mot de passe"
 									name="mdp_actuel" required pattern=".{8,30}">

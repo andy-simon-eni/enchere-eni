@@ -155,35 +155,36 @@
 					</div>
 				</div>
 			</div>
-
-			<form method="POST"
-				action="${pageContext.request.contextPath}/faire_enchere">
-				<div class="field is-horizontal">
-					<div class="field is-margin-20">
-						<label class="label">Ma proposition</label>
-					</div>
-					<div class="field-body">
-						<div class="field">
-							<div class="control">
-								<c:choose>
-									<c:when test="${montantMax == null}">
-										<input class="input input-is-250" type="number" min="${prix}"
-											name="proposition" value="${prix}">
-									</c:when>
-									<c:otherwise>
-										<input class="input input-is-250" type="number"
-											min="${montantMax + 1}" name="proposition"
-											value="${montantMax + 1}">
-									</c:otherwise>
-								</c:choose>
+			<c:if test="${showInfo}">
+				<form method="POST"
+					action="${pageContext.request.contextPath}/faire_enchere">
+					<div class="field is-horizontal">
+						<div class="field is-margin-20">
+							<label class="label">Ma proposition</label>
+						</div>
+						<div class="field-body">
+							<div class="field">
+								<div class="control">
+									<c:choose>
+										<c:when test="${montantMax == null}">
+											<input class="input input-is-250" type="number" min="${prix}"
+												name="proposition" value="${prix}">
+										</c:when>
+										<c:otherwise>
+											<input class="input input-is-250" type="number"
+												min="${montantMax + 1}" name="proposition"
+												value="${montantMax + 1}">
+										</c:otherwise>
+									</c:choose>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<br> <input name="noArticle" type="hidden" value="${noArticle}">
-				<c:if test="${showInfo}">
+					<br> <input name="noArticle" type="hidden"
+						value="${noArticle}">
+
 					<button class="button is-link">Encherir</button>
-				</c:if>
+			</c:if>
 			</form>
 		</div>
 	</section>

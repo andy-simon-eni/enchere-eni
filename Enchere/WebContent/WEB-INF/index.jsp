@@ -33,10 +33,10 @@
 						<div class="select">
 							<c:choose>
 								<c:when test="${ !empty sessionScope.id}">
-									<select id="selectCat">
+									<select id="selectCatConnecte">
 								</c:when>
 								<c:otherwise>
-									<select id="selectCatConnecte">
+									<select id="selectCat">
 								</c:otherwise>
 							</c:choose>
 								<option value="0">Toutes les catégories</option>

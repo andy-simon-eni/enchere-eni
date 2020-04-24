@@ -52,13 +52,19 @@ public class recherchesConnecté extends HttpServlet {
 		EncheresManager em = new EncheresManager();
 		List<Encheres> listEnch = null;
 		String search;
+		int idCateg;
 
+		idCateg = Integer.parseInt(request.getParameter("categorie"));
 		search = request.getParameter("search");
 
 		try {
 			switch (search) {
 			case "Achat":
-				listEnch = em.getAllEncheres();
+				if(idCateg != 0) {
+					listEnch = em.getEncheresByCategorie(idCateg);
+				}else {
+					listEnch = em.getAllEncheres();
+				}
 				break;
 			case "Vente":
 				listEnch = em.getAllEncheres();

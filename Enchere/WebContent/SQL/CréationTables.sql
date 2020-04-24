@@ -4,6 +4,7 @@
 -- Modification : passage de varchar(20) � varchar(100) le champ email dans la table UTILISATEURS
 -- Modification : erreur de table pour la contrainte encheres_utilisateurs_fk qui s'ajoutait sur ARTICLES_VENDUS et non sur ENCHERES
 -- Modification : passage de varchar(30) à varchar(35) le champ mot de passe car il est crypté en base
+-- Modification : création table qui va contenir la date de la dernière maj des articles. Pour mettre a jour les articles où la date de fin est passée.
 
 
 CREATE TABLE CATEGORIES (
@@ -63,6 +64,14 @@ CREATE TABLE ARTICLES_VENDUS (
 )
 
 ALTER TABLE ARTICLES_VENDUS ADD constraint articles_vendus_pk PRIMARY KEY (no_article)
+
+CREATE TABLE MAJ_ARTICLES (
+	date_derniere_maj			DATE NOT NULL,
+);
+ALTER TABLE MAJ_ARTICLES ADD constraint maj_articles_pk PRIMARY KEY (date_derniere_maj)
+
+INSERT INTO MAJ_ARTICLES VALUES(convert(varchar(10), GETDATE(), 120))
+
 
 ALTER TABLE ENCHERES
     ADD CONSTRAINT encheres_utilisateurs_fk FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )

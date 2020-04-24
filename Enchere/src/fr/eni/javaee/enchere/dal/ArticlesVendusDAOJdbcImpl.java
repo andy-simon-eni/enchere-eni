@@ -138,11 +138,11 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			pstmt.setInt(1, no_article);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				article = this.articlesBuilder(rs);
-				article.setUtil(this.utilisateursBuilder(rs));
-				article.setCategorie(this.categoriesBuilder(rs));
+				article = ObjectBuilder.getObjectArticle(rs);
+				article.setUtil(ObjectBuilder.getObjectUtil(rs));
+				article.setCategorie(ObjectBuilder.getObjectCategories(rs));
 
-				retrait = this.retraitsBuilder(rs);
+				retrait = ObjectBuilder.getObjectRetraits(rs);
 
 				if (retrait != null) {
 					article.setRetrait(retrait);
@@ -156,60 +156,6 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			throw businessException;
 		}
 		return article;
-	}
-
-	private ArticlesVendus articlesBuilder(ResultSet rs) throws SQLException {
-		ArticlesVendus article;
-		article = new ArticlesVendus();
-		article.setNo_article(rs.getInt("no_article"));
-		article.setNom_article(rs.getString("nom_article"));
-		article.setDescription(rs.getString("description"));
-		article.setDate_debut(LocalDate.parse(rs.getString("date_debut_encheres")));
-		article.setDate_fin(LocalDate.parse(rs.getString("date_fin_encheres")));
-		article.setPrix_initial(rs.getInt("prix_initial"));
-		article.setPrix_vente(rs.getInt("prix_vente"));
-		return article;
-	}
-
-	private Utilisateurs utilisateursBuilder(ResultSet rs) throws SQLException {
-		Utilisateurs util;
-		util = new Utilisateurs();
-		util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-		util.setPseudo(rs.getString("pseudo"));
-		util.setNom(rs.getString("nom"));
-		util.setPrenom(rs.getString("prenom"));
-		util.setEmail(rs.getString("email"));
-		util.setTelephone(rs.getString("telephone"));
-		util.setRue(rs.getString("rue_util"));
-		util.setCode_postal(rs.getString("cp_util"));
-		util.setVille(rs.getString("ville_util"));
-		util.setMot_de_passe(rs.getString("mot_de_passe"));
-		util.setCredit(rs.getInt("credit"));
-		util.setAdministrateur(rs.getBoolean("administrateur"));
-		return util;
-	}
-
-	private Categories categoriesBuilder(ResultSet rs) throws SQLException {
-		Categories categ;
-		categ = new Categories();
-		categ.setNo_categorie(rs.getInt("no_categorie"));
-		categ.setLibelle(rs.getString("libelle"));
-		return categ;
-	}
-
-	private Retraits retraitsBuilder(ResultSet rs) throws SQLException {
-		Retraits retrait = null;
-		String rue, cp, ville;
-		rue = rs.getString("rue_retrait");
-		cp = rs.getString("cp_retrait");
-		ville = rs.getString("ville_retrait");
-		if (rue != null && !rue.isEmpty() && cp != null && !cp.isEmpty() && ville != null && !ville.isEmpty()) {
-			retrait = new Retraits();
-			retrait.setRue(rue);
-			retrait.setCode_postal(cp);
-			retrait.setVille(ville);
-		}
-		return retrait;
 	}
 	@Override
 	public void deleteArticlesRetraits(int no_util) throws BusinessException{

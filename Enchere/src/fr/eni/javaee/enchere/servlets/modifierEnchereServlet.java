@@ -44,7 +44,7 @@ public class modifierEnchereServlet extends HttpServlet {
 		EncheresManager encheresManager = new EncheresManager();
 		UtilisateursManager utilManager = new UtilisateursManager();
 		Encheres uneEnchere = null;
-		Boolean showInfo = true;
+		Boolean showInfo = true, detailVendeur = true;
 		String paramNoArticle = request.getParameter("noArt");
 		if (paramNoArticle == null) {
 			response.sendRedirect(request.getContextPath() + "/");
@@ -84,6 +84,24 @@ public class modifierEnchereServlet extends HttpServlet {
 							request.setAttribute("categorie", article.getCategorie().getLibelle());
 							request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
 						}
+						
+					}else if(article.getDate_fin().isBefore(dateActuelle)){
+						url = "/WEB-INF/detailEnchereRemporte.jsp";
+						HttpSession session = request.getSession();
+						int no_util = (int)session.getAttribute("id");
+						uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
+						if(uneEnchere != null) {
+							request.setAttribute("montantMax", uneEnchere.getMontant_enchere());
+							request.setAttribute("PseudoMontantMax", uneEnchere.getNo_utilisateur().getPseudo());
+						}
+						request.setAttribute("categorie", article.getCategorie().getLibelle());
+						request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
+						if(article.getUtil().getNo_utilisateur() != no_util) {
+							detailVendeur = false;
+							
+							request.setAttribute("telVendeur", article.getUtil().getTelephone());
+							request.setAttribute("mailVendeur", article.getUtil().getEmail());
+						}
 					}else {
 						url = "/WEB-INF/detailEnchere.jsp";
 						uneEnchere = encheresManager.getInfosMaxEnchereByNoArticle(article.getNo_article());
@@ -95,6 +113,7 @@ public class modifierEnchereServlet extends HttpServlet {
 						request.setAttribute("pseudoVendeur", article.getUtil().getPseudo());
 					}
 					request.setAttribute("showInfo", showInfo);
+					request.setAttribute("detailVendeur", detailVendeur);
 					RequestDispatcher rd = request.getRequestDispatcher(url);
 					rd.forward(request, response);
 					

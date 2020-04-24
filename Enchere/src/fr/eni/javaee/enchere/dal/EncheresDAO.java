@@ -13,8 +13,8 @@ public interface EncheresDAO {
 	public List<Encheres> getMesEncheresByCateg(int no_utilisateur, int idCateg) throws BusinessException;
 	public List<Encheres> getEncheresOuvertes() throws BusinessException;
 	public List<Encheres> getEncheresOuvertesByCateg(int idCateg) throws BusinessException;
-	public List<Encheres> getEncheresEnCours() throws BusinessException;
-	public List<Encheres> getEncheresEnCoursByCateg(int idCateg) throws BusinessException;
+	public List<Encheres> getEncheresEnCours(int idUtil) throws BusinessException;
+	public List<Encheres> getEncheresEnCoursByCateg(int idUtil, int idCateg) throws BusinessException;
 	public List<Encheres> getMesEncheresNonDebutees(int no_utilisateur) throws BusinessException;
 	public List<Encheres> getMesEncheresNonDebuteesByCategorie(int no_utilisateur, int idCateg) throws BusinessException;
 	public List<Encheres> getMesEncheresEnCours(int no_utilisateur) throws BusinessException;

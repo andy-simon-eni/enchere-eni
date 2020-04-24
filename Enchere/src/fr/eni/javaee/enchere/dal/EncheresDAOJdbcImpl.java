@@ -71,7 +71,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
 			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
-			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE()";
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND E.no_utilisateur = ?";
 	
 	private static final String SELECT_ENCHERES_EN_COURS_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
 			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
@@ -79,8 +79,8 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
 			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
-			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND "
-			+ "c.no_categorie = ?";
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() "
+			+ "AND E.no_utilisateur = ? AND c.no_categorie = ?";
 	
 	private static final String SELECT_VENTE_OUVERTES = "SELECT * FROM ARTICLES_VENDUS a "
 			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
@@ -339,10 +339,11 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	}
 	
 	@Override
-	public List<Encheres> getEncheresEnCours() throws BusinessException {
+	public List<Encheres> getEncheresEnCours(int idUtil) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_EN_COURS);
+			pstmt.setInt(1, idUtil);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
@@ -367,11 +368,12 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 	}
 	
 	@Override
-	public List<Encheres> getEncheresEnCoursByCateg(int idCateg) throws BusinessException {
+	public List<Encheres> getEncheresEnCoursByCateg(int idUtil, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_EN_COURS_BY_CAT);
-			pstmt.setInt(1, idCateg);
+			pstmt.setInt(1, idUtil);
+			pstmt.setInt(2, idCateg);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();

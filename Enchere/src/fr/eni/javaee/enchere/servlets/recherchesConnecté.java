@@ -85,9 +85,9 @@ public class recherchesConnecté extends HttpServlet {
 				break;
 			case "aEnCours":
 				if(idCateg != 0) {
-					listEnch = em.getEncheresEnCoursByCategorie(idCateg);
+					listEnch = em.getEncheresEnCoursByCategorie(user, idCateg);
 				}else {
-					listEnch = em.getEncheresEnCours();
+					listEnch = em.getEncheresEnCours(user);
 				}
 				break;
 			case "aRemporte":

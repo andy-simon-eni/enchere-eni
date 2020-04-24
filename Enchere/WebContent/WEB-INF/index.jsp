@@ -31,7 +31,14 @@
 				<div class="panel" style="background-color: #f7f7f7">
 					<div class="panel-heading">
 						<div class="select">
-							<select id="selectCat">
+							<c:choose>
+								<c:when test="${ !empty sessionScope.id}">
+									<select id="selectCat">
+								</c:when>
+								<c:otherwise>
+									<select id="selectCatConnecte">
+								</c:otherwise>
+							</c:choose>
 								<option value="0">Toutes les catégories</option>
 								<c:forEach items="${ listCat }" var="lc">
 									<option value="${lc.getNo_categorie()}">${lc.getLibelle()}</option>

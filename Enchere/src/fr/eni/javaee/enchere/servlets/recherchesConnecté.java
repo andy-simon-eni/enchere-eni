@@ -57,6 +57,12 @@ public class recherchesConnecté extends HttpServlet {
 
 		try {
 			switch (search) {
+			case "Achat":
+				listEnch = em.getAllEncheres();
+				break;
+			case "Vente":
+				listEnch = em.getAllEncheres();
+				break;
 			case "vOuverte":
 				listEnch = em.getAllEncheres();
 				break;
@@ -87,8 +93,7 @@ public class recherchesConnecté extends HttpServlet {
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());
-			objectBuilder.add("nomUtil", ench.getNo_utilisateur().getNom());
-			objectBuilder.add("prenomUtil", ench.getNo_utilisateur().getPrenom());
+			objectBuilder.add("pseudo", ench.getNo_utilisateur().getPseudo());
 
 			arrayBuilder.add(objectBuilder);
 		}

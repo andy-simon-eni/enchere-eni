@@ -35,6 +35,19 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
 			+ "c.no_categorie = ?";
 
+	private static final String SELECT_ALL_VENTE = "SELECT * FROM ENCHERES E "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "AND A.no_utilisateur = ?";
+	
+	
+	
+	
+	
 	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES E "
 			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
 			+ " INNER JOIN ARTICLES_VENDUS AV ON E.no_article = AV.no_article "
@@ -81,6 +94,30 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCH_BY_CAT);
 			pstmt.setInt(1, cat);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(getObjectUtil(rs));
+				ench.setNo_article(getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheres(int no_utilisateurAcheteurConnecte) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_VENTE);
+			pstmt.setInt(1, no_utilisateurAcheteurConnecte);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();

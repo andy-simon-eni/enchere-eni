@@ -23,7 +23,9 @@ public class EncheresManager {
 	public List<Encheres> getEncheresByCategorie(int no_categorie) throws BusinessException{
 		return this.encheresDAO.getEnchereByCategorie(no_categorie);
 	}
-
+	public List<Encheres> getMesEncheres(int no_categorie) throws BusinessException{
+		return this.encheresDAO.getMesEncheres(no_categorie);
+	}
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
 		Encheres uneEnchere = null;
 		uneEnchere = this.encheresDAO.getInfosMaxEnchereByNoArticle(no_article);

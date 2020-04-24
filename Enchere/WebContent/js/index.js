@@ -35,48 +35,28 @@ $(".rbEnchere").on("click", function() {
 	$(".cbEnchere").prop("checked", false);
 	$(".cbEnchere").prop("disabled", false);
 	$(".cb" + $(this).data("val")).prop("disabled", true);
-
-	// ajax qui remove et affiche toutes les nouvelles encheres
+	
+	searchEnchere($(this).val());
 });
 
 $(".cbEnchere").on("click", function() {
 	$(".cbEnchere").not(this).prop("checked", false);
-	checkCase($(this).val());
+	searchEnchere($(this).val());
 });
 
-function checkCase(value) {
-	switch (value) {
-	case "vOuverte":
-
-		break;
-	case "vEnCours":
-
-		break;
-	case "vRemporte":
-
-		break;
-	case "aDebute":
-		$(".dateEnchere").each(
-				function() {
-					if (new Date() < new Date($(this).text())) {
-						$(this).parent().parent().parent().parent().css(
-								"display", "block");
-					} else {
-						$(this).parent().parent().parent().parent().css(
-								"display", "none");
-					}
-				});
-		break;
-	case "aEnCours":
-
-		break;
-	case "aTermine":
-
-		break;
-		default :
-			$("#list").children().css("discplay", "block");
-			break;
-	}
+function searchEnchere(value, categ) {
+	$.ajax({
+		url : "./recherchesConnecté",
+		method : "POST",
+		data : {
+			search: value,
+			categorie: categ
+			},
+		dataType : 'json',
+		success : function(data) {
+			initEnchere(data);
+		}
+	});
 }
 
 // GLOBAL

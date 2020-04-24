@@ -72,7 +72,6 @@ public class recherchesNonConnecté extends HttpServlet {
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());
-			objectBuilder.add("dateDebutEnch", ench.getNo_article().getDate_debut().toString());
 			objectBuilder.add("pseudo", ench.getNo_utilisateur().getPseudo());
 
 			arrayBuilder.add(objectBuilder);

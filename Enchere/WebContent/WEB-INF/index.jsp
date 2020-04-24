@@ -63,11 +63,11 @@
 									</label> <br>
 
 									<div style="margin: 1em">
-										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aDebute">
+										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aOuverte">
 											Enchères ouvertes
 										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aEnCours">
 											Mes enchères en cours
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aTermine">
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbAchat" value="aRemporte">
 											Mes enchères remportées
 										</label>
 									</div>
@@ -79,11 +79,11 @@
 										id="radioV" type="radio" name="answer" value="Vente" data-val="Achat"> Mes ventes
 									</label> <br>
 									<div style="margin: 1em">
-										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vOuverte"
+										<label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vDebute"
 											disabled> Mes ventes non débutées
 										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vEnCours"
 											disabled> Mes ventes en cours
-										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vRemporte"
+										</label> <label class="checkbox"> <input type="checkbox" class="cbEnchere cbVente" value="vTermine"
 											disabled> Mes ventes terminées
 										</label>
 									</div>

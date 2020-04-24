@@ -39,14 +39,111 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "A.no_utilisateur = ?";
+	
+	private static final String SELECT_ALL_VENTE_BY_CAT = "SELECT * FROM ENCHERES E "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "A.no_utilisateur = ? AND c.no_categorie = ?";
+	
+	private static final String SELECT_ENCHERES_OUVERTES = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_debut_encheres > GETDATE()";
+	
+	private static final String SELECT_ENCHERES_OUVERTES_BY_CAT = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_debut_encheres > GETDATE() AND c.no_categorie = ?";
+
+	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
 			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
 			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
 			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "AND A.no_utilisateur = ?";
+			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE()";
 	
+	private static final String SELECT_ENCHERES_EN_COURS_BY_CAT = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND "
+			+ "c.no_categorie = ?";
 	
+	private static final String SELECT_VENTE_OUVERTES = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ?";
 	
+	private static final String SELECT_VENTE_OUVERTES_BY_CAT = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ? AND c.no_categorie = ?";
 	
+	private static final String SELECT_VENTE_EN_COURS = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ?";
+	
+	private static final String SELECT_VENTE_EN_COURS_BY_CATEG = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ? AND"
+			+ "c.no_categorie = ?";
+	
+	private static final String SELECT_VENTES_TERMINEES = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ?";
+	
+	private static final String SELECT_VENTES_TERMINEES_BY_CATEG = "SELECT * FROM ENCHERES e "
+			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
+			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
+			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
+			+ "a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ? AND c.no_categorie = ?";
 	
 	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES E "
 			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
@@ -118,6 +215,272 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_VENTE);
 			pstmt.setInt(1, no_utilisateurAcheteurConnecte);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresByCateg(int no_utilisateur, int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_VENTE_BY_CAT);
+			pstmt.setInt(1, no_utilisateur);
+			pstmt.setInt(2, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEncheresOuvertes() throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_OUVERTES);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEncheresOuvertesByCateg(int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_OUVERTES_BY_CAT);
+			pstmt.setInt(1, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEncheresEnCours() throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_EN_COURS);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getEncheresEnCoursByCateg(int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_EN_COURS_BY_CAT);
+			pstmt.setInt(1, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresNonDebutees(int no_utilisateur) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTE_OUVERTES);
+			pstmt.setInt(1, no_utilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresNonDebuteesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTE_OUVERTES_BY_CAT);
+			pstmt.setInt(1, no_utilisateur);
+			pstmt.setInt(2, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresEnCours(int no_utilisateur) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTE_EN_COURS);
+			pstmt.setInt(1, no_utilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresEnCoursByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTE_EN_COURS_BY_CATEG);
+			pstmt.setInt(1, no_utilisateur);
+			pstmt.setInt(2, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresTerminees(int no_utilisateur) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTES_TERMINEES);
+			pstmt.setInt(1, no_utilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				listEnch.add(ench);
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresTermineesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_VENTES_TERMINEES_BY_CATEG);
+			pstmt.setInt(1, no_utilisateur);
+			pstmt.setInt(2, idCateg);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();

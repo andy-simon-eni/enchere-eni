@@ -23,7 +23,7 @@ public class CategoriesDAOJdbcImpl implements CategoriesDAO {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_CAT);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				listCat.add(new Categories(rs.getInt("no_categorie"),rs.getString("libelle")));
+				listCat.add(ObjectBuilder.getObjectCategories(rs));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -42,7 +42,7 @@ public class CategoriesDAOJdbcImpl implements CategoriesDAO {
 			pstmt.setInt(1, no_categorie);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				categ = new Categories(rs.getInt("no_categorie"), rs.getString("libelle"));
+				categ = ObjectBuilder.getObjectCategories(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

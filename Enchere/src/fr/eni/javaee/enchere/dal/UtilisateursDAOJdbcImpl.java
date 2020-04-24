@@ -131,19 +131,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			pstmt.setInt(1, no_util);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				util = new Utilisateurs();
-				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				util.setPseudo(rs.getString("pseudo"));
-				util.setNom(rs.getString("nom"));
-				util.setPrenom(rs.getString("prenom"));
-				util.setEmail(rs.getString("email"));
-				util.setTelephone(rs.getString("telephone"));
-				util.setRue(rs.getString("rue"));
-				util.setCode_postal(rs.getString("code_postal"));
-				util.setVille(rs.getString("ville"));
-				util.setMot_de_passe(rs.getString("mot_de_passe"));
-				util.setCredit(rs.getInt("credit"));
-				util.setAdministrateur(rs.getBoolean("administrateur"));
+				util = ObjectBuilder.getObjectUtil(rs);
 
 			}
 		} catch (SQLException e) {
@@ -163,19 +151,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			pstmt.setString(1, pseudo);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				util = new Utilisateurs();
-				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				util.setPseudo(rs.getString("pseudo"));
-				util.setNom(rs.getString("nom"));
-				util.setPrenom(rs.getString("prenom"));
-				util.setEmail(rs.getString("email"));
-				util.setTelephone(rs.getString("telephone"));
-				util.setRue(rs.getString("rue"));
-				util.setCode_postal(rs.getString("code_postal"));
-				util.setVille(rs.getString("ville"));
-				util.setMot_de_passe(rs.getString("mot_de_passe"));
-				util.setCredit(rs.getInt("credit"));
-				util.setAdministrateur(rs.getBoolean("administrateur"));
+				util = ObjectBuilder.getObjectUtil(rs);
 
 			}
 		} catch (Exception e) {
@@ -195,20 +171,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			pstmt.setString(1, email);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				util = new Utilisateurs();
-				util.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				util.setPseudo(rs.getString("pseudo"));
-				util.setNom(rs.getString("nom"));
-				util.setPrenom(rs.getString("prenom"));
-				util.setEmail(rs.getString("email"));
-				util.setTelephone(rs.getString("telephone"));
-				util.setRue(rs.getString("rue"));
-				util.setCode_postal(rs.getString("code_postal"));
-				util.setVille(rs.getString("ville"));
-				util.setMot_de_passe(rs.getString("mot_de_passe"));
-				util.setCredit(rs.getInt("credit"));
-				util.setAdministrateur(rs.getBoolean("administrateur"));
-
+				util = ObjectBuilder.getObjectUtil(rs);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

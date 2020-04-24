@@ -138,11 +138,11 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			pstmt.setInt(1, no_article);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				article = this.articlesBuilder(rs);
-				article.setUtil(this.utilisateursBuilder(rs));
-				article.setCategorie(this.categoriesBuilder(rs));
+				article = ObjectBuilder.getObjectArticle(rs);
+				article.setUtil(ObjectBuilder.getObjectUtil(rs));
+				article.setCategorie(ObjectBuilder.getObjectCategories(rs));
 
-				retrait = this.retraitsBuilder(rs);
+				retrait = ObjectBuilder.getObjectRetraits(rs);
 
 				if (retrait != null) {
 					article.setRetrait(retrait);
@@ -156,36 +156,6 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			throw businessException;
 		}
 		return article;
-	}
-
-	private ArticlesVendus articlesBuilder(ResultSet rs) throws SQLException {
-		ArticlesVendus article;
-		article = ObjectBuilder.getObjectArticle(rs);
-		return article;
-	}
-
-	private Utilisateurs utilisateursBuilder(ResultSet rs) throws SQLException {
-		Utilisateurs util;
-		util = ObjectBuilder.getObjectUtil(rs);
-		return util;
-	}
-
-	private Categories categoriesBuilder(ResultSet rs) throws SQLException {
-		Categories categ;
-		categ = ObjectBuilder.getObjectCategories(rs);
-		return categ;
-	}
-
-	private Retraits retraitsBuilder(ResultSet rs) throws SQLException {
-		Retraits retrait = null;
-		String rue, cp, ville;
-		rue = rs.getString("rue_retrait");
-		cp = rs.getString("cp_retrait");
-		ville = rs.getString("ville_retrait");
-		if (rue != null && !rue.isEmpty() && cp != null && !cp.isEmpty() && ville != null && !ville.isEmpty()) {
-			retrait = ObjectBuilder.getObjectRetraits(rs);
-		}
-		return retrait;
 	}
 	@Override
 	public void deleteArticlesRetraits(int no_util) throws BusinessException{

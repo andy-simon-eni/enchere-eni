@@ -10,13 +10,17 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
 import fr.eni.javaee.enchere.dal.ArticlesVendusDAO;
 import fr.eni.javaee.enchere.dal.DAOFactory;
 
+/* Manager des articlesVendus */
+
 public class ArticlesVendusManager {
 	private ArticlesVendusDAO articlesVendusDAO;
 
+	// constructeur du manager, qui instancie l'objet DAO depuis la DAO Factory
 	public ArticlesVendusManager() {
 		this.articlesVendusDAO = DAOFactory.getArticlesVendusDAO();
 	}
 	
+	// Permet d'inserer les données dans la table
 	public ArticlesVendus insertArticleVendu(String nom_article, String description, LocalDate date_debut, LocalDate date_fin, int prix_initial, int no_util, int no_categorie, String rue, String code_postal, String ville) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		UtilisateursManager utilManager = new UtilisateursManager();
@@ -47,6 +51,7 @@ public class ArticlesVendusManager {
 		return article;
 	}
 	
+	// Permet les champs d'un article, avant l'insertion
 	private void validerArticle(String nom_article, String description, LocalDate date_debut, LocalDate date_fin, int prix_initial, int no_util, int no_categorie, BusinessException businessException) throws BusinessException {
 		UtilisateursManager utilManager = new UtilisateursManager();
 		CategoriesManager categManager = new CategoriesManager();
@@ -73,6 +78,7 @@ public class ArticlesVendusManager {
 		}
 	}
 	
+	// Permet les champs d'un retrait, avant l'insertion
 	private void validerRetrait(String rue, String code_postal, String ville, BusinessException businessException) throws BusinessException {
 		UtilisateursManager utilManager;
 		Pattern patternCompile_Ville;
@@ -99,12 +105,14 @@ public class ArticlesVendusManager {
 		
 	}
 	
+	// Permet de recuperer un article grace à son ID
 	public ArticlesVendus getArticleByNoArticle(int no_article) throws BusinessException {
 		ArticlesVendus article = null;
 		article = this.articlesVendusDAO.getArticleByNoArticle(no_article);
 		return article;
 	}
 	
+	// Permet de mettre à jour un article
 	public void updateArticleVendu(int noArticle, String nom_article, String description, LocalDate date_debut, LocalDate date_fin, int prix_initial, int no_util, int no_categorie, String rue, String code_postal, String ville) throws BusinessException {
 		BusinessException businessException = new BusinessException();
 		UtilisateursManager utilManager = new UtilisateursManager();
@@ -134,10 +142,12 @@ public class ArticlesVendusManager {
 		}
 	}
 	
+	// Permet de supprimer un article
 	public void deleteArticlesRetraits(int no_util) throws BusinessException {
 		this.articlesVendusDAO.deleteArticlesRetraits(no_util);
 	}
 	
+	//Permet de mettre la derniere enchere dans le prix de vente lorsque l'enchere est finie
 	public void updateArticleRemporte() throws BusinessException {
 		this.articlesVendusDAO.updateArticleRemporte();
 	}

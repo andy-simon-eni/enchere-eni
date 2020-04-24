@@ -5,7 +5,6 @@
 -- Modification : erreur de table pour la contrainte encheres_utilisateurs_fk qui s'ajoutait sur ARTICLES_VENDUS et non sur ENCHERES
 -- Modification : passage de varchar(30) à varchar(35) le champ mot de passe car il est crypté en base
 -- Modification : création table qui va contenir la date de la dernière maj des articles. Pour mettre a jour les articles où la date de fin est passée.
--- Modification : ajout de deux vues, afin de récuperer les no_article ainsi que les montants maximums ou prix_initial des articles
 
 CREATE TABLE CATEGORIES (
     no_categorie   INTEGER IDENTITY(1,1) NOT NULL,
@@ -70,9 +69,6 @@ CREATE TABLE MAJ_ARTICLES (
 );
 ALTER TABLE MAJ_ARTICLES ADD constraint maj_articles_pk PRIMARY KEY (date_derniere_maj)
 
-INSERT INTO MAJ_ARTICLES VALUES(convert(varchar(10), GETDATE(), 120))
-
-
 ALTER TABLE ENCHERES
     ADD CONSTRAINT encheres_utilisateurs_fk FOREIGN KEY ( no_utilisateur ) REFERENCES UTILISATEURS ( no_utilisateur )
 ON DELETE NO ACTION 
@@ -101,13 +97,3 @@ ALTER TABLE ARTICLES_VENDUS
         REFERENCES utilisateurs ( no_utilisateur )
 ON DELETE NO ACTION 
     ON UPDATE no action 
-    
-CREATE VIEW MaxMontantUtilisateur AS
-SELECT no_article, MAX(montant_enchere)'montantMax'
-FROM ENCHERES
-GROUP BY no_article
-
-CREATE VIEW allEnchere AS
-SELECT AV.no_article, ISNULL(MMU.montantMax, AV.prix_initial)'montant'
-FROM ARTICLES_VENDUS AV 
-LEFT JOIN MaxMontantUtilisateur MMU ON AV.no_article = MMU.no_article

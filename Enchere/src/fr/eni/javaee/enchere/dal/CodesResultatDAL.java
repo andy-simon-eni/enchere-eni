@@ -1,5 +1,6 @@
 package fr.eni.javaee.enchere.dal;
 
+//Liste des erreurs de la DAL
 public abstract class CodesResultatDAL {
 	/**
 	 * Echec de l'insert

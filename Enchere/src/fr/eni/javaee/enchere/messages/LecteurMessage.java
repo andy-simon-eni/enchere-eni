@@ -2,6 +2,7 @@ package fr.eni.javaee.enchere.messages;
 
 import java.util.ResourceBundle;
 
+//Permet de lire les messages d'erreur
 public class LecteurMessage {
 	private static ResourceBundle rb;
 

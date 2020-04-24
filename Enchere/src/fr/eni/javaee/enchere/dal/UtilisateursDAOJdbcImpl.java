@@ -24,6 +24,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			+ " WHERE E.no_utilisateur = ? AND AV.date_fin_encheres >= convert(varchar(10), getdate(), 120) ";
 	private static final String IS_VENDEUR = " SELECT TOP(1) 1 FROM ARTICLES_VENDUS WHERE no_utilisateur = ? AND date_fin_encheres >= convert(varchar(10), getdate(), 120) ";
 
+	//Permet d'ajouter un utilisateur en BDD
 	@Override
 	public Utilisateurs insert(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -67,6 +68,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		return utilisateur;
 	}
 
+	//Permet de mettre à jour un utilisateur en BDD
 	@Override
 	public void update(Utilisateurs utilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -103,6 +105,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		}
 	}
 
+	//Permet de supprimer un utilisateur
 	@Override
 	public void delete(int no_util) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -117,12 +120,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		}
 	}
 
-	@Override
-	public List<Utilisateurs> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	//Permet de récupérer un utilisateur avec son ID
 	@Override
 	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException {
 		Utilisateurs util = null;
@@ -143,6 +141,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		return util;
 	}
 
+	//Permet de récupérer un utilisateur avec son pseudo
 	@Override
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException {
 		Utilisateurs util = null;
@@ -162,7 +161,8 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		}
 		return util;
 	}
-
+	
+	//Permet de récupérer un utilisateur avec son mail
 	@Override
 	public Utilisateurs getUtilByEmail(String email) throws BusinessException {
 		Utilisateurs util = null;
@@ -182,6 +182,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		return util;
 	}
 
+	//Permet d'ajouter des crédits à un utilisateur
 	@Override
 	public void ajouterCredit(int no_util, int montant) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -209,6 +210,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	}
 
+	//Permet de récuperer si un utilisateur est encherisseur max d'un article
 	@Override
 	public boolean isEncherisseurMax(int no_util) throws BusinessException {
 		Boolean isEncherisseur = false;
@@ -228,6 +230,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		return isEncherisseur;
 	}
 
+	//Permet de savoir si un utilisateur est vendeur
 	@Override
 	public boolean isVendeur(int no_util) throws BusinessException {
 		Boolean isVendeur = false;

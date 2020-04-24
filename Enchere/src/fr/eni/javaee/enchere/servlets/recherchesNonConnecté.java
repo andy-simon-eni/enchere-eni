@@ -46,6 +46,7 @@ public class recherchesNonConnecté extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 *      Page appelé par AJAX, qui permet de retourner une liste d'enchere selon le filtre séléctionné lorsqu'on est déconnecté
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

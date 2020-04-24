@@ -1,5 +1,6 @@
 // HORS LIGNE
 
+//Permet de faire un appel ajax, lorsqu'on change la catégorie en mode déconnecté
 $("#selectCat").on("change", function() {
 	$("#inputSearch").val("");
 	$.ajax({
@@ -15,6 +16,7 @@ $("#selectCat").on("change", function() {
 
 // EN LIGNE
 
+//Permet de faire un appel ajax, lorsqu'on change la catégorie en mode connecté
 $("#selectCatConnecte").on("change", function() {
 	$("#inputSearch").val("");
 	var find = false;
@@ -39,6 +41,7 @@ $("#selectCatConnecte").on("change", function() {
 	
 });
 
+//Permet de faire un appel ajax, lorsqu'on clique sur un nouveau filtre
 $(".rbEnchere").on("click", function() {
 	$("#inputSearch").val("");
 	$(".cbEnchere").prop("checked", false);
@@ -48,6 +51,7 @@ $(".rbEnchere").on("click", function() {
 	searchEnchere($(this).val(), $("#selectCatConnecte").val());
 });
 
+//Permet de faire un appel ajax, lorsqu'on clique sur un nouveau filtre
 $(".cbEnchere").on("click", function() {
 	$("#inputSearch").val("");
 	$(".cbEnchere").not(this).prop("checked", false);
@@ -71,6 +75,7 @@ $(".cbEnchere").on("click", function() {
 	
 });
 
+//requete AJAX
 function searchEnchere(value, categ) {
 	$.ajax({
 		url : "./recherchesConnecté",
@@ -88,6 +93,7 @@ function searchEnchere(value, categ) {
 
 // GLOBAL
 
+//Supprime toutes les encheres afin de les recréer via la liste passée en paramètre
 function initEnchere(data, link) {
 	$("#list").children().remove();
 	for (var i = 0; i < data.length; i++) {
@@ -125,6 +131,7 @@ function initEnchere(data, link) {
 	}
 }
 
+//Permet de cacher toutes les encheres dont le nom ne contient pas la chaine passée en paramètre
 $("#inputSearch").on(
 		"keyup",
 		function() {

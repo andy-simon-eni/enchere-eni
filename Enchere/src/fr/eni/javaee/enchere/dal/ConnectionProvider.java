@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+//Permet de se connecter à la BDD
 abstract class ConnectionProvider {
 	private static DataSource dataSource;
 	

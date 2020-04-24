@@ -18,7 +18,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) "
 			+ "VALUES (?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS VALUES (?,?,?,?);";
-	private static final String GET_ARTICLES_VENDUS_BY_NO_ARTICLE = "SELECT *"
+	private static final String GET_ARTICLES_VENDUS_BY_NO_ARTICLE = "SELECT AV.*, C.*, U.*, R.rue 'rueR', R.code_postal 'cpR', R.ville 'villeR'"
 			+ " FROM ARTICLES_VENDUS AV INNER JOIN UTILISATEURS U ON AV.no_utilisateur = U.no_utilisateur"
 			+ " INNER JOIN CATEGORIES C ON AV.no_categorie = C.no_categorie "
 			+ " INNER JOIN RETRAITS R ON AV.no_article = R.no_article WHERE AV.no_article = ?;";
@@ -37,6 +37,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			+ " UPDATE SET AV.prix_vente = source.prix_vente; ";
 	private static final String UPDATE_DATE_MAJ_ARTICLE = "UPDATE MAJ_ARTICLES SET date_derniere_maj = convert(varchar(10), GETDATE(), 120)";
 
+	// Permet d'inserer les données dans la table
 	@Override
 	public ArticlesVendus insert(ArticlesVendus article) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -85,6 +86,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 		return article;
 	}
 
+	// Permet de mettre à jour un article
 	@Override
 	public void update(ArticlesVendus article) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -125,18 +127,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 		}
 	}
 
-	@Override
-	public void delete(int no_article) throws BusinessException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<ArticlesVendus> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	// Permet de recuperer un article grace à son ID
 	@Override
 	public ArticlesVendus getArticleByNoArticle(int no_article) throws BusinessException {
 		ArticlesVendus article = null;
@@ -147,14 +138,9 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				article = ObjectBuilder.getObjectArticle(rs);
-				article.setUtil(ObjectBuilder.getObjectUtil(rs));
-				article.setCategorie(ObjectBuilder.getObjectCategories(rs));
+				retrait = new Retraits(rs.getString("rueR"), rs.getString("cpR"), rs.getString("villeR"));
 
-				retrait = ObjectBuilder.getObjectRetraits(rs);
-
-				if (retrait != null) {
-					article.setRetrait(retrait);
-				}
+				article.setRetrait(retrait);
 
 			}
 		} catch (SQLException e) {
@@ -166,6 +152,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 		return article;
 	}
 
+	// Permet de supprimer un article
 	@Override
 	public void deleteArticlesRetraits(int no_util) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -191,6 +178,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 
 	}
 
+	//Permet de mettre la derniere enchere dans le prix de vente lorsque l'enchere est finie
 	@Override
 	public void updateArticleRemporte() throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {

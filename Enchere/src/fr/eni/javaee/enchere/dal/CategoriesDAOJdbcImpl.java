@@ -16,6 +16,7 @@ public class CategoriesDAOJdbcImpl implements CategoriesDAO {
 	private static final String SELECT_ALL_CAT = "SELECT * from CATEGORIES";
 	private static final String SELECT_CATAGORIE_BY_NO_CATEGORIE = "SELECT * from CATEGORIES WHERE no_categorie = ?";
 
+	// Permet de récupérer la liste des catégories
 	@Override
 	public List<Categories> selectAll() throws BusinessException {
 		List<Categories> listCat = new ArrayList<Categories>();
@@ -34,6 +35,7 @@ public class CategoriesDAOJdbcImpl implements CategoriesDAO {
 		return listCat;
 	}
 
+	// Permet de récupérer la catégorie grace à son ID
 	@Override
 	public Categories getCategorieByNoCategorie(int no_categorie) throws BusinessException {
 		Categories categ = null;

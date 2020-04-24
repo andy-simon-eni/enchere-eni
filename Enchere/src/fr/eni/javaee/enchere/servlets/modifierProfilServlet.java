@@ -18,36 +18,38 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
 /**
  * Servlet implementation class modifierProfilServlet
  */
-@WebServlet(
-        urlPatterns= {"/modifier_profil"})
+@WebServlet(urlPatterns = { "/modifier_profil" })
 public class modifierProfilServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public modifierProfilServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public modifierProfilServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response) Permet d'afficher les informations du profil dans le
+	 *      formulaire de modification
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int no_util = 0;
 		boolean sessionExiste = false;
 		Utilisateurs util = null;
 		UtilisateursManager utilManager = new UtilisateursManager();
-		
+
 		try {
 			HttpSession session = request.getSession();
-			if(session.getAttribute("id") != null) {
+			if (session.getAttribute("id") != null) {
 				sessionExiste = true;
-				no_util = (int)session.getAttribute("id");
+				no_util = (int) session.getAttribute("id");
 				util = utilManager.getUtilByNoUtil(no_util);
-				
-				if(util != null) {
+
+				if (util != null) {
 					request.setAttribute("pseudo", util.getPseudo());
 					request.setAttribute("nom", util.getNom());
 					request.setAttribute("prenom", util.getPrenom());
@@ -62,49 +64,51 @@ public class modifierProfilServlet extends HttpServlet {
 		} catch (BusinessException e) {
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 		}
-		if(!sessionExiste) {
+		if (!sessionExiste) {
 			response.sendRedirect(request.getContextPath() + "/");
-		}else {
+		} else {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/modifier_profil.jsp");
 			rd.forward(request, response);
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response) Permet de modifier le profil
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp, mdp_actuel, resultButton;
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp, verif_mdp, mdp_actuel, resultButton;
 		int no_util = 0;
 		boolean valide = true, sessionExiste = false;
 		Utilisateurs util = null;
 		request.setCharacterEncoding("UTF-8");
 		UtilisateursManager utilManager = new UtilisateursManager();
-		
+
 		resultButton = request.getParameter("button");
-		
+
 		HttpSession session = request.getSession();
-		if(session.getAttribute("id") != null) {
+		if (session.getAttribute("id") != null) {
 			sessionExiste = true;
-			no_util = (int)session.getAttribute("id");
+			no_util = (int) session.getAttribute("id");
 		}
-		
-		if(sessionExiste) {
-			if(resultButton.equals("update")) {
-				pseudo = request.getParameter("pseudo");
-				nom = request.getParameter("nom");
-				prenom = request.getParameter("prenom");
-				email = request.getParameter("email");
-				telephone = request.getParameter("telephone");
-				rue = request.getParameter("rue");
-				code_postal = request.getParameter("code_postal");
-				ville = request.getParameter("ville");
-				mdp = request.getParameter("mdp");
-				verif_mdp = request.getParameter("verif_mdp");
-				mdp_actuel = request.getParameter("mdp_actuel");
-				
+
+		if (sessionExiste) {
+			pseudo = request.getParameter("pseudo");
+			nom = request.getParameter("nom");
+			prenom = request.getParameter("prenom");
+			email = request.getParameter("email");
+			telephone = request.getParameter("telephone");
+			rue = request.getParameter("rue");
+			code_postal = request.getParameter("code_postal");
+			ville = request.getParameter("ville");
+			mdp = request.getParameter("mdp");
+			verif_mdp = request.getParameter("verif_mdp");
+			mdp_actuel = request.getParameter("mdp_actuel");
+			if (resultButton.equals("update")) {
 				try {
-					util = utilManager.updateUtilisateur(no_util, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mdp,verif_mdp, mdp_actuel);
+					util = utilManager.updateUtilisateur(no_util, pseudo, nom, prenom, email, telephone, rue,
+							code_postal, ville, mdp, verif_mdp, mdp_actuel);
 					session.setAttribute("nom", util.getNom());
 					session.setAttribute("prenom", util.getPrenom());
 				} catch (BusinessException e) {
@@ -118,35 +122,42 @@ public class modifierProfilServlet extends HttpServlet {
 					request.setAttribute("rue", rue);
 					request.setAttribute("code_postal", code_postal);
 					request.setAttribute("ville", ville);
-				}		
-				
-				if(valide) {
+				}
+
+				if (valide) {
 					response.sendRedirect(request.getContextPath() + "/profil");
-				}else {
+				} else {
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/modifier_profil.jsp");
 					rd.forward(request, response);
 				}
-			}else if(resultButton.equals("delete")) {
+			} else if (resultButton.equals("delete")) {
 				try {
 					valide = true;
 					utilManager.deleteUtilisateur(no_util);
 				} catch (BusinessException e) {
 					valide = false;
 					request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
-					
+					request.setAttribute("pseudo", pseudo);
+					request.setAttribute("nom", nom);
+					request.setAttribute("prenom", prenom);
+					request.setAttribute("email", email);
+					request.setAttribute("telephone", telephone);
+					request.setAttribute("rue", rue);
+					request.setAttribute("code_postal", code_postal);
+					request.setAttribute("ville", ville);
 				}
-				if(valide) {
+				if (valide) {
 					Cookie cookie = new Cookie("identifiant", "");
-			    	cookie.setMaxAge(0);
-			    	response.addCookie(cookie);
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
 					response.sendRedirect(request.getContextPath() + "/logOut");
-				}else {
+				} else {
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/modifier_profil.jsp");
 					rd.forward(request, response);
 				}
-				
+
 			}
-		}else {
+		} else {
 			response.sendRedirect(request.getContextPath() + "/");
 		}
 	}

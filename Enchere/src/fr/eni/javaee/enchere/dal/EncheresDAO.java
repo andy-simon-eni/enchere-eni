@@ -6,6 +6,7 @@ import fr.eni.javaee.enchere.BusinessException;
 import fr.eni.javaee.enchere.bo.Categories;
 import fr.eni.javaee.enchere.bo.Encheres;
 
+//Interface contenant toutes les méthodes de ENCHERES
 public interface EncheresDAO {
 	public List<Encheres> selectAll() throws BusinessException;
 	List<Encheres> getEnchereByCategorie(int no_categorie) throws BusinessException;

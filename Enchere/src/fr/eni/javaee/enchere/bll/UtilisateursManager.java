@@ -10,13 +10,17 @@ import fr.eni.javaee.enchere.dal.CodesResultatDAL;
 import fr.eni.javaee.enchere.dal.DAOFactory;
 import fr.eni.javaee.enchere.dal.UtilisateursDAO;
 
+/* Manager des encheres */
+
 public class UtilisateursManager {
 	private UtilisateursDAO utilisateursDAO;
 
+	// constructeur du manager, qui instancie l'objet DAO depuis la DAO Factory
 	public UtilisateursManager() {
 		this.utilisateursDAO = DAOFactory.getUtilisateursDAO();
 	}
 
+	//Permet d'ajouter un utilisateur en BDD
 	public Utilisateurs insertUtilisateur(String pseudo, String nom, String prenom, String email, String telephone,
 			String rue, String code_postal, String ville, String mdp, String verif_mdp) throws BusinessException {
 		BusinessException businessException = new BusinessException();
@@ -50,6 +54,8 @@ public class UtilisateursManager {
 		return util;
 	}
 
+	
+	//Permet de valider les champs d'un utilisateur avant son ajout
 	private void validerUtil(int no_util, String pseudo, String nom, String prenom, String email, String telephone,
 			String rue, String code_postal, String ville, String mdp, String verif_mdp,
 			BusinessException businessException) throws BusinessException {
@@ -96,7 +102,6 @@ public class UtilisateursManager {
 				|| !patternCompile_Nom_Prenom_Ville.matcher(prenom).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_PRENOM_INVALIDE);
 		}
-		// TODO Tester si c'est un mail ?
 		if (email == null || email.isEmpty() || email.length() > 100
 				|| !patternCompile_Email.matcher(email).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MAIL_INVALIDE);
@@ -112,7 +117,6 @@ public class UtilisateursManager {
 				}
 			}
 		}
-		// TODO Tester si il y a que des chiffres
 		if (telephone.length() > 15 || !patternCompile_Telephone_CodePostal.matcher(telephone).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_TELEPHONE_INVALIDE);
 		}
@@ -123,7 +127,6 @@ public class UtilisateursManager {
 		if (rue == null || rue.isEmpty() || rue.length() > 30 || !patternCompile_Rue.matcher(rue).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_RUE_INVALIDE);
 		}
-		// TODO Tester si il n'y pas de chiffres
 		if (ville == null || ville.isEmpty() || ville.length() > 30
 				|| !patternCompile_Nom_Prenom_Ville.matcher(ville).matches()) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_VILLE_INVALIDE);
@@ -134,12 +137,14 @@ public class UtilisateursManager {
 		validerMdp(mdp, verif_mdp, businessException);
 	}
 
+	//Permet de vérifier si les deux mots de passes sont égaux
 	private void validerMdp(String mdp, String verif_mdp, BusinessException businessException) {
 		if (verif_mdp == null || !mdp.equals(verif_mdp)) {
 			businessException.ajouterErreur(CodesResultatBLL.REGLE_UTIL_MDPS_DIFFERENTS);
 		}
 	}
 
+	//Permet de tester si l'utilisateur peut se connecter
 	public Utilisateurs verifConnexion(String identifiant, String mdp) throws BusinessException {
 
 		BusinessException businessException = new BusinessException();
@@ -183,24 +188,28 @@ public class UtilisateursManager {
 		return user;
 	}
 
+	//Permet de récupérer un utilisateur avec son pseudo
 	public Utilisateurs getUtilByPseudo(String pseudo) throws BusinessException {
 		Utilisateurs util = null;
 		util = this.utilisateursDAO.getUtilByPseudo(pseudo);
 		return util;
 	}
 
+	//Permet de récupérer un utilisateur avec son mail
 	public Utilisateurs getUtilByEmail(String email) throws BusinessException {
 		Utilisateurs util = null;
 		util = this.utilisateursDAO.getUtilByEmail(email);
 		return util;
 	}
 
+	//Permet de récupérer un utilisateur avec son ID
 	public Utilisateurs getUtilByNoUtil(int no_util) throws BusinessException {
 		Utilisateurs util = null;
 		util = this.utilisateursDAO.getUtilByNoUtil(no_util);
 		return util;
 	}
 
+	//Permet de mettre à jour un utilisateur en BDD
 	public Utilisateurs updateUtilisateur(int no_utilisateur, String pseudo, String nom, String prenom, String email,
 			String telephone, String rue, String code_postal, String ville, String mdp, String verif_mdp,
 			String mdp_actuel) throws BusinessException {
@@ -259,6 +268,7 @@ public class UtilisateursManager {
 		return util;
 	}
 
+	//Permet de supprimer un utilisateur
 	public void deleteUtilisateur(int no_util) throws BusinessException {
 		if(!this.utilisateursDAO.isEncherisseurMax(no_util) && !this.utilisateursDAO.isVendeur(no_util)) {
 			EncheresManager enchereManager = new EncheresManager();
@@ -274,6 +284,7 @@ public class UtilisateursManager {
 		
 	}
 	
+	//Permet d'ajouter des crédits à un utilisateur
 	public void ajouterCredit(int no_util, int montant) throws BusinessException{
 		this.utilisateursDAO.ajouterCredit(no_util, montant);
 	}

@@ -39,6 +39,8 @@ public class uploadImageServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Permet d'afficher l'image de maniere dynamique, lorsqu'on clique sur upload dans la création d'un article
+	 * Cependant, ne stock pas l'image sur le server
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {                           
         JsonObjectBuilder objectBuilder = Json.createObjectBuilder();

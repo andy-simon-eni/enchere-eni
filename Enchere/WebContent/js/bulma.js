@@ -1,9 +1,11 @@
+//Permet de supprimer les erreurs
 $(document).ready(function(){
 	$(".delete").on("click", function(){
 	    $(this).parent().fadeOut();
 	});
 });
 
+//Code pour le burger en mode responsive
 document.addEventListener('DOMContentLoaded', () => {
 
 	  // Get all "navbar-burger" elements

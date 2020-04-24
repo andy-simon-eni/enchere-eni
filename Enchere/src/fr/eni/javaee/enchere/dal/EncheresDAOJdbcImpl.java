@@ -163,7 +163,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			+ " WHERE E.no_utilisateur = ? AND E.no_article = ?";
 	private static final String DELETE_ENCHERES_BY_NO_UTIL = "DELETE FROM ENCHERES WHERE no_utilisateur = ?";
 
-
+	//Permet de récuperer toutes les enchères
 	@Override
 	public List<Encheres> selectAll() throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -193,6 +193,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		return listEnch;
 	}
 
+	//Permet de récuperer toutes les enchères d'une catégorie
 	@Override
 	public List<Encheres> getEnchereByCategorie(int cat) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -221,7 +222,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes d'un utilisateur
 	@Override
 	public List<Encheres> getMesEncheres(int no_utilisateurAcheteurConnecte) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -250,7 +251,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes d'un utilisateur dans une catégorie
 	@Override
 	public List<Encheres> getMesEncheresByCateg(int no_utilisateur, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -280,7 +281,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les enchères à venir
 	@Override
 	public List<Encheres> getEncheresOuvertes() throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -308,7 +309,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les enchères à venir d'une catégorie
 	@Override
 	public List<Encheres> getEncheresOuvertesByCateg(int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -337,7 +338,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les enchères en cours
 	@Override
 	public List<Encheres> getEncheresEnCours(int idUtil) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -366,7 +367,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les enchères en cours d'une catégorie
 	@Override
 	public List<Encheres> getEncheresEnCoursByCateg(int idUtil, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -396,7 +397,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes non débutées d'un utilisateur
 	@Override
 	public List<Encheres> getMesEncheresNonDebutees(int no_utilisateur) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -425,7 +426,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes non débutées d'un utilisateur par catégorie
 	@Override
 	public List<Encheres> getMesEncheresNonDebuteesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -455,7 +456,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes en cours d'un utilisateur
 	@Override
 	public List<Encheres> getMesEncheresEnCours(int no_utilisateur) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -484,7 +485,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes en cours d'un utilisateur par catégorie
 	@Override
 	public List<Encheres> getMesEncheresEnCoursByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -514,7 +515,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes terminées d'un utilisateur
 	@Override
 	public List<Encheres> getMesEncheresTerminees(int no_utilisateur) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -543,7 +544,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les ventes terminées d'un utilisateur par catégorie
 	@Override
 	public List<Encheres> getMesEncheresTermineesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -573,7 +574,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les encheres gagnées d'un utilisateur
 	@Override
 	public List<Encheres> getMesEncheresGagnees(int no_utilisateur) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -602,7 +603,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 		return listEnch;
 	}
-	
+	//Permet de récuperer toutes les encheres gagnées d'un utilisateur par catégorie
 	@Override
 	public List<Encheres> getMesEncheresGagneesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
 		List<Encheres> listEnch = new ArrayList<Encheres>();
@@ -633,7 +634,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		return listEnch;
 	}
 	
-
+	//Permet de récupérer l'enchère la plus haute sur un article
 	@Override
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
 		Encheres uneEnchere = null;
@@ -660,7 +661,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 
 		return uneEnchere;
 	}
-
+	//Permet d'ajouter des enchères dans la BDD
 	@Override
 	public void insertEnchere(Encheres uneEnchere) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -687,6 +688,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 	}
 
+	//Permet de mettre à jour une enchere
 	@Override
 	public void updateEnchere(Encheres uneEnchere) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
@@ -713,6 +715,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		}
 	}
 
+	//Permet de récupérer une enchere grace au no_util
 	@Override
 	public Encheres getEnchereByNoUtil(int no_util, int no_article) throws BusinessException {
 		Encheres uneEnchere = null;
@@ -740,6 +743,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 		return uneEnchere;
 	}
 
+	//Permet de supprimer les enchères d'un utilisateur de la BDD 
 	@Override
 	public void deleteByNoUtil(int no_util) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {

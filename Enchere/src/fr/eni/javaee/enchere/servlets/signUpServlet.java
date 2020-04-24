@@ -33,6 +33,7 @@ public class signUpServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Affiche la page de création de compte
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/sign_up.jsp");
@@ -41,6 +42,7 @@ public class signUpServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Permet de créer un compte
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mdp,verif_mdp;

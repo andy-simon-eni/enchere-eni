@@ -36,6 +36,7 @@ public class creationEnchereServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 *      Affiche la page creation_enchere
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -55,6 +56,7 @@ public class creationEnchereServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 *      Lors de la création d'une enchere, si tout est valide, alons on redirige vers l'index, sinon on revient sur le formulaire en affichant les erreurs et les champs rentrés précédement
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

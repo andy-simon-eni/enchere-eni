@@ -1,5 +1,7 @@
 package fr.eni.javaee.enchere.bll;
 
+/* Liste des erreurs de la BLL */
+
 public abstract class CodesResultatBLL {
 	/**
 	 * Echec le pseudo de l'utilisateur n'est pas valide

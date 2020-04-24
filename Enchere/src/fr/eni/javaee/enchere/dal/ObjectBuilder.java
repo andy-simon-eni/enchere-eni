@@ -8,11 +8,13 @@ import fr.eni.javaee.enchere.bo.Categories;
 import fr.eni.javaee.enchere.bo.Retraits;
 import fr.eni.javaee.enchere.bo.Utilisateurs;
 
+//Permet de construire chaque objet
 public final class ObjectBuilder {
 	private ObjectBuilder() {
 		
 	}
 	
+	//Permet de construire un utilisateur
 	public static Utilisateurs getObjectUtil(ResultSet rs) throws SQLException {
 		Utilisateurs util = new Utilisateurs();
 		util.setNo_utilisateur(rs.getInt("no_utilisateur"));
@@ -30,6 +32,7 @@ public final class ObjectBuilder {
 		return util;
 	}
 
+	//Permet de construire une catégorie
 	public static Categories getObjectCategories(ResultSet rs) throws SQLException {
 		Categories cat = new Categories();
 		cat.setNo_categorie(rs.getInt("no_categorie"));
@@ -38,6 +41,7 @@ public final class ObjectBuilder {
 		return cat;
 	}
 
+	//Permet de construire un retrait
 	public static Retraits getObjectRetraits(ResultSet rs) throws SQLException {
 		Retraits retrait = new Retraits();
 		retrait.setRue(rs.getString("rue"));
@@ -47,6 +51,7 @@ public final class ObjectBuilder {
 		return retrait;
 	}
 
+	//Permet de construire un articlevendus
 	public static ArticlesVendus getObjectArticle(ResultSet rs) throws SQLException {
 		ArticlesVendus art = new ArticlesVendus();
 		Categories cat = getObjectCategories(rs);

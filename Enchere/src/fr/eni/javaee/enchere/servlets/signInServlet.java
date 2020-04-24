@@ -33,6 +33,7 @@ public class signInServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Permet d'afficher la page de connexion avec les cookies si ils existent
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 Cookie[] cookies = request.getCookies();
@@ -49,6 +50,7 @@ public class signInServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Permet de se connecter
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String identifiant, mdp;

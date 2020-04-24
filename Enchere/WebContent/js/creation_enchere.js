@@ -2,6 +2,7 @@ $(document).ready(function(){
 	var dt = new Date();
 	dt.setDate( dt.getDate() + 1 );
 	
+	//Créer les deux calendrier de la page de création d'enchere
 	$("[name='dateDebut'], [name='dateFin']").datepicker({
 	    minDate: dt,
 	    altFormat: "yy-mm-dd",
@@ -61,6 +62,7 @@ $(document).ready(function(){
 	});
 });
 
+//Affiche l'image
 function readURL(input) {
 	if (input.files && input.files[0]) {
 		var reader = new FileReader();
@@ -73,6 +75,7 @@ function readURL(input) {
 	}
 };
 
+//Permet de fermer les erreurs
 function closeError(){
 	$(".erreurFile").children().remove();
 }

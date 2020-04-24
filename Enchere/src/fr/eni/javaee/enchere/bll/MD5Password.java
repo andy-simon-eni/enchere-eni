@@ -9,6 +9,7 @@ public final class MD5Password {
 	
 	private MD5Password() {};
 	
+	//Permet de crypter un mot de passe
 	public static String getEncodedPassword(String key) throws BusinessException {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder hashString = null;
@@ -40,6 +41,7 @@ public final class MD5Password {
 		return hashString.toString();
 	}
 
+	//Permet de comparer un mot de passe crypté et un autre non crypté
 	public static boolean testPassword(String clearTextTestPassword, String encodedActualPassword)
 			throws BusinessException {
 		String encodedTestPassword = getEncodedPassword(clearTextTestPassword);

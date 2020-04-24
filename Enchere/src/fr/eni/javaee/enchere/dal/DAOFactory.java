@@ -1,6 +1,6 @@
 package fr.eni.javaee.enchere.dal;
 
-
+//Permet de récupérer toutes les DAO
 public abstract class DAOFactory {
 	
 	public static UtilisateursDAO getUtilisateursDAO()

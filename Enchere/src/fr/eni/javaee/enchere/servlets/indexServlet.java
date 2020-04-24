@@ -34,6 +34,7 @@ public class indexServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Affiche la page d'accueil ainsi que les enchères
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager cm = new CategoriesManager();

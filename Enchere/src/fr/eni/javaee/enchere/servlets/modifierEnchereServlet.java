@@ -37,6 +37,7 @@ public class modifierEnchereServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 *      Permet d'afficher selon l'etat de la vente, les informations de l'enchere pour le vendeur ou l'acheteur
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -132,6 +133,7 @@ public class modifierEnchereServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
+	 *      Permet de modifier une enchere si elle n'est pas encore commencée
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

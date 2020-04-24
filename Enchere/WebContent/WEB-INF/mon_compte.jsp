@@ -11,8 +11,7 @@
 <body>
 	<jsp:include page="/WEB-INF/fragments/navbar.jsp"></jsp:include>
 	<section class="section">
-		<div class="container"
-			style="max-width: 650px !important; text-align: center">
+		<div class="container petitContainer is-center">
 			<div class="field is-horizontal">
 				<div class="field-label is-normal">
 					<label class="label">Pseudo :</label>

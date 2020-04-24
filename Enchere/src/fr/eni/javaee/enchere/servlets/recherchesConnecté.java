@@ -91,7 +91,11 @@ public class recherchesConnecté extends HttpServlet {
 				}
 				break;
 			case "aRemporte":
-				//Faire la requete
+				if(idCateg != 0) {
+					listEnch = em.getMesEncheresGagneesByCategorie(user, idCateg);
+				}else {
+					listEnch = em.getMesEncheresGagnees(user);
+				}
 				break;
 			case "vDebute":
 				if(idCateg != 0) {
@@ -124,6 +128,7 @@ public class recherchesConnecté extends HttpServlet {
 
 		for (Encheres ench : listEnch) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("noArticle", ench.getNo_article().getNo_article());
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());

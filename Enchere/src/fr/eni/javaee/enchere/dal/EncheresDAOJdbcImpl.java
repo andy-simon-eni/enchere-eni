@@ -18,132 +18,134 @@ import fr.eni.javaee.enchere.bo.Utilisateurs;
 
 public class EncheresDAOJdbcImpl implements EncheresDAO {
 
-	private static final String SELECT_ALL_ENCH = "SELECT * FROM ENCHERES E "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
-			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur)";
-
-	private static final String SELECT_ENCH_BY_CAT = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
-			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article " 
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "c.no_categorie = ?";
-
-	private static final String SELECT_ALL_VENTE = "SELECT * FROM ENCHERES E "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_ALL_ENCH = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
 			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "A.no_utilisateur = ?";
-	
-	private static final String SELECT_ALL_VENTE_BY_CAT = "SELECT * FROM ENCHERES E "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere)";
+
+	private static final String SELECT_ENCH_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
 			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
 			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "A.no_utilisateur = ? AND c.no_categorie = ?";
-	
-	private static final String SELECT_ENCHERES_OUVERTES = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
-			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_debut_encheres > GETDATE()";
-	
-	private static final String SELECT_ENCHERES_OUVERTES_BY_CAT = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
-			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_debut_encheres > GETDATE() AND c.no_categorie = ?";
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE c.no_categorie = ?";
 
-	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_ALL_VENTE = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE()";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE A.no_utilisateur = ?";
 	
-	private static final String SELECT_ENCHERES_EN_COURS_BY_CAT = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_ALL_VENTE_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE A.no_utilisateur = ? AND c.no_categorie = ?";
+	
+	private static final String SELECT_ENCHERES_OUVERTES = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_debut_encheres > GETDATE()";
+	
+	private static final String SELECT_ENCHERES_OUVERTES_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_debut_encheres > GETDATE() AND c.no_categorie = ?";
+
+	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE()";
+	
+	private static final String SELECT_ENCHERES_EN_COURS_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND "
 			+ "c.no_categorie = ?";
 	
-	private static final String SELECT_VENTE_OUVERTES = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTE_OUVERTES = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ?";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ?";
 	
-	private static final String SELECT_VENTE_OUVERTES_BY_CAT = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTE_OUVERTES_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article " 
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ? AND c.no_categorie = ?";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_debut_encheres > GETDATE() AND A.no_utilisateur = ? AND c.no_categorie = ?";
 	
-	private static final String SELECT_VENTE_EN_COURS = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTE_EN_COURS = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ?";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ?";
 	
-	private static final String SELECT_VENTE_EN_COURS_BY_CATEG = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTE_EN_COURS_BY_CATEG = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ? AND"
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres > GETDATE() AND  a.date_debut_encheres <= GETDATE() AND A.no_utilisateur = ? AND"
 			+ "c.no_categorie = ?";
 	
-	private static final String SELECT_VENTES_TERMINEES = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTES_TERMINEES = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ?";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ?";
 	
-	private static final String SELECT_VENTES_TERMINEES_BY_CATEG = "SELECT * FROM ENCHERES e "
-			+ "INNER JOIN ARTICLES_VENDUS a ON e.no_article=a.no_article "
+	private static final String SELECT_VENTES_TERMINEES_BY_CATEG = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
 			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
-			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=e.no_utilisateur "
-			+ "LEFT JOIN RETRAITS R ON r.no_article=a.no_article "
-			+ "WHERE E.no_article IN (SELECT no_article FROM MaxMontantUtilisateur) AND "
-			+ "E.montant_enchere IN (SELECT montantMax FROM MaxMontantUtilisateur) AND "
-			+ "a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ? AND c.no_categorie = ?";
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE a.date_fin_encheres < GETDATE() AND a.no_utilisateur = ? AND c.no_categorie = ?";
+	
+	private static final String SELECT_ENCHERES_GAGNEES = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE A.prix_vente IS NOT NULL AND e.no_utilisateur = ?";
+	
+	private static final String SELECT_ENCHERES_GAGNEES_BY_CAT = "SELECT * FROM ARTICLES_VENDUS a "
+			+ "LEFT JOIN ENCHERES e ON e.no_article=a.no_article "
+			+ "INNER JOIN CATEGORIES c ON c.no_categorie=a.no_categorie "
+			+ "INNER JOIN UTILISATEURS u ON u.no_utilisateur=a.no_utilisateur "
+			+ "INNER JOIN RETRAITS R ON r.no_article=a.no_article "
+			+ "INNER JOIN allEnchere AE ON AE.no_article = A.no_article AND (AE.montant = A.prix_initial OR AE.montant = E.montant_enchere) "
+			+ "WHERE A.prix_vente IS NOT NULL AND e.no_utilisateur = ? AND c.no_categorie = ?";
 	
 	private static final String GET_PSEUDO_MAX_MONTANT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES E "
 			+ " INNER JOIN UTILISATEURS U ON E.no_utilisateur = U.no_utilisateur "
@@ -170,8 +172,14 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
+				
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
 				listEnch.add(ench);
@@ -194,11 +202,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,11 +231,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -243,11 +261,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -266,8 +289,13 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
 				listEnch.add(ench);
@@ -290,11 +318,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -313,8 +346,13 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
 				listEnch.add(ench);
@@ -337,11 +375,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -361,11 +404,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -386,11 +434,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -410,11 +463,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -435,11 +493,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -459,11 +522,16 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -484,11 +552,75 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Encheres ench = new Encheres();
-				ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
-				ench.setMontant_enchere(rs.getInt("montant_enchere"));
-				listEnch.add(ench);
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
 				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
 				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresGagnees(int no_utilisateur) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_GAGNEES);
+			pstmt.setInt(1, no_utilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ALL_ECHEC);
+			throw businessException;
+		}
+		return listEnch;
+	}
+	
+	@Override
+	public List<Encheres> getMesEncheresGagneesByCategorie(int no_utilisateur, int idCateg) throws BusinessException {
+		List<Encheres> listEnch = new ArrayList<Encheres>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_GAGNEES_BY_CAT);
+			pstmt.setInt(1, no_utilisateur);
+			pstmt.setInt(2, idCateg);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres ench = new Encheres();
+				if(rs.getDate("date_enchere") == null) {
+					ench.setDate_enchere(null);
+					ench.setMontant_enchere(rs.getInt("montant"));
+				}else {
+					ench.setDate_enchere(rs.getDate("date_enchere").toLocalDate());
+					ench.setMontant_enchere(rs.getInt("montant_enchere"));
+				}
+				ench.setNo_utilisateur(ObjectBuilder.getObjectUtil(rs));
+				ench.setNo_article(ObjectBuilder.getObjectArticle(rs));
+				listEnch.add(ench);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

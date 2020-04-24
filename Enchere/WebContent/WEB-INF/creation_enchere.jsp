@@ -37,11 +37,11 @@
 			<c:choose>
 				<c:when test="${noArticle != null}">
 					<form method="POST"
-						action="${pageContext.request.contextPath}/modifierEnchere">
+						action="${pageContext.request.contextPath}/modifierEnchere" autocomplete="off">
 				</c:when>
 				<c:otherwise>
 					<form method="POST"
-						action="${pageContext.request.contextPath}/creation_enchere">
+						action="${pageContext.request.contextPath}/creation_enchere" autocomplete="off">
 				</c:otherwise>
 			</c:choose>
 
@@ -112,7 +112,7 @@
 				<label class="label">Début de l'enchère *</label>
 				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateDebut"
-						value="${dateDebut}" required> <span
+						value="${dateDebut}" required autocomplete="false"> <span
 						class="icon is-small is-left"><i
 						class="far fa-calendar-alt"></i></span>
 				</div>
@@ -122,7 +122,7 @@
 				<label class="label">Fin de l'enchère *</label>
 				<div class="control has-icons-left">
 					<input class="input input-is-250" type="text" name="dateFin"
-						value="${dateFin}" required> <span
+						value="${dateFin}" required autocomplete="false"> <span
 						class="icon is-small is-left"><i
 						class="far fa-calendar-alt"></i></span>
 				</div>

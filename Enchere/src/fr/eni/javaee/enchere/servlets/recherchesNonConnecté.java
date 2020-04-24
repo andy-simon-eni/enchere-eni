@@ -69,6 +69,7 @@ public class recherchesNonConnecté extends HttpServlet {
 
 		for (Encheres ench : listEnch) {
 			JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+			objectBuilder.add("noArticle", ench.getNo_article().getNo_article());
 			objectBuilder.add("nomArticle", ench.getNo_article().getNom_article());
 			objectBuilder.add("montant", ench.getMontant_enchere());
 			objectBuilder.add("dateFinEnch", ench.getNo_article().getDate_fin().toString());

@@ -23,8 +23,8 @@
 				<br>
 			</c:if>
 
-			<div style="width: 100%; text-align: center">
-				<span style="font-size: 20px">Mon profil</span>
+			<div class="sous-titre">
+				<span class="title is-5">Mon profil</span>
 			</div>
 			<br> <br>
 			<form method="POST"
@@ -119,7 +119,7 @@
 									name="mdp_actuel" required pattern=".{8,30}">
 							</div>
 						</div>
-						<div class="field" style="visibility: hidden">
+						<div class="field hideField">
 							<label class="label"></label>
 							<div class="control">
 								<input class="input" type="text">
@@ -147,7 +147,7 @@
 					</div>
 				</div>
 				<br>
-				<div style="width: 100%; text-align: center">
+				<div class="sous-titre">
 					<button value="update" name="button" class="button is-link">Enregistrer</button>
 					<button value="delete" name="button" class="button">Supprimer
 						mon compte</button>

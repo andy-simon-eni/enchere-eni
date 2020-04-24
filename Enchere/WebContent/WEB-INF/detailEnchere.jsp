@@ -39,9 +39,8 @@
 			</div>
 			<br>
 			<div class="field is-horizontal">
-				<div class="field is-margin-20" style="position: relative">
-					<label class="label"
-						style="position: relative; top: 50%; left: 0; transform: translateY(-50%);">Description</label>
+				<div class="field is-margin-20 is-relative">
+					<label class="label label-description">Description</label>
 				</div>
 				<div class="field-body">
 					<div class="field">

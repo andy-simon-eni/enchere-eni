@@ -24,8 +24,8 @@
 				<br>
 			</c:if>
 
-			<div style="width: 100%; text-align: center">
-				<span style="font-size: 20px">Mon profil</span>
+			<div class="sous-titre">
+				<span class="title is-5">Mon profil</span>
 			</div>
 			<br><br>
 			<form method="POST"
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 				<br>
-				<div style="width: 100%; text-align: center">
+				<div class="sous-titre">
 					<button class="button is-link">Créer</button>
 					<a class="button" href="${pageContext.request.contextPath}/">Annuler</a>
 				</div>

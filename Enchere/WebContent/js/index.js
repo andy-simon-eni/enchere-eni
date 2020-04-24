@@ -8,7 +8,7 @@ $("#selectCat").on("change", function() {
 		data : "search=" + $(this).val(),
 		dataType : 'json',
 		success : function(data) {
-			initEnchere(data);
+			initEnchere(data, false);
 		}
 	});
 });
@@ -81,18 +81,18 @@ function searchEnchere(value, categ) {
 			},
 		dataType : 'json',
 		success : function(data) {
-			initEnchere(data);
+			initEnchere(data, true);
 		}
 	});
 }
 
 // GLOBAL
 
-function initEnchere(data) {
+function initEnchere(data, link) {
 	$("#list").children().remove();
 	for (var i = 0; i < data.length; i++) {
 		var htmlContent = '<div class="column is-3">';
-		htmlContent += '<div class="card" style="margin: 1em">';
+		htmlContent += '<div class="card is-margin-1em">';
 		htmlContent += '<div class="card-image">';
 		htmlContent += '<figure class="image is-4by3">';
 		htmlContent += '<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">';
@@ -100,14 +100,25 @@ function initEnchere(data) {
 		htmlContent += '</div>';
 		htmlContent += '<div class="card-content">';
 		htmlContent += '<div>';
-		htmlContent += '<p class="titleEnchere title is-4">'
-				+ data[i]["nomArticle"] + '</p>';
+		if(link){
+			htmlContent += '<p class="titleEnchere title is-4"><a href="/Enchere/modifierEnchere?noArt='+data[i]["noArticle"]+'">'
+			+ data[i]["nomArticle"] + '</a></p>';
+		}else{
+			htmlContent += '<p class="titleEnchere title is-4">'
+			+ data[i]["nomArticle"] + '</p>';
+		}
+		
 		htmlContent += '<span class="dateEnchere">' + data[i]["dateDebutEnch"]
 				+ '</span>'
 		htmlContent += '<p>Prix : ' + data[i]["montant"] + '</p>';
 		htmlContent += '<p>Fin de l\'enchère : ' + data[i]["dateFinEnch"]
 				+ '</p>';
-		htmlContent += '<p>Vendeur : ' + data[i]["pseudo"] + '</p>';
+		if(link){
+			htmlContent += '<p>Vendeur : <a href="/Enchere/profil?pseudo='+data[i]["pseudo"]+'">' + data[i]["pseudo"] + '</a></p>';
+		}else{
+			htmlContent += '<p>Vendeur : ' + data[i]["pseudo"] + '</p>';
+		}
+		
 		htmlContent += '</div></div></div></div>';
 
 		$("#list").append(htmlContent);

@@ -18,7 +18,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie) "
 			+ "VALUES (?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS VALUES (?,?,?,?);";
-	private static final String GET_ARTICLES_VENDUS_BY_NO_ARTICLE = "SELECT * "
+	private static final String GET_ARTICLES_VENDUS_BY_NO_ARTICLE = "SELECT *"
 			+ " FROM ARTICLES_VENDUS AV INNER JOIN UTILISATEURS U ON AV.no_utilisateur = U.no_utilisateur"
 			+ " INNER JOIN CATEGORIES C ON AV.no_categorie = C.no_categorie "
 			+ " INNER JOIN RETRAITS R ON AV.no_article = R.no_article WHERE AV.no_article = ?;";

@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="/WEB-INF/fragments/navbar.jsp"></jsp:include>
 	<section class="section">
-		<div class="container" style="max-width: 600px !important">
+		<div class="container petitContainer">
 			<form method="POST" action="${pageContext.request.contextPath}/signIn">
 				<div class="field">
 					<label class="label">Identifiant</label>
@@ -29,10 +29,11 @@
 			</div>
 
 			<c:if test="${!empty listeCodesErreur}">
-				<div role="alert" style="padding-bottom:1em">
+				<div role="alert">
 					<c:forEach var="code" items="${listeCodesErreur}">
 						<div class="notification is-danger is-light"><span>${LecteurMessage.getMessageErreur(code)}</span></div>
 					</c:forEach>
+					<br><br>
 				</div>
 			</c:if>
 				<div class="field is-horizontal">

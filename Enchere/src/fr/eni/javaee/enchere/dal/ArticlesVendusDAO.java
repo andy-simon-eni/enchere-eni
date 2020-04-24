@@ -12,4 +12,5 @@ public interface ArticlesVendusDAO {
 	public List<ArticlesVendus> selectAll();
 	public ArticlesVendus getArticleByNoArticle(int no_article) throws BusinessException;
 	public void deleteArticlesRetraits(int no_util) throws BusinessException;
+	public void updateArticleRemporte() throws BusinessException;
 }

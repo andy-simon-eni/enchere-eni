@@ -28,6 +28,13 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?";
 	private static final String DELETE_ARTICLES_BY_NO_UTIL = "DELETE FROM ARTICLES_VENDUS WHERE no_utilisateur = ?";
 	private static final String DELETE_RETRAITS_BY_NO_ARTICLE = "DELETE FROM RETRAITS WHERE no_article IN (SELECT no_article FROM ARTICLES_VENDUS WHERE no_utilisateur = ?)";
+	private static final String UPDATE_PRIX_VENTE = "MERGE INTO ARTICLES_VENDUS AV "
+			+ " USING (SELECT AV.no_article, ISNULL(MMU.montantMax, AV.prix_initial) 'prix_vente' "
+			+ " FROM ARTICLES_VENDUS AV " + "LEFT JOIN MaxMontantUtilisateur MMU ON AV.no_article = MMU.no_article "
+			+ " where (SELECT DATEDIFF(day, date_derniere_maj, GETDATE()) FROM MAJ_ARTICLES) > 0 "
+			+ " AND DATEDIFF(day, date_fin_encheres, GETDATE()) > 0) AS source "
+			+ " ON AV.no_article = source.no_article " + " WHEN MATCHED THEN "
+			+ " UPDATE SET AV.prix_vente = source.prix_vente; ";
 
 	@Override
 	public ArticlesVendus insert(ArticlesVendus article) throws BusinessException {
@@ -157,8 +164,9 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 		}
 		return article;
 	}
+
 	@Override
-	public void deleteArticlesRetraits(int no_util) throws BusinessException{
+	public void deleteArticlesRetraits(int no_util) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				cnx.setAutoCommit(false);
@@ -174,12 +182,31 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 				cnx.rollback();
 				throw e;
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.DELETE_OBJET_ECHEC);
 			throw businessException;
 		}
-		
+
+	}
+
+	@Override
+	public void updateArticleRemporte() throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				PreparedStatement pstmt;
+				pstmt = cnx.prepareStatement(UPDATE_PRIX_VENTE);
+				pstmt.executeUpdate();
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		} catch (SQLException e) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_ECHEC);
+			throw businessException;
+		}
 	}
 
 }

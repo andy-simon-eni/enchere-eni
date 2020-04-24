@@ -138,4 +138,8 @@ public class ArticlesVendusManager {
 		this.articlesVendusDAO.deleteArticlesRetraits(no_util);
 	}
 	
+	public void updateArticleRemporte() throws BusinessException {
+		this.articlesVendusDAO.updateArticleRemporte();
+	}
+	
 }

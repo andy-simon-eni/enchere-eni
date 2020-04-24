@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.javaee.enchere.BusinessException;
+import fr.eni.javaee.enchere.bll.ArticlesVendusManager;
 import fr.eni.javaee.enchere.bll.CategoriesManager;
 import fr.eni.javaee.enchere.bll.EncheresManager;
 import fr.eni.javaee.enchere.bo.Encheres;
@@ -37,8 +38,9 @@ public class indexServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager cm = new CategoriesManager();
 		EncheresManager em = new EncheresManager();
-		
+		ArticlesVendusManager articleManager = new ArticlesVendusManager();
 		try {
+			articleManager.updateArticleRemporte();
 			Object paramSessionErreur = request.getSession().getAttribute("ListeErreurAfficherEnchere");
 			if(paramSessionErreur != null) {
 				List<Integer> listeErreurs = (List<Integer>) paramSessionErreur;

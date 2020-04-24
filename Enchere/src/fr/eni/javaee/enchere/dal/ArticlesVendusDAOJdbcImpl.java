@@ -35,6 +35,7 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 			+ " AND DATEDIFF(day, date_fin_encheres, GETDATE()) > 0) AS source "
 			+ " ON AV.no_article = source.no_article " + " WHEN MATCHED THEN "
 			+ " UPDATE SET AV.prix_vente = source.prix_vente; ";
+	private static final String UPDATE_DATE_MAJ_ARTICLE = "UPDATE MAJ_ARTICLES SET date_derniere_maj = convert(varchar(10), GETDATE(), 120)";
 
 	@Override
 	public ArticlesVendus insert(ArticlesVendus article) throws BusinessException {
@@ -195,11 +196,16 @@ public class ArticlesVendusDAOJdbcImpl implements ArticlesVendusDAO {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				PreparedStatement pstmt;
+				cnx.setAutoCommit(false);
 				pstmt = cnx.prepareStatement(UPDATE_PRIX_VENTE);
 				pstmt.executeUpdate();
+				pstmt = cnx.prepareStatement(UPDATE_DATE_MAJ_ARTICLE);
+				pstmt.executeUpdate();
 				pstmt.close();
+				cnx.commit();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				cnx.rollback();
 				throw e;
 			}
 		} catch (SQLException e) {

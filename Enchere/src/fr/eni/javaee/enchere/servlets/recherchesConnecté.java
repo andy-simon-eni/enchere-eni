@@ -52,34 +52,68 @@ public class recherchesConnecté extends HttpServlet {
 		EncheresManager em = new EncheresManager();
 		List<Encheres> listEnch = null;
 		String search;
+		int idCateg;
 
+		HttpSession session = request.getSession();
+		int user = (int) session.getAttribute("id");
+		
+		idCateg = Integer.parseInt(request.getParameter("categorie"));
 		search = request.getParameter("search");
 
 		try {
 			switch (search) {
 			case "Achat":
-				listEnch = em.getAllEncheres();
+				if(idCateg != 0) {
+					listEnch = em.getEncheresByCategorie(idCateg);
+				}else {
+					listEnch = em.getAllEncheres();
+				}
 				break;
 			case "Vente":
-				listEnch = em.getAllEncheres();
+				if(idCateg != 0) {
+					listEnch = em.getMesEncheresByCategorie(user, idCateg);
+				}else {
+					listEnch = em.getMesEncheres(user);
+				}
 				break;
-			case "vOuverte":
-				listEnch = em.getAllEncheres();
-				break;
-			case "vEnCours":
-				listEnch = em.getAllEncheres();
-				break;
-			case "vRemporte":
-				listEnch = em.getAllEncheres();
-				break;
-			case "aDebute":
-				listEnch = em.getAllEncheres();
+			case "aOuverte":
+				if(idCateg != 0) {
+					listEnch = em.getEncheresOuvertesByCategorie(idCateg);
+				}else {
+					listEnch = em.getEncheresOuvertes();
+				}
 				break;
 			case "aEnCours":
-				listEnch = em.getAllEncheres();
+				if(idCateg != 0) {
+					listEnch = em.getEncheresEnCoursByCategorie(idCateg);
+				}else {
+					listEnch = em.getEncheresEnCours();
+				}
 				break;
-			case "aTermine":
-				listEnch = em.getAllEncheres();
+			case "aRemporte":
+				//Faire la requete
+				break;
+			case "vDebute":
+				if(idCateg != 0) {
+					listEnch = em.getMesEncheresNonDebuteesByCategorie(user, idCateg);
+					
+				}else {
+					listEnch = em.getMesEncheresNonDebutees(user);
+				}
+				break;
+			case "vEnCours":
+				if(idCateg != 0) {
+					listEnch = em.getMesEncheresEnCoursByCategorie(user, idCateg);
+				}else {
+					listEnch = em.getMesEncheresEnCours(user);
+				}
+				break;
+			case "vTermine":
+				if(idCateg != 0) {
+					listEnch = em.getMesEncheresTermineesByCategorie(user, idCateg);
+				}else {
+					listEnch = em.getMesEncheresTerminees(user);
+				}
 				break;
 			}
 		} catch (BusinessException e) {

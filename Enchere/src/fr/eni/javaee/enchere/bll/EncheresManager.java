@@ -23,8 +23,41 @@ public class EncheresManager {
 	public List<Encheres> getEncheresByCategorie(int no_categorie) throws BusinessException{
 		return this.encheresDAO.getEnchereByCategorie(no_categorie);
 	}
-	public List<Encheres> getMesEncheres(int no_categorie) throws BusinessException{
-		return this.encheresDAO.getMesEncheres(no_categorie);
+	public List<Encheres> getMesEncheres(int idUtilisateur) throws BusinessException{
+		return this.encheresDAO.getMesEncheres(idUtilisateur);
+	}
+	public List<Encheres> getMesEncheresByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
+		return this.encheresDAO.getMesEncheresByCateg(idUtilisateur, idCateg);
+	}
+	public List<Encheres> getEncheresOuvertes() throws BusinessException{
+		return this.encheresDAO.getEncheresOuvertes();
+	}
+	public List<Encheres> getEncheresOuvertesByCategorie(int idCateg) throws BusinessException{
+		return this.encheresDAO.getEncheresOuvertesByCateg(idCateg);
+	}
+	public List<Encheres> getEncheresEnCours() throws BusinessException{
+		return this.encheresDAO.getEncheresEnCours();
+	}
+	public List<Encheres> getEncheresEnCoursByCategorie(int idCateg) throws BusinessException{
+		return this.encheresDAO.getEncheresEnCoursByCateg(idCateg);
+	}
+	public List<Encheres> getMesEncheresNonDebutees(int idUtilisateur) throws BusinessException{
+		return this.encheresDAO.getMesEncheresNonDebutees(idUtilisateur);
+	}
+	public List<Encheres> getMesEncheresNonDebuteesByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
+		return this.encheresDAO.getMesEncheresNonDebuteesByCategorie(idUtilisateur, idCateg);
+	}
+	public List<Encheres> getMesEncheresEnCours(int idUtilisateur) throws BusinessException{
+		return this.encheresDAO.getMesEncheresEnCours(idUtilisateur);
+	}
+	public List<Encheres> getMesEncheresEnCoursByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
+		return this.encheresDAO.getMesEncheresEnCoursByCategorie(idUtilisateur, idCateg);
+	}
+	public List<Encheres> getMesEncheresTerminees(int idUtilisateur) throws BusinessException{
+		return this.encheresDAO.getMesEncheresTerminees(idUtilisateur);
+	}
+	public List<Encheres> getMesEncheresTermineesByCategorie(int idUtilisateur, int idCateg) throws BusinessException{
+		return this.encheresDAO.getMesEncheresTermineesByCategorie(idUtilisateur, idCateg);
 	}
 	public Encheres getInfosMaxEnchereByNoArticle(int no_article) throws BusinessException {
 		Encheres uneEnchere = null;

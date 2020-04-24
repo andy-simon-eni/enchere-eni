@@ -51,7 +51,24 @@ $(".rbEnchere").on("click", function() {
 $(".cbEnchere").on("click", function() {
 	$("#inputSearch").val("");
 	$(".cbEnchere").not(this).prop("checked", false);
-	searchEnchere($(this).val(), $("#selectCatConnecte").val());
+	var checked = false;
+	$(".cbEnchere").each(function(){
+		if($(this).prop("checked") == true){
+			checked = true;
+		}
+	});
+	
+	if(checked){
+		searchEnchere($(this).val(), $("#selectCatConnecte").val());
+	}else{
+		$(".rbEnchere").each(function(){
+			if($(this).prop("checked") == true){
+				$(this).click();
+			}
+		});
+	}
+	
+	
 });
 
 function searchEnchere(value, categ) {

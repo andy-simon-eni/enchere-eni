@@ -35,11 +35,11 @@ public class EncheresManager {
 	public List<Encheres> getEncheresOuvertesByCategorie(int idCateg) throws BusinessException{
 		return this.encheresDAO.getEncheresOuvertesByCateg(idCateg);
 	}
-	public List<Encheres> getEncheresEnCours() throws BusinessException{
-		return this.encheresDAO.getEncheresEnCours();
+	public List<Encheres> getEncheresEnCours(int idUtil) throws BusinessException{
+		return this.encheresDAO.getEncheresEnCours(idUtil);
 	}
-	public List<Encheres> getEncheresEnCoursByCategorie(int idCateg) throws BusinessException{
-		return this.encheresDAO.getEncheresEnCoursByCateg(idCateg);
+	public List<Encheres> getEncheresEnCoursByCategorie(int idUtil, int idCateg) throws BusinessException{
+		return this.encheresDAO.getEncheresEnCoursByCateg(idUtil, idCateg);
 	}
 	public List<Encheres> getMesEncheresNonDebutees(int idUtilisateur) throws BusinessException{
 		return this.encheresDAO.getMesEncheresNonDebutees(idUtilisateur);
